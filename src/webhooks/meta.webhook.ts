@@ -7,10 +7,12 @@ import { orchestrator } from '../services/orchestrator';
 import { logger } from '../utils/logger';
 
 // In-memory buffer for multi-image WhatsApp forwards
-const merchantUploadBuffers: Record<
-  string,
-  { imageIds: string[]; captions: string[]; timer: NodeJS.Timeout | null; acknowledged: boolean }
-> = {};
+interface MerchantBuffer {
+  imageIds: string[];
+  captions: string[];
+}
+
+const merchantUploadBuffers: Record<string, MerchantBuffer> = {};
 
 /**
  * Meta Webhook Verification Handshake (GET)
@@ -27,6 +29,82 @@ export function verifyMetaWebhook(req: Request, res: Response): void {
     logger.warn({ mode, token }, 'Meta Webhook verification failed - token mismatch');
     res.status(403).send('Verification failed');
   }
+}
+
+/**
+ * Helper to process and publish buffered product
+ */
+async function processAndPublishBuffer(fromNumber: string, buf: MerchantBuffer): Promise<void> {
+  const finalCaptions = buf.captions.join('\n');
+  const finalImageIds = [...buf.imageIds];
+
+  // 1. Send Instant Processing Notification
+  const instantAck = `📸 *We have received your product photos & details!* ⏳\n\n` +
+    `_Analyzing fabric, calculating 2x selling price & publishing live to your store... Please give us 10-15 seconds!_ ✨`;
+  await whatsappService.sendTextMessage({ to: fromNumber, text: instantAck });
+
+  logger.info({ count: finalImageIds.length, captions: finalCaptions }, 'Executing "done" publish command');
+
+  const { vendorParser } = await import('../services/vendorParser');
+  const parsed = vendorParser.parseVendorMessage(finalCaptions);
+
+  // Download all images from Meta Graph API
+  const axios = (await import('axios')).default;
+  const formattedImages: { attachment: string; filename: string }[] = [];
+
+  for (let i = 0; i < finalImageIds.length; i++) {
+    try {
+      const mediaRes = await axios.get(`https://graph.facebook.com/v19.0/${finalImageIds[i]}`, {
+        headers: { Authorization: `Bearer ${config.meta.accessToken}` },
+      });
+      const mediaUrl = mediaRes.data?.url;
+      if (mediaUrl) {
+        const imgBuffer = await axios.get(mediaUrl, {
+          headers: { Authorization: `Bearer ${config.meta.accessToken}` },
+          responseType: 'arraybuffer',
+        });
+        formattedImages.push({
+          attachment: Buffer.from(imgBuffer.data).toString('base64'),
+          filename: `wa_kurti_${Date.now()}_${i + 1}.jpg`,
+        });
+      }
+    } catch (imgErr: any) {
+      logger.warn({ error: imgErr.message }, 'Failed to fetch one WhatsApp media attachment');
+    }
+  }
+
+  const skuPrefix = `ARF-WA-${Date.now().toString().slice(-4)}`;
+  const variants = parsed.sizes.map((size) => ({
+    title: size,
+    option1: size,
+    price: parsed.retailPrice.toFixed(2),
+    compare_at_price: parsed.compareAtPrice.toFixed(2),
+    sku: `${skuPrefix}-${size}`,
+    inventory_quantity: 12,
+    inventory_management: 'shopify',
+  }));
+
+  const product = await shopifyService.createProduct({
+    title: parsed.title,
+    product_type: parsed.category,
+    vendor: 'Araadhya Fashion',
+    includeSeo: true,
+    fabric: parsed.fabric,
+    variants,
+    images: formattedImages.length > 0 ? formattedImages : undefined,
+  });
+
+  const storeUrl = `https://${config.shopify.shopDomain || 'araadhyafashion.myshopify.com'}/products/${product.handle}`;
+  const confirmation = `👑 *NEW PRODUCT PUBLISHED LIVE!* ✨\n\n` +
+    `🛍️ *${product.title}*\n\n` +
+    `📸 *Photos:* ${formattedImages.length} HD Angles\n` +
+    `💰 *Wholesale:* ₹${parsed.wholesalePrice}\n` +
+    `🏷️ *Selling Price (2x):* ₹${parsed.retailPrice} (50% OFF)\n` +
+    `📏 *Sizes:* ${parsed.sizes.join(', ')}\n\n` +
+    `🔗 *Live Store Link:* \n${storeUrl}`;
+
+  await whatsappService.sendTextMessage({ to: fromNumber, text: confirmation });
+  logger.info({ productId: product.id, url: storeUrl }, 'Product published from WhatsApp "done" command');
 }
 
 /**
@@ -55,124 +133,60 @@ export async function handleMetaWebhook(req: Request, res: Response): Promise<vo
       const fromNumber = message.from;
       logger.info({ fromNumber, type: message.type }, 'Incoming WhatsApp webhook message');
 
+      // Initialize buffer for this merchant
+      if (!merchantUploadBuffers[fromNumber]) {
+        merchantUploadBuffers[fromNumber] = {
+          imageIds: [],
+          captions: [],
+        };
+      }
+      const buf = merchantUploadBuffers[fromNumber];
+
       // =========================================================================
-      // A. VENDOR FORWARD / PRODUCT UPLOADER (Images & Vendor Captions)
+      // A. IMAGE ATTACHMENTS
       // =========================================================================
       if (message.type === 'image') {
         const caption = message.image.caption || '';
         const imageId = message.image.id;
-
-        if (!merchantUploadBuffers[fromNumber]) {
-          merchantUploadBuffers[fromNumber] = {
-            imageIds: [],
-            captions: [],
-            timer: null,
-            acknowledged: false,
-          };
-        }
-
-        const buf = merchantUploadBuffers[fromNumber];
         buf.imageIds.push(imageId);
         if (caption) buf.captions.push(caption);
 
-        // ⚡ INSTANT ACKNOWLEDGEMENT: Send immediate feedback on the 1st photo received!
-        if (!buf.acknowledged) {
-          buf.acknowledged = true;
-          const instantAck = `📸 *We have received your product photos!* ⏳\n\n` +
-            `_Analyzing fabric, calculating 2x selling price & publishing live to your store... Please give us 10-15 seconds!_ ✨`;
-          await whatsappService.sendTextMessage({ to: fromNumber, text: instantAck });
-        }
+        logger.info({ fromNumber, totalImages: buf.imageIds.length }, 'Photo added to merchant staging buffer');
+      }
 
-        // Reset debounce timer
-        if (buf.timer) clearTimeout(buf.timer);
+      // =========================================================================
+      // B. TEXT MESSAGES
+      // =========================================================================
+      else if (message.type === 'text') {
+        const rawText = message.text.body.trim();
+        const lowerText = rawText.toLowerCase();
+        logger.info({ fromNumber, rawText }, 'Text message received');
 
-        buf.timer = setTimeout(async () => {
-          try {
-            const finalCaptions = buf.captions.join('\n');
-            const finalImageIds = [...buf.imageIds];
-            delete merchantUploadBuffers[fromNumber];
-
-            logger.info({ count: finalImageIds.length, captions: finalCaptions }, 'Processing multi-image vendor forward');
-
-            const { vendorParser } = await import('../services/vendorParser');
-            const parsed = vendorParser.parseVendorMessage(finalCaptions);
-
-            // Download all images from Meta Graph API
-            const axios = (await import('axios')).default;
-            const formattedImages: { attachment: string; filename: string }[] = [];
-
-            for (let i = 0; i < finalImageIds.length; i++) {
-              try {
-                const mediaRes = await axios.get(`https://graph.facebook.com/v19.0/${finalImageIds[i]}`, {
-                  headers: { Authorization: `Bearer ${config.meta.accessToken}` },
-                });
-                const mediaUrl = mediaRes.data?.url;
-                if (mediaUrl) {
-                  const imgBuffer = await axios.get(mediaUrl, {
-                    headers: { Authorization: `Bearer ${config.meta.accessToken}` },
-                    responseType: 'arraybuffer',
-                  });
-                  formattedImages.push({
-                    attachment: Buffer.from(imgBuffer.data).toString('base64'),
-                    filename: `wa_kurti_${Date.now()}_${i + 1}.jpg`,
-                  });
-                }
-              } catch (imgErr: any) {
-                logger.warn({ error: imgErr.message }, 'Failed to fetch one WhatsApp media attachment');
-              }
-            }
-
-            const skuPrefix = `ARF-WA-${Date.now().toString().slice(-4)}`;
-            const variants = parsed.sizes.map((size) => ({
-              title: size,
-              option1: size,
-              price: parsed.retailPrice.toFixed(2),
-              compare_at_price: parsed.compareAtPrice.toFixed(2),
-              sku: `${skuPrefix}-${size}`,
-              inventory_quantity: 12,
-              inventory_management: 'shopify',
-            }));
-
-            const product = await shopifyService.createProduct({
-              title: parsed.title,
-              product_type: parsed.category,
-              vendor: 'Araadhya Fashion',
-              includeSeo: true,
-              fabric: parsed.fabric,
-              variants,
-              images: formattedImages.length > 0 ? formattedImages : undefined,
+        // 🎯 1. THE "DONE" TRIGGER COMMAND
+        if (lowerText === 'done' || lowerText === 'publish' || lowerText === 'upload') {
+          if (buf.imageIds.length === 0 && buf.captions.length === 0) {
+            await whatsappService.sendTextMessage({
+              to: fromNumber,
+              text: `⚠️ *No photos or details found in staging!*\n\nPlease forward your Kurti photos and vendor description first, then type *done*!`,
             });
+            return;
+          }
 
-            const storeUrl = `https://${config.shopify.shopDomain || 'araadhyafashion.myshopify.com'}/products/${product.handle}`;
-            const confirmation = `👑 *NEW PRODUCT PUBLISHED LIVE!* ✨\n\n` +
-              `🛍️ *${product.title}*\n\n` +
-              `📸 *Photos:* ${formattedImages.length} HD Angles\n` +
-              `💰 *Wholesale:* ₹${parsed.wholesalePrice}\n` +
-              `🏷️ *Selling Price (2x):* ₹${parsed.retailPrice} (50% OFF)\n` +
-              `📏 *Sizes:* ${parsed.sizes.join(', ')}\n\n` +
-              `🔗 *Live Store Link:* \n${storeUrl}`;
-
-            await whatsappService.sendTextMessage({ to: fromNumber, text: confirmation });
-            logger.info({ productId: product.id, url: storeUrl }, 'Product published from WhatsApp forward');
+          try {
+            const currentBuf = { ...buf };
+            delete merchantUploadBuffers[fromNumber];
+            await processAndPublishBuffer(fromNumber, currentBuf);
           } catch (err: any) {
-            logger.error({ error: err.message }, 'Failed to publish product from WhatsApp forward buffer');
+            logger.error({ error: err.message }, 'Failed to publish on "done"');
             await whatsappService.sendTextMessage({
               to: fromNumber,
               text: `⚠️ Error auto-publishing product: ${err.message}`,
             });
           }
-        }, 10000);
-      }
+          return;
+        }
 
-      // =========================================================================
-      // B. TEXT MESSAGES (Vendor descriptions OR Customer discovery)
-      // =========================================================================
-      else if (message.type === 'text') {
-        const rawText = message.text.body.trim();
-        const lowerText = rawText.toLowerCase();
-        logger.info({ fromNumber, rawText }, 'Incoming WhatsApp Text message');
-
-        // Check if text is a vendor forward with price/rate/fabric/sizes
+        // 2. VENDOR DETAILS / CAPTION TEXT
         const isVendorText =
           lowerText.includes('rate') ||
           lowerText.includes('price') ||
@@ -180,28 +194,19 @@ export async function handleMetaWebhook(req: Request, res: Response): Promise<vo
           lowerText.includes('size') ||
           lowerText.includes('kurti') ||
           lowerText.includes('free ship') ||
-          lowerText.includes('set');
+          lowerText.includes('garara') ||
+          lowerText.includes('set') ||
+          lowerText.includes('anarkali') ||
+          lowerText.includes('saree');
 
         if (isVendorText) {
-          // If images buffer already exists, append caption
-          if (merchantUploadBuffers[fromNumber]) {
-            merchantUploadBuffers[fromNumber].captions.push(rawText);
-            const ack = `📝 *Product details added to your photos!* Publishing in a few seconds... ⏳`;
-            await whatsappService.sendTextMessage({ to: fromNumber, text: ack });
-          } else {
-            // Text arrived before images
-            merchantUploadBuffers[fromNumber] = {
-              imageIds: [],
-              captions: [rawText],
-              timer: null,
-              acknowledged: true,
-            };
-            const ack = `📝 *Product details received:* \n"${rawText.slice(0, 80)}..."\n\n📸 *Now please forward the product photos to publish live!*`;
-            await whatsappService.sendTextMessage({ to: fromNumber, text: ack });
-          }
+          buf.captions.push(rawText);
+          logger.info({ fromNumber, caption: rawText }, 'Vendor description saved in buffer');
+          return;
         }
-        // Customer Shopping / Discovery flow
-        else if (
+
+        // 3. CUSTOMER DISCOVERY / CATALOG SHOPPING
+        if (
           lowerText.includes('catalog') ||
           lowerText.includes('saree') ||
           lowerText.includes('lehenga') ||
@@ -235,7 +240,7 @@ export async function handleMetaWebhook(req: Request, res: Response): Promise<vo
           const welcome = `Namaste! 🙏 Welcome to *Araadhya Fashion* ✨\n\n` +
             `How can we help you today?\n` +
             `• Type *catalog* to view our latest Sarees, Kurtis & Lehengas\n` +
-            `• Forward product photos + price to auto-publish to store!\n` +
+            `• Forward vendor photos + text, then type *done* to publish live!\n` +
             `• Type *support* to speak with our personal stylist!`;
           await whatsappService.sendTextMessage({ to: fromNumber, text: welcome });
         }
