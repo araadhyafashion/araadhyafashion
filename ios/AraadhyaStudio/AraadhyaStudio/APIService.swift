@@ -4,8 +4,8 @@ import UIKit
 class APIService: ObservableObject {
     static let shared = APIService()
     
-    // Cloud HTTPS URL for 24/7 Mobile & Cellular Connectivity
-    @Published var serverBaseUrl: String = "https://d25a90aaf2fc7d.lhr.life"
+    // Permanent 24/7 Render Cloud URL
+    @Published var serverBaseUrl: String = "https://araadhya-commerce-hub.onrender.com"
     
     // Direct Shopify Storefront fallback when on Cellular 5G / Outside Wi-Fi
     private let shopifyDirectCatalogUrl = "https://araadhyafashion.myshopify.com/products.json?limit=50"
