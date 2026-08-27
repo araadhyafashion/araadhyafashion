@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Araadhya Hub" />
+  <meta name="theme-color" content="#780016" />
+  <title>Araadhya Fashion — Unified Commerce & Shopify Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">👗</div>
+        <div class="brand-info">
+          <h1>Araadhya Fashion</h1>
+          <span>Unified Commerce Hub</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#overview" class="nav-item active" data-tab="overview">
+          <span class="nav-icon">📊</span> Overview & Health
+        </a>
+        <a href="#storefront" class="nav-item" data-tab="storefront">
+          <span class="nav-icon">✨</span> Storefront Experience (PDP)
+        </a>
+        <a href="#catalog" class="nav-item" data-tab="catalog">
+          <span class="nav-icon">🛍️</span> Shopify Catalog
+        </a>
+        <a href="#orders" class="nav-item" data-tab="orders">
+          <span class="nav-icon">📦</span> Shopify Orders & Fulfillment
+        </a>
+        <a href="#iosupload" class="nav-item" data-tab="iosupload">
+          <span class="nav-icon">📱</span> iPhone Studio Direct
+        </a>
+        <a href="#vendorbot" class="nav-item" data-tab="vendorbot">
+          <span class="nav-icon">📲</span> WhatsApp Vendor 2x Bot
+        </a>
+        <a href="#bulkupload" class="nav-item" data-tab="bulkupload">
+          <span class="nav-icon">📁</span> Mac Bulk Upload
+        </a>
+        <a href="#sales" class="nav-item" data-tab="sales">
+          <span class="nav-icon">⚡</span> Omni-Channel Sales
+        </a>
+        <a href="#simulator" class="nav-item" data-tab="simulator">
+          <span class="nav-icon">🧪</span> Payment Simulator
+        </a>
+        <a href="#guide" class="nav-item" data-tab="guide">
+          <span class="nav-icon">🔑</span> API Keys Setup
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="server-badge">
+          <span class="pulse-dot"></span> Server: <b id="server-status">Connecting...</b>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="top-header">
+        <div class="header-title">
+          <h2 id="page-title">Platform Overview & Integrations</h2>
+          <p class="subtitle">Unified engine powering Shopify, Razorpay, WhatsApp, Instagram & Facebook</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" id="btn-refresh-status">
+            <span>🔄</span> Refresh Status
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB: Overview & Health -->
+      <section id="tab-overview" class="tab-pane active">
+        <!-- Store Summary Metrics Bar -->
+        <div class="metrics-row" id="overview-metrics-row">
+          <div class="metric-box">
+            <span class="metric-label">🛍️ Total Products</span>
+            <span class="metric-val" id="metric-total-prods">--</span>
+            <span class="metric-sub" id="metric-active-prods">Active in catalog</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">📦 Store Orders</span>
+            <span class="metric-val" id="metric-total-orders">--</span>
+            <span class="metric-sub" id="metric-paid-orders">Total captured</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">🚚 Pending Fulfillment</span>
+            <span class="metric-val" id="metric-unfulfilled-orders" style="color: #DC2626;">--</span>
+            <span class="metric-sub">Need dispatch</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">⚠️ Low Stock Variants</span>
+            <span class="metric-val" id="metric-low-stock" style="color: #D97706;">--</span>
+            <span class="metric-sub">Stock &le; 5 units</span>
+          </div>
+        </div>
+
+        <!-- Integration Cards Grid -->
+        <div class="grid grid-5">
+          <!-- Shopify Card -->
+          <div class="card status-card" id="card-shopify">
+            <div class="card-header">
+              <div class="card-icon shopify-bg">🛍️</div>
+              <span class="badge" id="badge-shopify">Checking...</span>
+            </div>
+            <h3>Shopify Store</h3>
+            <p class="card-desc" id="desc-shopify">Website, Catalog & Orders</p>
+            <div class="card-footer">
+              <small id="sub-shopify">araadhyafashion.com</small>
+            </div>
+          </div>
+
+          <!-- Razorpay Card -->
+          <div class="card status-card" id="card-razorpay">
+            <div class="card-header">
+              <div class="card-icon razorpay-bg">💳</div>
+              <span class="badge" id="badge-razorpay">Checking...</span>
+            </div>
+            <h3>Razorpay</h3>
+            <p class="card-desc" id="desc-razorpay">Instant Payment Links & UPI</p>
+            <div class="card-footer">
+              <small id="sub-razorpay">Payments & Webhooks</small>
+            </div>
+          </div>
+
+          <!-- WhatsApp Card -->
+          <div class="card status-card" id="card-whatsapp">
+            <div class="card-header">
+              <div class="card-icon whatsapp-bg">💬</div>
+              <span class="badge" id="badge-whatsapp">Checking...</span>
+            </div>
+            <h3>WhatsApp Cloud</h3>
+            <p class="card-desc" id="desc-whatsapp">Direct Chat Checkout & Alerts</p>
+            <div class="card-footer">
+              <small id="sub-whatsapp">Meta Cloud API</small>
+            </div>
+          </div>
+
+          <!-- Instagram Card -->
+          <div class="card status-card" id="card-instagram">
+            <div class="card-header">
+              <div class="card-icon insta-bg">📸</div>
+              <span class="badge" id="badge-instagram">Checking...</span>
+            </div>
+            <h3>Instagram DMs</h3>
+            <p class="card-desc" id="desc-instagram">Social DM Commerce</p>
+            <div class="card-footer">
+              <small id="sub-instagram">Instagram Graph API</small>
+            </div>
+          </div>
+
+          <!-- Facebook Card -->
+          <div class="card status-card" id="card-facebook">
+            <div class="card-header">
+              <div class="card-icon fb-bg">🎯</div>
+              <span class="badge" id="badge-facebook">Checking...</span>
+            </div>
+            <h3>Meta CAPI & FB</h3>
+            <p class="card-desc" id="desc-facebook">Ad Conversion Tracking</p>
+            <div class="card-footer">
+              <small id="sub-facebook">Conversions API</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workflow Visualizer -->
+        <div class="card workflow-card">
+          <h3>⚡ How Araadhya Unified Engine Sells & Fulfills</h3>
+          <div class="workflow-steps">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-text">
+                <strong>Customer Inquires</strong>
+                <p>On WhatsApp or Instagram DM</p>
+              </div>
+            </div>
+            <div class="step-arrow">➔</div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-text">
+                <strong>Instant Razorpay Link</strong>
+                <p>Generated & dispatched to customer chat</p>
+              </div>
+            </div>
+            <div class="step-arrow">➔</div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-text">
+                <strong>UPI / Card Payment</strong>
+                <p>Customer pays securely in 1 click</p>
+              </div>
+            </div>
+            <div class="step-arrow">➔</div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-text">
+                <strong>Shopify Order & CAPI</strong>
+                <p>Paid order auto-synced to Shopify</p>
+              </div>
+            </div>
+            <div class="step-arrow">➔</div>
+            <div class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-text">
+                <strong>1-Click Fulfillment</strong>
+                <p>Tracking sent via WhatsApp & Shopify</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Activity Log -->
+        <div class="card">
+          <div class="card-title-row">
+            <h3>📜 Live Event & Webhook Monitor</h3>
+            <button class="btn btn-sm btn-outline" id="btn-clear-logs">Clear</button>
+          </div>
+          <div class="log-container" id="log-feed">
+            <div class="log-entry log-info">[SYSTEM] Araadhya Unified Hub initialized. Ready to process multi-channel sales.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Storefront Experience (Best-in-Class PDP) -->
+      <section id="tab-storefront" class="tab-pane">
+        <div class="preview-controls">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #1E293B; margin-bottom: 2px;">
+              ✨ Best-in-Class Storefront Experience (Interactive PDP)
+            </h3>
+            <p style="font-size: 12px; color: #64748B; margin: 0;">
+              Zero-error, high-converting product page benchmarked against Mulmul, House of Chikankari & Kalki.
+            </p>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="device-switcher">
+              <button class="device-btn active" id="btn-view-mobile">📱 iPhone View</button>
+              <button class="device-btn" id="btn-view-desktop">💻 Desktop View</button>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-open-liquid-modal">
+              📋 Get Shopify Theme Liquid Code
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview Container -->
+        <div class="preview-container device-mobile" id="storefront-preview-wrapper">
+          <div class="phone-mockup-frame" id="phone-frame">
+            <div class="phone-mockup-screen">
+              <!-- Top Navbar in Simulated Store -->
+              <div style="padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F1F5F9; background: #FFF; position: sticky; top: 0; z-index: 50;">
+                <div style="font-size: 18px; font-weight: 800; font-family: 'Playfair Display', serif; color: #780016;">
+                  Araadhya Fashion
+                </div>
+                <div style="display: flex; gap: 14px; font-size: 16px;">
+                  <span>🔍</span>
+                  <span>🛍️ <b style="font-size: 10px; background: #780016; color: #FFF; border-radius: 50%; padding: 2px 5px;">1</b></span>
+                </div>
+              </div>
+
+              <!-- Storefront PDP Content -->
+              <div class="arf-pdp-wrapper" style="padding: 16px;">
+                <div class="arf-grid">
+                  <!-- Left: 5-Angle Gallery -->
+                  <div>
+                    <div class="arf-gallery-main">
+                      <img id="arf-active-image" src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800" alt="Araadhya Chikankari Outfit" />
+                      <div class="arf-badge-artisan">✨ Lucknowi GI Handcrafted</div>
+                    </div>
+                    <!-- Thumbnails -->
+                    <div class="arf-thumbs-row">
+                      <div class="arf-thumb-item active" data-img="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800">
+                        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=200" alt="Front Pose" />
+                      </div>
+                      <div class="arf-thumb-item" data-img="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800">
+                        <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=200" alt="Side Profile" />
+                      </div>
+                      <div class="arf-thumb-item" data-img="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800">
+                        <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=200" alt="Embroidery Zoom" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: High-Converting Product Details -->
+                  <div>
+                    <div class="arf-brand-crumb">Heritage Lucknowi Chikankari</div>
+                    <h1 class="arf-product-title">Royal Handcrafted Modal Chikankari Kurta & Palazzo Set</h1>
+
+                    <div class="arf-price-row">
+                      <span class="arf-selling-price">₹2,999</span>
+                      <span class="arf-compare-price">₹5,999</span>
+                      <span class="arf-discount-pill">50% OFF</span>
+                    </div>
+
+                    <!-- Special Offer Box -->
+                    <div class="arf-festive-offer-banner">
+                      <span>🎁</span> <span>Special Offer: Extra ₹200 OFF on Instant Prepaid UPI | Code: <b>FESTIVE200</b></span>
+                    </div>
+
+                    <!-- Size Selector & Fit Guide -->
+                    <div style="margin-bottom: 16px;">
+                      <div class="arf-size-header">
+                        <span class="arf-size-label">Select Size: <b id="arf-selected-size-text" style="color: #780016;">38-M</b></span>
+                        <button type="button" class="arf-size-guide-btn" id="btn-open-size-chart">📏 Size Guide</button>
+                      </div>
+                      <div class="arf-size-chips">
+                        <div class="arf-size-chip" data-size="36-S">36-S</div>
+                        <div class="arf-size-chip active" data-size="38-M">38-M</div>
+                        <div class="arf-size-chip" data-size="40-L">40-L</div>
+                        <div class="arf-size-chip" data-size="42-XL">42-XL</div>
+                        <div class="arf-size-chip" data-size="44-XXL">44-XXL</div>
+                        <div class="arf-size-chip" data-size="46-3XL">46-3XL</div>
+                      </div>
+                      <div class="arf-model-note">
+                        💃 <b>Model Fit:</b> 5'7" tall wearing <b>Size 38-M</b> (Designed with 2-inch ease for graceful breathability).
+                      </div>
+                    </div>
+
+                    <!-- Pincode Delivery Estimator -->
+                    <div class="arf-pincode-box">
+                      <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-size: 13px; font-weight: 700; color: #1E293B;">🚚 Check Delivery Date & COD:</span>
+                      </div>
+                      <div class="arf-pincode-input-row">
+                        <input type="text" class="arf-pincode-input" id="arf-pincode-val" placeholder="Enter 6-digit Pincode (e.g. 400050)" maxlength="6" value="400050" />
+                        <button type="button" class="arf-pincode-btn" id="btn-check-pincode">Check</button>
+                      </div>
+                      <div class="arf-pincode-result" id="arf-pincode-output">
+                        <span>✅</span> <span>Delivers by <b>Saturday, Aug 29</b> | Cash on Delivery (COD) Available</span>
+                      </div>
+                    </div>
+
+                    <!-- 4 Trust Badges -->
+                    <div class="arf-trust-grid">
+                      <div class="arf-trust-item">
+                        <span class="arf-trust-icon">🧵</span>
+                        <span>100% Hand-Embroidered</span>
+                      </div>
+                      <div class="arf-trust-item">
+                        <span class="arf-trust-icon">🔄</span>
+                        <span>7-Day Easy Size Exchange</span>
+                      </div>
+                      <div class="arf-trust-item">
+                        <span class="arf-trust-icon">⚡</span>
+                        <span>Free Express Shipping</span>
+                      </div>
+                      <div class="arf-trust-item">
+                        <span class="arf-trust-icon">💵</span>
+                        <span>Cash on Delivery (COD)</span>
+                      </div>
+                    </div>
+
+                    <!-- Styling & FAQ Accordion -->
+                    <div style="margin-top: 20px;">
+                      <h4 style="font-size: 14px; font-weight: 800; margin-bottom: 10px; color: #1E293B;">Craftsmanship & Styling FAQ</h4>
+                      <div class="arf-faq-item open">
+                        <div class="arf-faq-question">
+                          <span>✨ What fabric and stitches are used?</span>
+                          <span>▾</span>
+                        </div>
+                        <div class="arf-faq-answer">
+                          Handcrafted on ultra-soft pure Modal fabric by certified Lucknowi master artisans using authentic Bakhiya, Phanda, and Keel Kangan stitches.
+                        </div>
+                      </div>
+                      <div class="arf-faq-item">
+                        <div class="arf-faq-question">
+                          <span>👗 How should I style this outfit?</span>
+                          <span>▾</span>
+                        </div>
+                        <div class="arf-faq-answer">
+                          Pair with oxidized silver jhumkas, handcrafted mojris, and a soft matching chiffon dupatta for festive gatherings and elegant evening wear.
+                        </div>
+                      </div>
+                      <div class="arf-faq-item">
+                        <div class="arf-faq-question">
+                          <span>🧼 What are the wash care instructions?</span>
+                          <span>▾</span>
+                        </div>
+                        <div class="arf-faq-answer">
+                          Gentle hand wash in cold water or dry clean recommended to preserve delicate artisan threadwork brilliance.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Buy Bar at Bottom -->
+              <div class="arf-sticky-bar">
+                <div>
+                  <span style="font-size: 10px; color: #64748B; display: block;">Total (Size <span id="arf-sticky-size-label">38-M</span>):</span>
+                  <span class="arf-sticky-price">₹2,999</span>
+                </div>
+                <button type="button" class="arf-sticky-buy-btn" id="btn-sticky-buy">
+                  ⚡ Buy Now via UPI
+                </button>
+                <a href="https://wa.me/919876543210?text=Hi%20Araadhya%20Fashion,%20I%20want%20to%20order%20the%20Royal%20Chikankari%20Kurta%20Set%20in%20Size%2038-M" target="_blank" class="arf-whatsapp-btn" title="Chat & Buy on WhatsApp">
+                  💬
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Shopify Catalog Manager -->
+      <section id="tab-catalog" class="tab-pane">
+        <div class="card">
+          <div class="card-title-row" style="flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+            <div>
+              <h3>🛍️ Shopify Live Product Catalog</h3>
+              <p class="subtitle" style="margin: 0;">Manage prices, update inventory stock, view variants, or add new handcrafted pieces.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-primary" id="btn-open-create-modal">
+                <span>➕</span> Create New Product
+              </button>
+              <button class="btn btn-secondary" id="btn-refresh-products">
+                <span>🔄</span> Refresh Catalog
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Filter Toolbar -->
+          <div class="catalog-toolbar">
+            <div class="search-input-box">
+              <span class="search-input-icon">🔍</span>
+              <input type="text" id="catalog-search-input" placeholder="Search by title, tag, embroidery style (e.g. Saree, Kurti, Banarasi)..." />
+            </div>
+            <select id="catalog-status-filter" style="padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; background: #FFF;">
+              <option value="">All Statuses</option>
+              <option value="active">Active Only</option>
+              <option value="draft">Drafts</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="product-grid" id="product-list-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Shopify Orders & Fulfillment Hub -->
+      <section id="tab-orders" class="tab-pane">
+        <div class="card">
+          <div class="card-title-row" style="flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3>📦 Shopify Orders & Automated Fulfillment</h3>
+              <p class="subtitle" style="margin: 0;">Live store orders, payment status, and 1-click fulfillment with automated WhatsApp tracking dispatch.</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary" id="btn-refresh-orders">
+                <span>🔄</span> Refresh Orders
+              </button>
+            </div>
+          </div>
+
+          <!-- Orders Filter Tabs -->
+          <div style="display: flex; gap: 8px; margin-top: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+            <button class="btn btn-sm btn-secondary btn-order-tab active" data-filter="all">All Orders</button>
+            <button class="btn btn-sm btn-outline btn-order-tab" data-filter="unfulfilled">🔴 Unfulfilled</button>
+            <button class="btn btn-sm btn-outline btn-order-tab" data-filter="fulfilled">🟢 Fulfilled</button>
+          </div>
+
+          <!-- Orders Table -->
+          <div class="orders-table-wrapper">
+            <table class="orders-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items Ordered</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                  <th>Fulfillment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <tr>
+                  <td colspan="8" style="text-align: center; color: #94A3B8; padding: 30px;">Loading orders from Shopify...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: iPhone Studio Direct Upload -->
+      <section id="tab-iosupload" class="tab-pane">
+        <div class="card ios-card" style="max-width: 680px; margin: 0 auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 24px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
+            <div>
+              <h2 style="font-size: 20px; font-weight: 800; color: #1E293B; display: flex; align-items: center; gap: 8px;">
+                <span>📱</span> iPhone Studio Direct Uploader
+              </h2>
+              <p class="subtitle" style="margin: 0; font-size: 13px;">Upload original HD photos from your iPhone with instant 2x retail pricing and automated SEO.</p>
+            </div>
+            <span class="badge badge-connected" style="font-size: 11px; padding: 4px 10px;">iOS Native Mode</span>
+          </div>
+
+          <!-- Method Selector -->
+          <div style="display: flex; background: #F1F5F9; padding: 4px; border-radius: 12px; margin-bottom: 20px;">
+            <button type="button" id="btn-mode-phone" class="btn-ios-toggle active" style="flex: 1; padding: 8px 12px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; background: #FFFFFF; color: #780016; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+              📸 iPhone Photos
+            </button>
+            <button type="button" id="btn-mode-gdrive" class="btn-ios-toggle" style="flex: 1; padding: 8px 12px; border: none; border-radius: 9px; font-weight: 700; font-size: 13px; cursor: pointer; background: transparent; color: #64748B;">
+              📁 Google Drive Link
+            </button>
+          </div>
+
+          <form id="form-ios-upload">
+            <!-- iPhone Photo Picker Box -->
+            <div id="ios-photo-box" style="border: 2px dashed #CBD5E1; border-radius: 16px; padding: 28px 16px; text-align: center; background: #F8FAFC; cursor: pointer; transition: all 0.2s;" onclick="document.getElementById('ios-file-input').click()">
+              <input type="file" id="ios-file-input" multiple accept="image/*" style="display: none;" />
+              <div style="font-size: 40px; margin-bottom: 8px;">📸</div>
+              <h4 style="font-size: 15px; font-weight: 700; color: #1E293B;">Tap to Select Kurti Photos from iPhone</h4>
+              <p style="font-size: 12px; color: #64748B; margin-top: 4px;">Supports multiple HD photos (Front, Back, Close-up embroidery)</p>
+              <div id="ios-selected-count" style="display: none; margin-top: 10px; font-weight: 700; color: #166534; background: #DCFCE7; padding: 6px 12px; border-radius: 20px; font-size: 12px;"></div>
+            </div>
+
+            <!-- Google Drive Box (Hidden by default) -->
+            <div id="ios-gdrive-box" style="display: none; margin-bottom: 16px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #1E293B;">📁 Google Drive Folder / File URL:</label>
+              <input type="url" id="ios-gdrive-url" placeholder="https://drive.google.com/drive/folders/..." style="width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 10px; font-size: 14px;" />
+            </div>
+
+            <!-- Image Thumbnails Strip -->
+            <div id="ios-preview-strip" style="display: none; gap: 10px; overflow-x: auto; padding: 12px 0; margin-top: 12px;"></div>
+
+            <!-- Vendor Caption Input -->
+            <div style="margin-top: 18px;">
+              <label style="display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: #1E293B;">📝 Paste Vendor WhatsApp Caption / Description:</label>
+              <textarea id="ios-vendor-caption" rows="3" placeholder="e.g. Beautiful Lucknowi chikankari work pure Modal white kurta plazo set&#10;Sizes 38-46&#10;Length-46&#10;Price 1699 free ship" style="width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 10px; font-size: 13px; line-height: 1.5;"></textarea>
+            </div>
+
+            <!-- 2x Pricing Calculator Card -->
+            <div style="background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 12px; padding: 14px 16px; margin-top: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span style="font-size: 11px; font-weight: 700; color: #92400E; text-transform: uppercase;">Wholesale Rate:</span>
+                  <div style="display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <span style="font-size: 14px; font-weight: 700; color: #92400E;">₹</span>
+                    <input type="number" id="ios-wholesale-price" value="1699" style="width: 90px; padding: 4px 8px; border: 1px solid #F59E0B; border-radius: 6px; font-weight: 700; font-size: 15px; color: #92400E; background: #FFFFFF;" />
+                  </div>
+                </div>
+
+                <div style="font-size: 20px; color: #D97706; font-weight: 800;">➔ 2×</div>
+
+                <div style="text-align: right;">
+                  <span style="font-size: 11px; font-weight: 700; color: #166534; text-transform: uppercase;">Selling Price:</span>
+                  <div style="font-size: 20px; font-weight: 800; color: #166534;" id="ios-retail-display">₹3,399</div>
+                  <span style="font-size: 10px; color: #64748B;">Compare: <s id="ios-compare-display">₹6,799</s> (50% OFF)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Size Checkboxes -->
+            <div style="margin-top: 16px;">
+              <label style="display: block; font-size: 12px; font-weight: 700; margin-bottom: 8px; color: #1E293B;">📏 Size Variants to Create:</label>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="36-S" /> 36-S</label>
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="38-M" checked /> 38-M</label>
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="40-L" checked /> 40-L</label>
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="42-XL" checked /> 42-XL</label>
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="44-XXL" checked /> 44-XXL</label>
+                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; background: #F1F5F9; padding: 4px 10px; border-radius: 8px; cursor: pointer;"><input type="checkbox" name="ios-size" value="46-3XL" checked /> 46-3XL</label>
+              </div>
+            </div>
+
+            <!-- Big iOS Publish Button -->
+            <button type="submit" id="btn-ios-publish" class="btn btn-primary" style="width: 100%; margin-top: 20px; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 800; background: linear-gradient(135deg, #780016, #9B111E); box-shadow: 0 4px 15px rgba(120, 0, 22, 0.35);">
+              🚀 Publish Live to araadhyafashion.com
+            </button>
+          </form>
+
+          <!-- Result Box -->
+          <div id="ios-publish-result" style="display: none; margin-top: 18px; padding: 16px; background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+              <span style="font-size: 24px;">🎉</span>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 24px;">🎉</span>
+                <div>
+                  <h4 style="font-size: 14px; font-weight: 800; color: #166534;" id="ios-res-title">Product Published Successfully!</h4>
+                  <p style="font-size: 12px; color: #15803D; margin: 0;">Live on araadhyafashion.com at 2x retail price.</p>
+                </div>
+              </div>
+              <a href="#" id="ios-res-link" target="_blank" class="btn btn-primary btn-sm" style="display: inline-block; margin-top: 8px; text-decoration: none;">View Live on Store ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: WhatsApp Vendor 2x Auto-Publisher Bot -->
+      <section id="tab-vendorbot" class="tab-pane">
+        <!-- Executive Header & Phone Instructions -->
+        <div class="card" style="margin-bottom: 20px; border-left: 4px solid #166534; background: linear-gradient(to right, #FFFFFF, #F0FDF4);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 800; color: #0F172A;">🛍️ Private WhatsApp Store Publisher</h3>
+                <span class="badge badge-connected" style="font-size: 11px;">🟢 Multi-Device Active (+91 91378 99409)</span>
+              </div>
+              <p class="subtitle" style="margin-top: 6px; font-size: 13px; color: #475569; max-width: 700px; line-height: 1.5;">
+                Publish handcrafted outfits to your Shopify store in seconds directly from your phone. Send photos and product descriptions with rate into your private WhatsApp group or direct message.
+              </p>
+            </div>
+            
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-sm btn-outline" id="btn-reconnect-wa" style="font-size: 11px;">🔄 Re-link Phone</button>
+            </div>
+          </div>
+
+          <!-- Quick 3-Step Phone Guide -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 18px;">
+            <div style="background: #FFFFFF; border: 1px solid #DCFCE7; border-radius: 10px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">Step 1 • Drop Photos & Text</div>
+              <p style="font-size: 12px; color: #334155; margin: 4px 0 0 0;">
+                Send outfit photos with caption: <br/><i>"Pure Modal Silk Kurti. Rate: 1250/- Sizes: 38 to 44"</i>
+              </p>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #DCFCE7; border-radius: 10px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">Step 2 • Multi-Item Separator</div>
+              <p style="font-size: 12px; color: #334155; margin: 4px 0 0 0;">
+                If sending multiple outfits at once, simply type <b>---</b> (long dash) between different products!
+              </p>
+            </div>
+            <div style="background: #FFFFFF; border: 1px solid #DCFCE7; border-radius: 10px; padding: 12px;">
+              <div style="font-size: 11px; font-weight: 800; color: #166534; text-transform: uppercase;">Step 3 • Instant WhatsApp Reply</div>
+              <p style="font-size: 12px; color: #334155; margin: 4px 0 0 0;">
+                Bot creates 2x price, size curve, SEO & returns live storefront link directly in your chat!
+              </p>
+            </div>
+          </div>
+
+          <!-- Hidden QR View for Pairing -->
+          <div id="vendor-qr-view" style="display: none; margin-top: 16px; padding: 16px; background: #FFF; border: 1px dashed #CBD5E1; border-radius: 8px; text-align: center;">
+            <p style="font-size: 12px; color: #475569; margin-bottom: 8px;">Scan below with WhatsApp on your phone (Settings &gt; Linked Devices):</p>
+            <img id="vendor-qr-image" style="width: 200px; height: 200px; margin: 0 auto; border-radius: 8px;" alt="QR Code" />
+          </div>
+        </div>
+
+        <!-- 4 Executive KPI Cards -->
+        <div class="metrics-row" style="margin-bottom: 20px;">
+          <div class="metric-box">
+            <span class="metric-label">📦 WhatsApp Published Outfits</span>
+            <span class="metric-val" id="vt-total-detected" style="color: #0F172A;">0 Outfits</span>
+            <span class="metric-sub">Published via Phone Channel</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">✅ Live on Shopify Store</span>
+            <span class="metric-val" id="vt-published-count" style="color: #166534;">0 Live</span>
+            <span class="metric-sub">Active in Storefront</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">⏳ Processing Queue</span>
+            <span class="metric-val" id="vt-pending-count" style="color: #D97706;">0 Queued</span>
+            <span class="metric-sub">Instant 1-Click Processing</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">📈 Gross Profit Generated</span>
+            <span class="metric-val" id="vt-profit-margin" style="color: #780016;">₹0</span>
+            <span class="metric-sub">At 2x Retail Margin</span>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 13px; font-weight: 700; color: #1E293B;">📱 WhatsApp Publisher Activity Log</span>
+            </div>
+            <div>
+              <button type="button" class="btn btn-sm btn-outline" id="btn-refresh-vendor-feed" style="font-size: 11px;">
+                🔄 Refresh Feeds
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Activity Log Stream -->
+          <div id="live-upload-box" style="display: none; margin-top: 14px; background: #0F172A; border-radius: 8px; padding: 12px; border: 1px solid #334155;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 11px; font-weight: 700; color: #38BDF8;">⚡ LIVE UPLOAD & CATALOG SYNTHESIS STREAM</span>
+              <span id="upload-stream-counter" style="font-size: 10px; color: #94A3B8;">0 / 0 Completed</span>
+            </div>
+            <div id="live-upload-terminal" style="font-family: monospace; font-size: 11px; color: #E2E8F0; max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;">
+              <div style="color: #94A3B8;">Ready for commands...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WhatsApp Published Products Feed -->
+        <div class="card">
+          <!-- Filter Header Row -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 14px; font-weight: 800; color: #0F172A;">✨ Real-Time Store Listings Feed</span>
+              <span class="badge badge-connected" style="font-size: 10px;" id="count-all">0 Outfits</span>
+            </div>
+
+            <!-- Publishing Status Filter -->
+            <div style="display: flex; gap: 6px;">
+              <button type="button" class="btn btn-sm btn-primary" id="tab-vendor-all" style="font-size: 11px; padding: 4px 10px;">All</button>
+              <button type="button" class="btn btn-sm btn-outline" id="tab-vendor-done" style="font-size: 11px; padding: 4px 10px;">✅ Live on Store</button>
+            </div>
+          </div>
+
+          <!-- Product Cards Grid Feed -->
+          <div id="vendor-feed-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="text-align: center; color: #94A3B8; padding: 40px 0;">
+              No outfits sent yet. Send outfit photos with wholesale rate to your WhatsApp to publish instantly!
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Bulk Upload & AI Studio -->
+      <section id="tab-bulkupload" class="tab-pane">
+        <div class="card">
+          <h3>📁 Method 1: Drop & Auto-Publish to Shopify Store</h3>
+          <p class="subtitle">Drop photos into your local folder <code>Araadhya Fashion/uploads_catalog</code> (or specify custom path), and publish to <b>araadhyafashion.com</b> with luxury descriptions, SEO & size variants in 1 click.</p>
+
+          <form id="form-bulk-publish" style="max-width: 700px; margin-top: 24px;">
+            <div class="form-group">
+              <label>Folder Path on Mac</label>
+              <input type="text" id="bulk-folder-path" value="/Users/sachinkhandeshe/Desktop/Araadhya Fashion/uploads_catalog" required />
+              <small style="color: #64748B; font-size: 12px; display: block; margin-top: 4px;">Drop your Chikankari photos into this folder.</small>
+            </div>
+
+            <div class="grid grid-2" style="margin-bottom: 0;">
+              <div class="form-group">
+                <label>Default Price (₹ INR)</label>
+                <input type="number" id="bulk-price" value="2499" required />
+              </div>
+              <div class="form-group">
+                <label>Compare-At Price (₹ INR)</label>
+                <input type="number" id="bulk-compare-price" value="4999" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Product Category / Type</label>
+              <select id="bulk-product-type">
+                <option value="Chikankari Kurti">Lucknowi Chikankari Kurti</option>
+                <option value="Chikankari Anarkali Set">Chikankari Anarkali Set (with Pant & Dupatta)</option>
+                <option value="Chikankari Saree">Royal Chikankari Saree</option>
+                <option value="Chikankari Angrakha">Chikankari Angrakha Frock</option>
+                <option value="Chikankari Short Kurti">Everyday Casual Chikankari Short Top</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Size Variants to Generate</label>
+              <input type="text" id="bulk-sizes" value="36-S, 38-M, 40-L, 42-XL, 44-XXL, 46-3XL, FREE SIZE" disabled style="background: #F1F5F9;" />
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-start-bulk" style="padding: 14px 24px; font-size: 15px;">
+              🚀 Publish All Photos to Shopify Live
+            </button>
+          </form>
+
+          <!-- Result Container -->
+          <div class="bulk-result-container" id="bulk-result" style="display: none; margin-top: 24px;">
+            <h4>🎉 Publishing Summary</h4>
+            <div id="bulk-summary-content"></div>
+          </div>
+        </div>
+
+        <!-- AI Virtual Photoshoot Guide -->
+        <div class="card" style="background: linear-gradient(135deg, #1E1B4B 0%, #31103F 100%); color: #FFF;">
+          <h3 style="color: var(--gold-light);">✨ AI Virtual Model & 5-Angle Photoshoot Studio</h3>
+          <p style="color: #CBD5E1; font-size: 14px; margin-bottom: 16px;">Each outfit can be transformed into 5 hyper-realistic studio angle shots with natural lighting, skin tones, and macro embroidery texture:</p>
+          <div class="grid grid-5">
+            <div class="step-item" style="flex-direction: column; align-items: flex-start;">
+              <span style="color: var(--gold); font-weight: 700;">Shot 1</span>
+              <strong style="color: #FFF; font-size: 13px;">Front Full-Length</strong>
+              <p style="font-size: 11px; color: #94A3B8;">Full silhouette & hemline</p>
+            </div>
+            <div class="step-item" style="flex-direction: column; align-items: flex-start;">
+              <span style="color: var(--gold); font-weight: 700;">Shot 2</span>
+              <strong style="color: #FFF; font-size: 13px;">3/4 Side Profile</strong>
+              <p style="font-size: 11px; color: #94A3B8;">Sleeve work & fit depth</p>
+            </div>
+            <div class="step-item" style="flex-direction: column; align-items: flex-start;">
+              <span style="color: var(--gold); font-weight: 700;">Shot 3</span>
+              <strong style="color: #FFF; font-size: 13px;">Macro Embroidery</strong>
+              <p style="font-size: 11px; color: #94A3B8;">Bakhiya & Phanda zoom</p>
+            </div>
+            <div class="step-item" style="flex-direction: column; align-items: flex-start;">
+              <span style="color: var(--gold); font-weight: 700;">Shot 4</span>
+              <strong style="color: #FFF; font-size: 13px;">Back Profile & Drape</strong>
+              <p style="font-size: 11px; color: #94A3B8;">Back neck & dupatta fall</p>
+            </div>
+            <div class="step-item" style="flex-direction: column; align-items: flex-start;">
+              <span style="color: var(--gold); font-weight: 700;">Shot 5</span>
+              <strong style="color: #FFF; font-size: 13px;">Editorial Movement</strong>
+              <p style="font-size: 11px; color: #94A3B8;">Candid royal courtyard</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Omni-Channel Sales -->
+      <section id="tab-sales" class="tab-pane">
+        <div class="grid grid-2">
+          <!-- Sales Generator Form -->
+          <div class="card">
+            <h3>⚡ Send Instant Checkout Link</h3>
+            <p class="subtitle">Select product and send payment link directly to customer's WhatsApp or Instagram.</p>
+            
+            <form id="form-chat-sale">
+              <div class="form-group">
+                <label>Channel</label>
+                <div class="radio-toggle">
+                  <label class="radio-label">
+                    <input type="radio" name="channel" value="whatsapp" checked />
+                    <span>WhatsApp</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="channel" value="instagram" />
+                    <span>Instagram DM</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="sale-customer-name">Customer Name</label>
+                <input type="text" id="sale-customer-name" placeholder="e.g. Priya Sharma" required />
+              </div>
+
+              <div class="form-group">
+                <label for="sale-contact">Customer Phone / Instagram ID</label>
+                <input type="text" id="sale-contact" placeholder="e.g. 919876543210 (with country code)" required />
+              </div>
+
+              <div class="form-group">
+                <label for="sale-product-select">Select Product from Shopify</label>
+                <select id="sale-product-select" required>
+                  <option value="">Loading products...</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="sale-price">Amount (₹ INR)</label>
+                <input type="number" id="sale-price" placeholder="4999" required />
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block" id="btn-submit-sale">
+                🚀 Generate & Dispatch Link
+              </button>
+            </form>
+          </div>
+
+          <!-- Result Preview -->
+          <div class="card">
+            <h3>📱 Link & Notification Preview</h3>
+            <div class="preview-box" id="sale-result-preview">
+              <div class="placeholder-text">Generated payment link and dispatched WhatsApp message will appear here.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Payment Simulator -->
+      <section id="tab-simulator" class="tab-pane">
+        <div class="card">
+          <h3>🧪 End-to-End Payment & Fulfillment Simulator</h3>
+          <p class="subtitle">Simulate a customer paying a Razorpay link to verify the automated pipeline (Razorpay Webhook ➔ Shopify Order Creation ➔ Meta CAPI ➔ WhatsApp Confirmation).</p>
+          
+          <form id="form-simulator" style="max-width: 600px; margin-top: 20px;">
+            <div class="form-group">
+              <label>Customer Name</label>
+              <input type="text" id="sim-name" value="Ananya Roy" required />
+            </div>
+            <div class="form-group">
+              <label>Customer Phone (WhatsApp)</label>
+              <input type="text" id="sim-phone" value="919876543210" required />
+            </div>
+            <div class="form-group">
+              <label>Product Title</label>
+              <input type="text" id="sim-product" value="Araadhya Royal Banarasi Silk Saree" required />
+            </div>
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="sim-amount" value="4999" required />
+            </div>
+
+            <button type="submit" class="btn btn-accent" id="btn-run-sim">
+              ⚡ Trigger Simulated Payment Event
+            </button>
+          </form>
+
+          <div class="sim-result-box" id="sim-result" style="display: none;">
+            <h4>Simulation Output</h4>
+            <pre id="sim-output"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: API Keys Setup Guide -->
+      <section id="tab-guide" class="tab-pane">
+        <div class="card">
+          <h3>🔑 Connecting Your Live API Credentials</h3>
+          <p class="subtitle">All keys are securely stored in your local <code>.env</code> file. Follow the steps below for each platform:</p>
+
+          <div class="setup-grid">
+            <div class="setup-item">
+              <h4>1. Shopify Admin API</h4>
+              <ol>
+                <li>Open <b>Shopify Admin</b> &gt; <b>Settings</b> &gt; <b>Apps and sales channels</b> &gt; <b>Develop apps</b>.</li>
+                <li>Create a custom app named <code>Araadhya Hub</code>.</li>
+                <li>Grant Admin API scopes: <code>read_products</code>, <code>write_products</code>, <code>read_orders</code>, <code>write_orders</code>, <code>read_inventory</code>, <code>write_inventory</code>.</li>
+                <li>Install app & copy <b>Admin API access token</b> into <code>SHOPIFY_ADMIN_ACCESS_TOKEN</code>.</li>
+              </ol>
+            </div>
+
+            <div class="setup-item">
+              <h4>2. Razorpay</h4>
+              <ol>
+                <li>Log in to <a href="https://dashboard.razorpay.com" target="_blank">Razorpay Dashboard</a>.</li>
+                <li>Go to <b>Account & Settings</b> &gt; <b>API Keys</b>.</li>
+                <li>Generate Key ID & Secret and put them into <code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code>.</li>
+                <li>Under <b>Webhooks</b>, add your webhook URL: <code>https://YOUR_DOMAIN/webhooks/razorpay</code>.</li>
+              </ol>
+            </div>
+
+            <div class="setup-item">
+              <h4>3. Meta (WhatsApp & Instagram & Facebook)</h4>
+              <ol>
+                <li>Visit <a href="https://developers.facebook.com" target="_blank">Meta for Developers</a>.</li>
+                <li>Create an App (Type: <b>Business</b>).</li>
+                <li>Add <b>WhatsApp</b> and copy your <b>Phone Number ID</b> & <b>Permanent Access Token</b>.</li>
+                <li>Add <b>Instagram Graph API</b> for DM automation.</li>
+                <li>Configure Webhook callback URL: <code>https://YOUR_DOMAIN/webhooks/meta</code> with verify token.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- MODAL: Copy Shopify Theme Liquid Snippet -->
+  <div class="modal-backdrop" id="modal-liquid-snippet">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3>📋 Shopify Theme Liquid Snippet</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-liquid-snippet')">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: #64748B; margin-bottom: 12px;">
+        Copy this clean, zero-error Liquid code and paste it into your theme at <code>snippets/araadhya-conversion-pack.liquid</code>, then render it in <code>sections/main-product.liquid</code> using <code>{% render 'araadhya-conversion-pack' %}</code>.
+      </p>
+      <div style="position: relative;">
+        <textarea id="liquid-code-box" rows="12" readonly style="width: 100%; font-family: monospace; font-size: 11px; padding: 12px; background: #0F172A; color: #38BDF8; border-radius: 8px; line-height: 1.4;"></textarea>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+        <span id="liquid-copied-status" style="font-size: 12px; color: #166534; font-weight: 700; display: none;">✅ Copied to Clipboard!</span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-liquid-snippet')">Close</button>
+          <button type="button" class="btn btn-primary" id="btn-copy-liquid">📋 Copy Liquid Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Size Guide Popup -->
+  <div class="modal-backdrop" id="modal-size-guide">
+    <div class="modal-card" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>📏 Araadhya Fashion — Size Guide</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-size-guide')">&times;</button>
+      </div>
+      <p style="font-size: 12px; color: #64748B; margin-bottom: 14px;">
+        All measurements in <b>Inches</b>. Chikankari garments are designed with an extra <b>2 inches of ease</b> over garment body for a flattering royal drape.
+      </p>
+      <table class="orders-table" style="font-size: 12px;">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Bust (Inches)</th>
+            <th>Waist (Inches)</th>
+            <th>Hip (Inches)</th>
+            <th>Length</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>36 - S</b></td><td>36"</td><td>32"</td><td>38"</td><td>46"</td></tr>
+          <tr style="background: #FFFBEB;"><td><b>38 - M (Popular)</b></td><td>38"</td><td>34"</td><td>40"</td><td>46"</td></tr>
+          <tr><td><b>40 - L</b></td><td>40"</td><td>36"</td><td>42"</td><td>46"</td></tr>
+          <tr><td><b>42 - XL</b></td><td>42"</td><td>38"</td><td>44"</td><td>46"</td></tr>
+          <tr><td><b>44 - XXL</b></td><td>44"</td><td>40"</td><td>46"</td><td>46"</td></tr>
+          <tr><td><b>46 - 3XL</b></td><td>46"</td><td>42"</td><td>48"</td><td>46"</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top: 16px; text-align: right;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeModal('modal-size-guide')">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Create New Product -->
+  <div class="modal-backdrop" id="modal-create-product">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>➕ Create New Shopify Product</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-create-product')">&times;</button>
+      </div>
+      <form id="form-create-product">
+        <div class="form-group">
+          <label>Product Title *</label>
+          <input type="text" id="cp-title" placeholder="e.g. Royal Lucknowi Mukaish Anarkali Set" required />
+        </div>
+        <div class="grid grid-2" style="margin-bottom: 0;">
+          <div class="form-group">
+            <label>Product Category</label>
+            <select id="cp-type">
+              <option value="Chikankari Kurti">Chikankari Kurti</option>
+              <option value="Chikankari Anarkali Set">Anarkali Set</option>
+              <option value="Chikankari Saree">Royal Saree</option>
+              <option value="Chikankari Angrakha">Angrakha Frock</option>
+              <option value="Short Kurti">Casual Short Kurti</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fabric / Craft</label>
+            <input type="text" id="cp-fabric" value="Pure Georgette / Modal Cotton" />
+          </div>
+        </div>
+        <div class="grid grid-2" style="margin-bottom: 0;">
+          <div class="form-group">
+            <label>Selling Price (₹ INR) *</label>
+            <input type="number" id="cp-price" value="2999" required />
+          </div>
+          <div class="form-group">
+            <label>Compare-At Price (₹ INR)</label>
+            <input type="number" id="cp-compare-price" value="5999" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Product Photos (HD)</label>
+          <input type="file" id="cp-files" multiple accept="image/*" style="padding: 8px; border: 1px dashed var(--border-color); border-radius: 8px; width: 100%;" />
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label style="margin: 0;">Luxury Description & AEO FAQs (HTML)</label>
+            <button type="button" class="btn btn-sm btn-outline" id="btn-generate-ai-seo" style="font-size: 11px;">
+              ✨ Generate AI Luxury Copy & SEO
+            </button>
+          </div>
+          <textarea id="cp-description" rows="5" placeholder="Click 'Generate AI Luxury Copy & SEO' or write custom description..." style="width: 100%; font-size: 12px; font-family: monospace;"></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-create-product')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-create-prod">🚀 Publish to Shopify Live</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Quick Edit Variant Price & Stock -->
+  <div class="modal-backdrop" id="modal-edit-variant">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>✏️ Quick Edit Variant Price & Stock</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-edit-variant')">&times;</button>
+      </div>
+      <form id="form-edit-variant">
+        <input type="hidden" id="ev-variant-id" />
+        <div class="form-group">
+          <label>Product / Variant Title</label>
+          <input type="text" id="ev-title" disabled style="background: #F1F5F9;" />
+        </div>
+        <div class="grid grid-2" style="margin-bottom: 0;">
+          <div class="form-group">
+            <label>Price (₹ INR) *</label>
+            <input type="number" id="ev-price" required />
+          </div>
+          <div class="form-group">
+            <label>Compare-At Price (₹ INR)</label>
+            <input type="number" id="ev-compare-price" />
+          </div>
+        </div>
+        <div class="grid grid-2" style="margin-bottom: 0;">
+          <div class="form-group">
+            <label>SKU</label>
+            <input type="text" id="ev-sku" />
+          </div>
+          <div class="form-group">
+            <label>Available Stock</label>
+            <input type="number" id="ev-stock" />
+          </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-edit-variant')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-edit-variant">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Fulfill Order & Tracking -->
+  <div class="modal-backdrop" id="modal-fulfill-order">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🚚 Fulfill Shopify Order & Dispatch Tracking</h3>
+        <button type="button" class="modal-close" onclick="closeModal('modal-fulfill-order')">&times;</button>
+      </div>
+      <form id="form-fulfill-order">
+        <input type="hidden" id="fo-order-id" />
+        <div class="form-group">
+          <label>Order Reference</label>
+          <input type="text" id="fo-order-name" disabled style="background: #F1F5F9; font-weight: 700;" />
+        </div>
+        <div class="form-group">
+          <label>Customer Name & Contact</label>
+          <input type="text" id="fo-customer-info" disabled style="background: #F1F5F9;" />
+        </div>
+        <div class="form-group">
+          <label>Courier Service / Carrier *</label>
+          <select id="fo-courier" required>
+            <option value="Blue Dart Express">Blue Dart Express</option>
+            <option value="Delhivery">Delhivery</option>
+            <option value="DTDC">DTDC</option>
+            <option value="India Post">India Post</option>
+            <option value="Ekart Logistics">Ekart Logistics</option>
+            <option value="Shadowfax">Shadowfax</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tracking / AWB Number *</label>
+          <input type="text" id="fo-tracking-number" placeholder="e.g. BLUEDART-987654321" required />
+        </div>
+        <div class="form-group">
+          <label>Tracking URL (Optional)</label>
+          <input type="url" id="fo-tracking-url" placeholder="https://www.bluedart.com/tracking?track=..." />
+        </div>
+        <div class="form-group" style="background: #F0FDF4; border: 1px solid #BBF7D0; padding: 10px 14px; border-radius: 8px;">
+          <label style="display: flex; align-items: center; gap: 8px; margin: 0; cursor: pointer; color: #166534; font-weight: 700;">
+            <input type="checkbox" id="fo-notify-wa" checked />
+            📲 Send Instant WhatsApp Tracking Notification to Customer
+          </label>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-fulfill-order')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-fulfill">🚀 Complete Fulfillment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- iOS Mobile Floating Bottom Tab Bar (Visible on iPhone) -->
+  <nav class="ios-bottom-bar">
+    <a href="#storefront" class="ios-tab-item active" data-tab="storefront">
+      <span class="ios-tab-icon">✨</span>
+      <span class="ios-tab-label">PDP Live</span>
+    </a>
+    <a href="#catalog" class="ios-tab-item" data-tab="catalog">
+      <span class="ios-tab-icon">🛍️</span>
+      <span class="ios-tab-label">Catalog</span>
+    </a>
+    <a href="#orders" class="ios-tab-item" data-tab="orders">
+      <span class="ios-tab-icon">📦</span>
+      <span class="ios-tab-label">Orders</span>
+    </a>
+    <a href="#iosupload" class="ios-tab-item" data-tab="iosupload">
+      <span class="ios-tab-icon">📸</span>
+      <span class="ios-tab-label">Studio</span>
+    </a>
+    <a href="#overview" class="ios-tab-item" data-tab="overview">
+      <span class="ios-tab-icon">📊</span>
+      <span class="ios-tab-label">Health</span>
+    </a>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

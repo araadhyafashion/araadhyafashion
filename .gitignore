@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.DS_Store
+.baileys_auth_info/
+.temp_upload_cache/
+uploads_catalog/
+ios/AraadhyaStudio/build/
+ios/AraadhyaStudio/DerivedData/
+*.log
