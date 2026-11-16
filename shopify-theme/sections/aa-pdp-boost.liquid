@@ -49,11 +49,6 @@
   /* 7) bundle offer */
   var bd=T.querySelector('[data-bundle]'),cbox=q('.aap-coupon');
   if(bd){if(cbox){cbox.appendChild(bd.cloneNode(true))}else{var w=document.createElement('div');w.className='aap-coupon';w.appendChild(bd.cloneNode(true));q('.aap-info').appendChild(w)}}
-  /* 6) payment logos + trust under the buttons */
-  var sec=q('.aap-sec');
-  if(sec){sec.lastChild.textContent='100% secure payments · Cash on delivery available';
-    sec.parentNode.appendChild(T.querySelector('[data-pays]').cloneNode(true));
-    sec.parentNode.appendChild(T.querySelector('[data-tb]').cloneNode(true));}
   /* Diwali offer countdown: only on kurtis that are part of the 2-kurti offer, and only until it ends */
   var tEl=q('.aap-timer'),inb={{ inb | json }},offEnd=Date.parse('{{ section.settings.offer_end }}');
   if(tEl){

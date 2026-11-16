@@ -68,19 +68,19 @@
 .aap-btn--sm{height:34px;padding:0 14px;font-size:13px;flex:0 0 auto}
 .aap-link{border:0;background:none;color:var(--acc);font-size:13px;font-weight:600;text-decoration:underline;padding:6px 0;text-align:left}
 .aap-err{font-size:12px;color:var(--red)}
-.aap-opts{padding:20px 16px 0;display:flex;flex-direction:column;gap:20px}
+.aap-opts{padding:10px 16px 0;display:flex;flex-direction:column;gap:12px}
 .aap-colrow{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-.aap-lbl{font-size:14px;margin-bottom:10px}
+.aap-lbl{font-size:13px;margin-bottom:6px}
 .aap-sw{display:flex;gap:8px;flex-wrap:wrap}
 .aap-sw button{width:44px;height:44px;border-radius:22px;padding:3px;border:2px solid transparent;background:#fff}
 .aap-sw button.is-on{border-color:var(--ink)}
 .aap-sw button i{display:block;width:100%;height:100%;border-radius:50%;border:1px solid #DDD3C8}
 .aap-qty{display:flex;align-items:center;border:1px solid #CFC6BC;border-radius:6px}
-.aap-qty button{width:40px;height:44px;border:0;background:none;font-size:18px}
+.aap-qty button{width:36px;height:38px;border:0;background:none;font-size:16px}
 .aap-qty span{min-width:24px;text-align:center;font-weight:600}
-.aap-sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.aap-pills{display:flex;gap:8px;flex-wrap:wrap}
-.aap-sizes button,.aap-pills button{height:44px;padding:0 14px;border-radius:6px;font-size:14px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aap-sizes{display:flex;gap:6px;flex-wrap:wrap}
+.aap-pills{display:flex;gap:6px;flex-wrap:wrap}
+.aap-sizes button,.aap-pills button{height:38px;padding:0 12px;border-radius:6px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
 .aap-sizes button.is-on,.aap-pills button.is-on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .aap-sizes button.is-out,.aap-pills button.is-out{background:#F4F1EE;color:#8F877F;border-style:dashed;text-decoration:line-through}
 .aap-sizehead{display:flex;justify-content:space-between;align-items:center}
@@ -101,12 +101,12 @@
 .aap-urgency-badge{display:flex;align-items:center;gap:8px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;padding:8px 12px;border-radius:8px;font-size:12px;margin:8px 0}
 .aap-pulse-dot{width:8px;height:8px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 0 rgba(239,68,68,0.7);animation:pulseDot 1.8s infinite;flex-shrink:0}
 @keyframes pulseDot{0%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0)}}
-.aap-sibling-colors{margin:14px 0 10px}
-.aap-color-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.aap-color-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;border:1.5px solid #E5E7EB;background:#FFFFFF;text-decoration:none;font-size:12px;font-weight:500;color:#1F2937;transition:all .2s ease}
+.aap-sibling-colors{margin:8px 0 6px}
+.aap-color-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.aap-color-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:16px;border:1.5px solid #E5E7EB;background:#FFFFFF;text-decoration:none;font-size:11px;font-weight:500;color:#1F2937;transition:all .2s ease}
 .aap-color-pill:hover,.aap-color-pill.active{border-color:#0B382C;background:#F0FDF4;color:#0B382C;font-weight:700}
-.aap-color-circle{width:14px;height:14px;border-radius:50%;display:inline-block}
-.aap-buy{padding:14px 16px 0;display:flex;flex-direction:column;gap:10px}
+.aap-color-circle{width:12px;height:12px;border-radius:50%;display:inline-block}
+.aap-buy{padding:10px 16px 0;display:flex;flex-direction:column;gap:8px}
 .aap-buy .r{display:flex;gap:10px}
 .aap-atc,.aap-bn{flex:1;height:50px;border-radius:8px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease;text-decoration:none}
 .aap-atc{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
@@ -119,28 +119,28 @@
 @keyframes aapSpin{to{transform:rotate(360deg)}}
 .aap-sec{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--mut)}
 
-/* 1. Prepaid Offers Toggle (Slide 1) */
-.aap-pay-mode{display:flex;flex-direction:column;gap:8px;margin:10px 0 4px}
-.aap-pay-opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;border:1.5px solid #E5E7EB;border-radius:10px;cursor:pointer;background:#FAFAFA;transition:all .2s ease}
+/* 1. Prepaid Offers Toggle (Compact Side-by-Side) */
+.aap-pay-mode{display:grid;grid-template-columns:1.15fr 1fr;gap:8px;margin:8px 0 4px}
+.aap-pay-opt{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1.5px solid #E5E7EB;border-radius:8px;cursor:pointer;background:#FAFAFA;transition:all .2s ease;user-select:none}
 .aap-pay-opt:hover{background:#F9FBFB;border-color:#A7D5C9}
-.aap-pay-opt.is-active{background:#F0FDF4;border-color:#0B382C;box-shadow:0 2px 8px rgba(11,56,44,0.06)}
+.aap-pay-opt.is-active{background:#F0FDF4;border-color:#0B382C;box-shadow:0 1px 4px rgba(11,56,44,0.08)}
 .aap-pay-opt input[type=radio]{display:none}
-.aap-pay-left{display:flex;align-items:center;gap:10px}
-.aap-pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid #9CA3AF;display:flex;align-items:center;justify-content:center;transition:all .2s ease;flex-shrink:0}
+.aap-pay-radio{width:16px;height:16px;border-radius:50%;border:2px solid #9CA3AF;display:flex;align-items:center;justify-content:center;transition:all .2s ease;flex-shrink:0}
 .aap-pay-opt.is-active .aap-pay-radio{border-color:#0B382C}
-.aap-pay-opt.is-active .aap-pay-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:#0B382C}
-.aap-pay-text{display:flex;flex-direction:column;gap:2px}
-.aap-pay-headline{display:flex;align-items:center;gap:8px}
-.aap-pay-headline strong{font-size:13px;color:#111827}
-.aap-pay-pill{background:#16A34A;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.02em}
-.aap-pay-text small{font-size:11px;color:#6B7280}
-.aap-pay-right{display:flex;align-items:baseline;gap:6px;text-align:right}
-.aap-pay-now{font-size:15px;font-weight:700;color:#0B382C}
-.aap-pay-strike{font-size:11px;color:#9CA3AF;text-decoration:line-through}
+.aap-pay-opt.is-active .aap-pay-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:#0B382C}
+.aap-pay-text{display:flex;flex-direction:column;min-width:0;flex:1}
+.aap-pay-headline{display:flex;align-items:center;gap:4px}
+.aap-pay-headline strong{font-size:12px;color:#111827;white-space:nowrap}
+.aap-pay-pill{background:#16A34A;color:#fff;font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;letter-spacing:.02em}
+.aap-pay-right{display:flex;align-items:baseline;gap:4px;margin-left:auto}
+.aap-pay-now{font-size:13px;font-weight:700;color:#0B382C}
+.aap-pay-strike{font-size:10px;color:#9CA3AF;text-decoration:line-through}
 
-/* 4. Multiple Payment Option Logos (Slide 4) */
-.aap-pay-icons{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:4px 0}
-.aap-pay-icon-tag{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;color:#374151;display:inline-flex;align-items:center;gap:4px}
+/* 4. Sleek Unified Payment Strip */
+.aap-pay-strip{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0 2px}
+.aap-pay-icons{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+.aap-pay-icon-tag{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600;color:#374151;display:inline-flex;align-items:center;gap:4px}
+.aap-pay-trust-note{font-size:11px;color:#4B5563;display:flex;align-items:center;gap:5px}
 
 /* 3. Pincode & Faster Shipping Estimator (Slide 3) */
 .aap-pin-box{border:1px solid #E5E7EB;border-radius:10px;padding:12px 14px;background:#FAFAFA;margin:14px 0 0}
@@ -227,12 +227,15 @@
 .aap-jm .jdgm-rev-widg[data-number-of-reviews="0"] .jdgm-rev-widg__summary-text{display:none}
 @media(min-width:990px){
  .aap{max-width:1360px}
- .aap-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;padding:0 32px;align-items:start}
- .aap-top .aap-gal-wrap{position:sticky;top:110px}
- .aap-crumb{padding-left:32px}
+ .aap-top{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;padding:0 32px;align-items:start}
+ .aap-top .aap-gal-wrap{position:sticky;top:90px}
+ .aap-crumb{padding-left:32px;margin-bottom:6px}
  .aap-info,.aap-opts,.aap-buy{padding-left:0;padding-right:0}
+ .aap-info{gap:6px}
+ .aap-opts{gap:10px;padding-top:8px}
+ .aap-buy{padding-top:8px}
  .aap-pin,.aap-trust,.aap-acc{margin-left:0;margin-right:0}
- .aap-title{font-size:30px}
+ .aap-title{font-size:28px}
  .aap-rest{padding:0 32px}
  .aap-h2{padding-left:0;padding-right:0;font-size:26px}
  .aap-reviews,.aap-faq,.aap-quotes,.aap-ctl,.aap-revsub{padding-left:0;padding-right:0}
@@ -438,8 +441,9 @@ a[href*="wa.me"].m-button--whatsapp,
         -%}
         {%- if is_kurti -%}
           <div class="aap-sibling-colors" style="margin-top:0">
-            <div class="aap-lbl">Color: <strong>{% if p_title_lower contains "yellow" %}Lemon Yellow{% elsif p_title_lower contains "blue" %}Azure Blue{% elsif p_title_lower contains "pink" %}Coral Pink{% elsif p_title_lower contains "grey" or p_title_lower contains "gray" %}Slate Grey{% elsif p_title_lower contains "white" %}Mahi White{% elsif p_title_lower contains "green" %}Parrot Green{% else %}{{ p.title | split: "Chikankari" | first | strip }}{% endif %}</strong></div>
+            <div class="aap-lbl">Color: <strong>{% if p_title_lower contains "yellow" %}Lemon Yellow{% elsif p_title_lower contains "blue" %}Azure Blue{% elsif p_title_lower contains "pink" %}Coral Pink{% elsif p_title_lower contains "grey" or p_title_lower contains "gray" %}Slate Grey{% elsif p_title_lower contains "white" %}Mahi White{% elsif p_title_lower contains "green" %}Parrot Green{% elsif p_title_lower contains "berry" or p_title_lower contains "magenta" %}Berry Magenta{% else %}{{ p.title | split: "Chikankari" | first | strip }}{% endif %}</strong></div>
             <div class="aap-color-pills">
+              <a href="/products/berry-magenta-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "berry" or p_title_lower contains "magenta" %}active{% endif %}"><span class="aap-color-circle" style="background:#831843;border:1px solid #701A75"></span> Magenta</a>
               <a href="/products/lemon-yellow-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "yellow" %}active{% endif %}"><span class="aap-color-circle" style="background:#FDE047;border:1px solid #CA8A04"></span> Yellow</a>
               <a href="/products/azure-blue-pintuck-yoke-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "blue" %}active{% endif %}"><span class="aap-color-circle" style="background:#38BDF8;border:1px solid #0284C7"></span> Azure Blue</a>
               <a href="/products/coral-pink-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "pink" %}active{% endif %}"><span class="aap-color-circle" style="background:#F472B6;border:1px solid #DB2777"></span> Coral Pink</a>
@@ -553,19 +557,16 @@ a[href*="wa.me"].m-button--whatsapp,
           <div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div>
         </div>
 
-        <!-- 1. Prepaid Offers Toggle (Slide 1) -->
+        <!-- 1. Prepaid Offers Toggle (Compact Side-by-Side) -->
         {%- assign online_init_price = current_price | times: 90 | divided_by: 100 -%}
         <div class="aap-pay-mode">
           <label class="aap-pay-opt is-active" data-pay-mode="online">
             <input type="radio" name="aap_pay_pref" value="online" checked>
-            <div class="aap-pay-left">
-              <span class="aap-pay-radio"></span>
-              <div class="aap-pay-text">
-                <div class="aap-pay-headline">
-                  <strong>Pay Online &amp; Save 10%</strong>
-                  <span class="aap-pay-pill">SAVE 10%</span>
-                </div>
-                <small>Instant UPI (GPay, PhonePe, Paytm) · Cards · Netbanking</small>
+            <span class="aap-pay-radio"></span>
+            <div class="aap-pay-text">
+              <div class="aap-pay-headline">
+                <strong>Pay Online</strong>
+                <span class="aap-pay-pill">SAVE 10%</span>
               </div>
             </div>
             <div class="aap-pay-right">
@@ -576,13 +577,10 @@ a[href*="wa.me"].m-button--whatsapp,
 
           <label class="aap-pay-opt" data-pay-mode="cod">
             <input type="radio" name="aap_pay_pref" value="cod">
-            <div class="aap-pay-left">
-              <span class="aap-pay-radio"></span>
-              <div class="aap-pay-text">
-                <div class="aap-pay-headline">
-                  <strong>Cash on Delivery</strong>
-                </div>
-                <small>Pay with cash or UPI when your parcel arrives</small>
+            <span class="aap-pay-radio"></span>
+            <div class="aap-pay-text">
+              <div class="aap-pay-headline">
+                <strong>Cash on Delivery</strong>
               </div>
             </div>
             <div class="aap-pay-right">
@@ -597,16 +595,21 @@ a[href*="wa.me"].m-button--whatsapp,
           <button class="aap-atc" type="button" data-atc>Add to cart</button>
           <button class="aap-bn" type="button" data-bn>Buy now · <span data-bn-price>{{ online_init_price | money_without_trailing_zeros }}</span></button>
         </div>
-        <!-- 4. Multiple Payment Options Badges (Slide 4) -->
-        <div class="aap-pay-icons">
-          <span class="aap-pay-icon-tag"><span style="color:#0B382C">⚡</span> UPI</span>
-          <span class="aap-pay-icon-tag"><span style="color:#2563EB;font-weight:700">G</span>Pay</span>
-          <span class="aap-pay-icon-tag"><span style="color:#7C3AED;font-weight:700">Phone</span>Pe</span>
-          <span class="aap-pay-icon-tag"><span style="color:#0284C7;font-weight:700">Pay</span>tm</span>
-          <span class="aap-pay-icon-tag">Cards / EMI</span>
-          <span class="aap-pay-icon-tag">Cash on Delivery</span>
+        <!-- 4. Clean Unified Payment & Trust Strip -->
+        <div class="aap-pay-strip">
+          <div class="aap-pay-icons">
+            <span class="aap-pay-icon-tag"><span style="color:#0B382C">⚡</span> UPI</span>
+            <span class="aap-pay-icon-tag"><span style="color:#2563EB;font-weight:700">G</span>Pay</span>
+            <span class="aap-pay-icon-tag"><span style="color:#7C3AED;font-weight:700">Phone</span>Pe</span>
+            <span class="aap-pay-icon-tag"><span style="color:#0284C7;font-weight:700">Pay</span>tm</span>
+            <span class="aap-pay-icon-tag">Cards / Netbanking</span>
+            <span class="aap-pay-icon-tag">Cash on Delivery</span>
+          </div>
+          <div class="aap-pay-trust-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <span>100% Encrypted Checkout · Free Express Dispatch · 7-Day Easy Exchanges</span>
+          </div>
         </div>
-        <div class="aap-sec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B635B" stroke-width="1.7" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>100% Encrypted 1-Click Checkout · Free Express Shipping · 7-Day Returns</div>
       </div>
 
       <div class="aap-info" style="padding-top:14px">
