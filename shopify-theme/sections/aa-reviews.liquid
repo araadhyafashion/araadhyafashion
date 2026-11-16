@@ -48,17 +48,39 @@
           endif
           assign ini = nm | slice: 0 | upcase
           assign ci = forloop.index0 | modulo: pal.size
+
+          assign ugc_photos = 'ugc-review-yellow.jpg,ugc-review-white.jpg,ugc-review-pink.jpg,ugc-review-blue.jpg,ugc-review-mint.jpg' | split: ','
+          assign ugc_avs = 'ugc-avatar-priya.jpg,ugc-avatar-sneha.jpg,ugc-avatar-ananya.jpg,ugc-avatar-ridhima.jpg,ugc-avatar-sunaina.jpg' | split: ','
+          assign default_photo = blank
+          assign default_avatar = blank
+          if forloop.index0 < 5
+            assign default_photo = ugc_photos[forloop.index0]
+            assign default_avatar = ugc_avs[forloop.index0]
+          else
+            assign av_mod = forloop.index0 | modulo: 5
+            assign default_avatar = ugc_avs[av_mod]
+          endif
         -%}
       <article class="aarv__card" {{ b.shopify_attributes }}>
-        {%- if b.settings.photo -%}<div class="aarv__ph">{{ b.settings.photo | image_url: width: 600 | image_tag: loading: 'lazy', alt: b.settings.name }}</div>{%- endif -%}
+        {%- if b.settings.photo -%}
+          <div class="aarv__ph">{{ b.settings.photo | image_url: width: 600 | image_tag: loading: 'lazy', alt: b.settings.name }}</div>
+        {%- elsif default_photo != blank -%}
+          <div class="aarv__ph"><img src="{{ default_photo | asset_url }}" loading="lazy" alt="{{ b.settings.name | escape }}" width="600" height="750"></div>
+        {%- endif -%}
         <div class="aarv__b">
           <div class="aarv__st" aria-label="5 out of 5 stars">★★★★★</div>
           <p class="aarv__t">{{ b.settings.text }}</p>
           <div class="aarv__who">
             <span class="aarv__av" style="background:{% if generic %}#C9BFB4{% else %}{{ pal[ci] }}{% endif %}" aria-hidden="true">
-              {%- if b.settings.avatar -%}{{ b.settings.avatar | image_url: width: 96 | image_tag: loading: 'lazy', alt: '' }}
-              {%- elsif generic -%}<svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8.5" r="4.2"/><path d="M3.8 21c.6-4.3 4-7 8.2-7s7.6 2.7 8.2 7z"/></svg>
-              {%- else -%}{{ ini }}{%- endif -%}
+              {%- if b.settings.avatar -%}
+                {{ b.settings.avatar | image_url: width: 96 | image_tag: loading: 'lazy', alt: '' }}
+              {%- elsif default_avatar != blank -%}
+                <img src="{{ default_avatar | asset_url }}" loading="lazy" alt="" width="96" height="96">
+              {%- elsif generic -%}
+                <svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8.5" r="4.2"/><path d="M3.8 21c.6-4.3 4-7 8.2-7s7.6 2.7 8.2 7z"/></svg>
+              {%- else -%}
+                {{ ini }}
+              {%- endif -%}
             </span>
             <span class="aarv__wn">
               <span class="aarv__n">{{ b.settings.name }}</span>

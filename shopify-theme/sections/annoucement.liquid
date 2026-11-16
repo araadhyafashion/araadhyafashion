@@ -1,117 +1,98 @@
-<style>
-  .m-announcement-bar {
-    min-height: 38px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-    z-index: 100 !important;
-    background-color: #0b382c !important;
-  }
-  .m-announcement-bar__container {
-    width: 100% !important;
-  }
-  .m-announcement-bar__item {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    min-height: 38px !important;
-    color: #ffffff !important;
-  }
-  .m-announcement-bar__content {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.1em !important;
-    text-transform: uppercase !important;
-    color: #ffffff !important;
-    padding: 8px 16px !important;
-    line-height: 1.4 !important;
-  }
-  .m-announcement-bar__inner:not(.swiper-wrapper-initialized) .m-announcement-bar__item:first-child {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-</style>
-<script src="{{ 'announcement-bar.js' | asset_url }}" defer="defer"></script>
-
 {% liquid
-  assign enable_slider = false
-  if section.blocks.size > 1
-    assign enable_slider = true
-  endif
-
-  assign autorotate = section.settings.autorotate
-  assign autorotate_speed = section.settings.autorotate_speed
-  assign show_divider = section.settings.show_divider
-  assign show_nav = section.settings.show_nav
-
-  assign container = section.settings.container
-  if container == 'w-full'
-    assign container = 'container-full'
+  assign show = section.settings.show_announcement
+  if section.settings.homepage_only and request.page_type != 'index'
+    assign show = false
   endif
 %}
 
-{% if section.settings.show_announcement %}
-  {% if section.settings.homepage_only == false or request.page_type == 'index' %}
-    <section
-      id="m-announcement--{{ section.id }}"
-      data-section-id="{{ section.id }}"
-      data-section-type="announcement"
-      class="m-announcement-bar m-gradient m-color-{{ section.settings.color_scheme }}"
-      {% if show_divider %}
-        style="--border-width: 1px"
-      {% endif %}
-    >
-      <m-announcement-bar
-        data-enable-slider="{{ enable_slider }}"
-        {% if enable_slider %}
-          data-enable-autoplay="{{ autorotate }}"
-          data-autoplay-speed="{{ autorotate_speed }}"
-        {% endif %}
-      >
-        <div class="m-announcement-bar__container {{ container }}">
-          <div class="m-announcement-bar__wrapper{% if enable_slider %} swiper-container{% endif %}">
-            <div class="m-announcement-bar__inner{% if enable_slider %} swiper-wrapper{% endif %}">
-              {% for block in section.blocks %}
-                <div class="m-announcement-bar__item{% if enable_slider %} swiper-slide{% endif %}">
-                  {% if block.settings.message_link != blank %}
-                    <a href="{{ block.settings.message_link }}" class="m-announcement-bar__link"></a>
-                  {% endif %}
-                  {% if block.settings.message != blank %}
-                    <div class="m-announcement-bar__content">{{ block.settings.message }}</div>
-                  {% endif %}
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% if enable_slider %}
-            {% render 'slider-controls', show_nav: show_nav, absolute: true, container: container %}
-          {% endif %}
-        </div>
-      </m-announcement-bar>
-      {% if section.settings.show_close %}
-        <div class="m-announcement-bar__close m:flex m:items-center">
-          <svg
-            class="m-svg-icon--medium"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-        </div>
-        <script>
-          document.querySelector('.m-announcement-bar__close').addEventListener('click', function () {
-            document.querySelector('.m-announcement-bar').remove();
-            document.documentElement.style.setProperty('--m-announcement-height', '0px');
-          });
-        </script>
-      {% endif %}
-    </section>
-  {% endif %}
+{% if show %}
+  <section
+    id="m-announcement--{{ section.id }}"
+    class="aa-announcement-marquee"
+    aria-label="Announcement"
+  >
+    <div class="aa-marquee-wrapper">
+      <div class="aa-marquee-track">
+        {%- capture marquee_content -%}
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> FREE SHIPPING ACROSS INDIA</span>
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> CASH ON DELIVERY AVAILABLE NATIONWIDE</span>
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> 100% HAND-EMBROIDERED IN LUCKNOW</span>
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> EXTRA 10% OFF FIRST ORDER: CODE <strong>WELCOME10</strong></span>
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> DISPATCHED WITHIN 24–48 HOURS</span>
+          <span class="aa-marquee-item"><span class="aa-sparkle">✦</span> WORLDWIDE EXPRESS DELIVERY (4–7 DAYS)</span>
+        {%- endcapture -%}
+        <div class="aa-marquee-group">{{ marquee_content }}</div>
+        <div class="aa-marquee-group" aria-hidden="true">{{ marquee_content }}</div>
+        <div class="aa-marquee-group" aria-hidden="true">{{ marquee_content }}</div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .aa-announcement-marquee {
+      background: #0B382C !important;
+      color: #FDFBF7 !important;
+      overflow: hidden !important;
+      width: 100% !important;
+      height: 38px !important;
+      min-height: 38px !important;
+      display: flex !important;
+      align-items: center !important;
+      position: relative !important;
+      z-index: 100 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    .aa-marquee-wrapper {
+      width: 100% !important;
+      overflow: hidden !important;
+      display: flex !important;
+      align-items: center !important;
+      position: relative !important;
+    }
+    .aa-marquee-track {
+      display: flex !important;
+      flex-shrink: 0 !important;
+      align-items: center !important;
+      white-space: nowrap !important;
+      animation: aaMarqueeScroll 28s linear infinite !important;
+      will-change: transform !important;
+    }
+    .aa-announcement-marquee:hover .aa-marquee-track,
+    .aa-announcement-marquee:active .aa-marquee-track {
+      animation-play-state: paused !important;
+    }
+    .aa-marquee-group {
+      display: flex !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+    }
+    .aa-marquee-item {
+      display: inline-flex !important;
+      align-items: center !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      padding: 0 24px !important;
+      color: #FDFBF7 !important;
+      white-space: nowrap !important;
+      line-height: 38px !important;
+    }
+    .aa-sparkle {
+      color: #F2D594 !important;
+      margin-right: 8px !important;
+      font-size: 10px !important;
+    }
+    .aa-marquee-item strong {
+      color: #F2D594 !important;
+      margin-left: 4px !important;
+      letter-spacing: 0.14em !important;
+    }
+    @keyframes aaMarqueeScroll {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-33.33333%, 0, 0); }
+    }
+  </style>
 {% endif %}
 
 {% schema %}
@@ -122,39 +103,6 @@
   },
   "settings": [
     {
-      "type": "paragraph",
-      "content": "[Watch tutorial](https://foxecom.link/zDfFJy)"
-    },
-    {
-      "type": "header",
-      "content": "General"
-    },
-    {
-      "type": "select",
-      "id": "container",
-      "label": "Container type",
-      "default": "container",
-      "options": [
-        {
-          "value": "container-fluid",
-          "label": "Default"
-        },
-        {
-          "value": "w-full",
-          "label": "Full width"
-        },
-        {
-          "value": "container",
-          "label": "Use container box"
-        }
-      ]
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme"
-    },
-    {
       "type": "checkbox",
       "id": "show_announcement",
       "label": "Show announcement",
@@ -164,79 +112,12 @@
       "type": "checkbox",
       "id": "homepage_only",
       "label": "Home page only",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_close",
-      "label": "Show close button",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_divider",
-      "label": "Show divider",
       "default": false
-    },
-    {
-      "type": "header",
-      "content": "Slider settings"
-    },
-    {
-      "type": "paragraph",
-      "content": "Slider work when more than more 2 items"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_nav",
-      "label": "Show navigation",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "autorotate",
-      "label": "Auto-rotate slides",
-      "default": false
-    },
-    {
-      "type": "range",
-      "id": "autorotate_speed",
-      "label": "Change slides every",
-      "max": 10,
-      "min": 2,
-      "step": 1,
-      "unit": "s",
-      "default": 3
-    }
-  ],
-  "blocks": [
-    {
-      "type": "item",
-      "name": "Announcement item",
-      "settings": [
-        {
-          "type": "textarea",
-          "id": "message",
-          "label": "Message",
-          "default": "Free shipping for all orders from $60+"
-        },
-        {
-          "type": "url",
-          "id": "message_link",
-          "label": "Link"
-        }
-      ]
     }
   ],
   "presets": [
     {
-      "name": "Announcement bar",
-      "category": "Image",
-      "blocks": [
-        {
-          "type": "item"
-        }
-      ]
+      "name": "Announcement bar"
     }
   ]
 }

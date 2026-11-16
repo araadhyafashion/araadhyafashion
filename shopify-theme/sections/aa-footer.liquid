@@ -1,0 +1,142 @@
+{%- liquid
+  assign wa = section.settings.whatsapp | remove: ' ' | remove: '+'
+  assign ig = section.settings.instagram | default: settings.social_instagram_link
+  assign fb = settings.social_facebook_link
+  assign pin = settings.social_pinterest_link
+  assign tw = settings.social_twitter_link
+  assign ph = 'https://instagram.com/,https://www.instagram.com/,https://facebook.com/,https://www.facebook.com/,https://pinterest.com/,https://www.pinterest.com/,https://twitter.com/,https://x.com/' | split: ','
+  if ph contains ig
+    assign ig = blank
+  endif
+  if ph contains fb
+    assign fb = blank
+  endif
+  if ph contains pin
+    assign pin = blank
+  endif
+  if ph contains tw
+    assign tw = blank
+  endif
+-%}
+<style>
+.aaf{background:#163F3B;color:#EDE6DD;font-family:'DM Sans',system-ui,sans-serif;padding:48px 24px 0;margin-top:0!important;line-height:normal;letter-spacing:normal}
+.aaf *{box-sizing:border-box}
+.aaf a{color:#EDE6DD;text-decoration:none}
+.aaf a:hover{color:#fff;text-decoration:underline}
+.aaf-in{max-width:1296px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.4fr;gap:36px}
+.aaf-brand b{display:block;font-family:Marcellus,serif;font-weight:400;font-size:30px;letter-spacing:.14em;color:#fff}
+.aaf-brand p{margin:12px 0 0;font-size:14px;line-height:1.6;color:#C9D6D2;max-width:320px}
+.aaf h3,.aaf summary{font-family:Marcellus,serif!important;font-weight:400!important;font-size:18px;color:#fff;margin:0 0 16px;list-style:none}
+.aaf summary::-webkit-details-marker{display:none}
+.aaf ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:14px}
+.aaf-ic{display:flex;gap:8px;margin-top:18px;flex-wrap:nowrap}
+.aaf-ic a{flex:0 0 36px;width:36px;height:36px;border-radius:18px;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center}
+.aaf-ic a:hover{background:rgba(255,255,255,.1);text-decoration:none}
+.aaf form{display:flex;margin-top:4px}
+.aaf input[type=email]{flex:1;min-width:0;height:46px;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;padding:0 14px;border-radius:6px 0 0 6px;font:inherit;font-size:14px;margin:0}
+.aaf input::placeholder{color:#AFC3BE}
+.aaf button{height:46px;padding:0 18px;border:0;background:#FBF8F3;color:#163F3B;font-weight:700;font-size:14px;border-radius:0 6px 6px 0;cursor:pointer;font-family:inherit}
+.aaf .note{font-size:12px;color:#AFC3BE;margin-top:8px}
+.aaf .ok{font-size:13px;color:#fff;margin-top:8px}
+.aaf-pay{display:flex;gap:6px;flex-wrap:nowrap;align-items:center}
+.aaf-pi{display:inline-flex}
+.aaf-pi svg{width:44px;height:28px;display:block;border-radius:4px}
+.aaf-bot{max-width:1296px;margin:48px auto 0;border-top:1px solid rgba(255,255,255,.15);padding:20px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;color:#AFC3BE}
+.aaf-bot a{color:#AFC3BE}
+.aaf details{border:0}
+.aaf details summary{cursor:default;pointer-events:none}
+@media(max-width:989px){
+ .aaf{padding:36px 16px 0}
+ .aaf-in{grid-template-columns:1fr;gap:0}
+ .aaf-brand{padding-bottom:20px}
+ .aaf-brand p{font-size:13px}
+ .aaf details{border-top:1px solid rgba(255,255,255,.15)}
+ .aaf details summary{pointer-events:auto;cursor:pointer;margin:0;padding:15px 0;display:flex;justify-content:space-between;align-items:center;font-size:17px}
+ .aaf details summary:after{content:'+';font-family:'DM Sans',sans-serif;font-size:22px;color:#C9D6D2}
+ .aaf details[open] summary:after{content:'\2212'}
+ .aaf details ul{padding:0 0 16px;gap:12px}
+ .aaf-news{border-top:1px solid rgba(255,255,255,.15);padding-top:18px}
+ .aaf-news h3{font-size:17px;margin-bottom:12px}
+ .aaf-pay{gap:4px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+ .aaf-pi svg{width:38px;height:24px}
+ .aaf-bot{flex-direction:column;align-items:flex-start;padding-bottom:110px}
+}
+.aawa{position:fixed;right:18px;bottom:96px;z-index:60;width:54px;height:54px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.18);transition:transform .2s}
+.aawa:hover{transform:scale(1.06)}
+.aawa svg{width:28px;height:28px}
+@media(max-width:767px){.aawa{right:14px;bottom:88px;width:50px;height:50px}}
+</style>
+<footer class="aaf">
+  <div class="aaf-in">
+    <div class="aaf-brand">
+      <b>{{ section.settings.brand }}</b>
+      <p>{{ section.settings.tagline }}</p>
+      <div class="aaf-ic">
+        {%- if ig != blank -%}<a href="{{ ig }}" target="_blank" rel="noopener" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>{%- endif -%}
+        {%- if fb != blank -%}<a href="{{ fb }}" target="_blank" rel="noopener" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 00-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>{%- endif -%}
+        {%- if pin != blank -%}<a href="{{ pin }}" target="_blank" rel="noopener" aria-label="Pinterest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M11 8c3-1 6 1 5 4-1 2-3 3-4 2M11 10l-2 10"/></svg></a>{%- endif -%}
+        {%- if tw != blank -%}<a href="{{ tw }}" target="_blank" rel="noopener" aria-label="X"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg></a>{%- endif -%}
+        {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener" aria-label="WhatsApp us"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8 8 0 01-2.4-1.5 9 9 0 01-1.6-2c-.2-.3 0-.5.1-.6l.4-.5.3-.5v-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 00-.8.4 3.4 3.4 0 00-1 2.5 5.9 5.9 0 001.2 3.1 13.4 13.4 0 005.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 002-1.4 2.5 2.5 0 00.2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.8 9.8 0 01-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zM20.5 3.5A11.8 11.8 0 001.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0024 12a11.7 11.7 0 00-3.5-8.5z"/></svg></a>{%- endif -%}
+        {%- if section.settings.email != blank -%}<a href="mailto:{{ section.settings.email }}" aria-label="Email us"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></a>{%- endif -%}
+      </div>
+    </div>
+    <details open><summary>{{ section.settings.shop_title }}</summary>
+      <ul>{%- for l in section.settings.shop_menu.links -%}<li><a href="{{ l.url }}">{{ l.title }}</a></li>{%- endfor -%}</ul>
+    </details>
+    <details open><summary>{{ section.settings.help_title }}</summary>
+      <ul>{%- for l in section.settings.help_menu.links -%}<li><a href="{{ l.url }}">{{ l.title }}</a></li>{%- endfor -%}</ul>
+    </details>
+    <details open><summary>{{ section.settings.about_title }}</summary>
+      <ul>{%- for l in section.settings.about_menu.links -%}<li><a href="{{ l.url }}">{{ l.title }}</a></li>{%- endfor -%}</ul>
+    </details>
+    <div class="aaf-news">
+      <h3>{{ section.settings.news_title }}</h3>
+      {%- form 'customer', id: 'aaf-news' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label for="aaf-email" style="position:absolute;left:-9999px">Email</label>
+        <input id="aaf-email" type="email" name="contact[email]" placeholder="Your email address" required autocomplete="email"><button type="submit">Subscribe</button>
+        {%- if form.posted_successfully? -%}<p class="ok">Thank you for subscribing!</p>{%- endif -%}
+      {%- endform -%}
+      <p class="note">{{ section.settings.news_note }}</p>
+    </div>
+  </div>
+  <div class="aaf-bot">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright }}. All rights reserved.{%- if section.settings.terms_link != blank -%} &nbsp;·&nbsp; <a href="{{ section.settings.terms_link }}">Terms of service</a>{%- endif -%}</span>
+    <div class="aaf-pay" aria-label="Payment methods we accept">
+      {%- assign pts = section.settings.pay_icons | remove: ' ' | split: ',' -%}
+      {%- for t in pts -%}<span class="aaf-pi" data-pt="{{ t }}">{{ t | payment_type_svg_tag }}</span>{%- endfor -%}
+    </div>
+  </div>
+</footer>
+{%- if wa != blank and section.settings.wa_float -%}
+<a class="aawa" href="https://wa.me/{{ wa }}?text={{ 'Hi Araadhya! I have a question.' | url_encode }}" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8 8 0 01-2.4-1.5 9 9 0 01-1.6-2c-.2-.3 0-.5.1-.6l.4-.5.3-.5v-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 00-.8.4 3.4 3.4 0 00-1 2.5 5.9 5.9 0 001.2 3.1 13.4 13.4 0 005.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 002-1.4 2.5 2.5 0 00.2-1.4c-.1-.1-.3-.2-.6-.3zM12 21.8a9.8 9.8 0 01-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1112 21.8zM20.5 3.5A11.8 11.8 0 001.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0024 12a11.7 11.7 0 00-3.5-8.5z"/></svg></a>
+{%- endif -%}
+<script>
+(function(){if(window.matchMedia('(max-width:989px)').matches){document.querySelectorAll('.aaf details').forEach(function(d){d.removeAttribute('open')})}})();
+</script>
+{% schema %}
+{
+  "name": "Araadhya footer",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "brand", "label": "Brand name", "default": "ARAADHYA" },
+    { "type": "url", "id": "instagram", "label": "Instagram link" },
+    { "type": "text", "id": "copyright", "label": "Copyright name", "default": "Araadhya" },
+    { "type": "url", "id": "terms_link", "label": "Terms link (bottom line)" },
+    { "type": "textarea", "id": "tagline", "label": "Tagline", "default": "Hand-embroidered Lucknowi chikankari kurtis, suit sets and dupattas, made slowly, by hand." },
+    { "type": "text", "id": "shop_title", "label": "Shop column title", "default": "Shop" },
+    { "type": "link_list", "id": "shop_menu", "label": "Shop menu", "default": "main-menu" },
+    { "type": "text", "id": "help_title", "label": "Help column title", "default": "Help" },
+    { "type": "link_list", "id": "help_menu", "label": "Help menu" },
+    { "type": "text", "id": "about_title", "label": "About column title", "default": "About" },
+    { "type": "link_list", "id": "about_menu", "label": "About menu" },
+    { "type": "text", "id": "news_title", "label": "Newsletter title", "default": "Join the Araadhya list" },
+    { "type": "text", "id": "news_note", "label": "Newsletter note", "default": "New drops and offers. No spam." },
+    { "type": "text", "id": "email", "label": "Email", "default": "araadhyafashion@gmail.com" },
+    { "type": "text", "id": "phone", "label": "Phone / WhatsApp", "default": "+91 91378 99409" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number (digits)", "default": "919137899409" },
+    { "type": "checkbox", "id": "wa_float", "label": "Show floating WhatsApp button", "default": true },
+    { "type": "text", "id": "pay_icons", "label": "Payment icons (Shopify names, comma separated)", "default": "visa,master,rupay,upi,google_pay,phonepe,paytm,paypal" }
+  ]
+}
+{% endschema %}

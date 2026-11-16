@@ -19,7 +19,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-.aap{--ink:#1E1B18;--mut:#6B635B;--line:#EEE7E0;--soft:#F7F1EC;--acc:#1F5752;--acc2:#163F3B;--red:#A23B2A;--gold:#B7791F;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:#fff;max-width:1200px;margin:0 auto;padding-bottom:96px}
+.aap{--ink:#1E1B18;--mut:#6B635B;--line:#EEE7E0;--soft:#F7F1EC;--acc:#1F5752;--acc2:#163F3B;--red:#A23B2A;--gold:#B7791F;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:#fff;max-width:1200px;margin:0 auto;padding-bottom:24px}
+#MainContent, .template-product #MainContent { padding-bottom: 0 !important; margin-bottom: 0 !important; }
 .aap *{box-sizing:border-box}
 .aap h1,.aap h2{font-family:Marcellus,serif;font-weight:400;margin:0}
 .aap button{font-family:inherit;cursor:pointer}
@@ -126,7 +127,15 @@
 .aap-quotes figure{flex:0 0 260px;scroll-snap-align:start;margin:0;background:var(--soft);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
 .aap-quotes .s{color:var(--gold);font-size:13px;letter-spacing:1px}
 .aap-quotes blockquote{margin:0;font-size:14px;line-height:1.55;flex:1}
-.aap-quotes figcaption{font-size:12px;color:var(--mut);display:flex;align-items:center;flex-wrap:wrap}
+.aap-quotes figcaption{font-size:12px;color:var(--mut);display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.aap-ugc-grid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 16px 16px;scrollbar-width:none}
+.aap-ugc-grid::-webkit-scrollbar{display:none}
+.aap-ugc-card{flex:0 0 170px;scroll-snap-align:start;border-radius:12px;overflow:hidden;background:var(--soft);border:1px solid var(--line);display:flex;flex-direction:column}
+.aap-ugc-card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.aap-ugc-cap{padding:8px 10px;display:flex;flex-direction:column;gap:2px;background:#fff}
+.aap-ugc-cap span{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aap-ugc-cap small{font-size:10px;color:#1F5752;font-weight:600}
+.aap-av-img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--line);display:inline-block}
 .aap-faq{padding:0 16px}
 .aap-faq details{border-bottom:1px solid var(--line)}
 .aap-faq summary{list-style:none;min-height:52px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;font-weight:600;cursor:pointer}
@@ -223,7 +232,8 @@ a[href*="wa.me"].m-button--whatsapp,
 /* Mobile Product Layout: PHOTO FIRST, then Title, Price, Size, CTA */
 .aap-size-summary{display:none}
 @media(max-width:989px){
-  .aap{padding-bottom:110px!important}
+  .aap{padding-bottom:20px!important;margin-bottom:0!important;}
+  .aap-faq{margin-bottom:12px!important;}
   .aap-top{display:flex;flex-direction:column}
   .aap-top > .aap-gal-wrap{order:1;width:100%}
   .aap-top > .aap-right{order:2;width:100%}
@@ -470,10 +480,52 @@ a[href*="wa.me"].m-button--whatsapp,
     {%- endif -%}
 
     {%- if has_q -%}
-      <h2 class="aap-h2"{% unless has_product_reviews %} id="aap-reviews"{% endunless %}>What customers say about Araadhya</h2>
-      <p class="aap-revsub">{{ section.settings.quotes_sub }}</p>
-      <div class="aap-quotes">
-        {%- for block in section.blocks -%}{%- if block.type == 'quote' -%}<figure {{ block.shopify_attributes }}><span class="s" aria-hidden="true">★★★★★</span><blockquote>“{{ block.settings.text }}”</blockquote><figcaption>{{ block.settings.who }}<span class="aap-vb"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1D9BF0"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified buyer</span></figcaption></figure>{%- endif -%}{%- endfor -%}
+      <div class="aap-ugc-wrap">
+        <h2 class="aap-h2"{% unless has_product_reviews %} id="aap-reviews"{% endunless %}>Loved in real life</h2>
+        <p class="aap-revsub">Real customer photos & verified buyer reviews</p>
+        
+        <!-- Authentic Customer Gallery -->
+        <div class="aap-ugc-grid">
+          <div class="aap-ugc-card">
+            <img src="{{ 'ugc-review-yellow.jpg' | asset_url }}" loading="lazy" alt="Priya S. wearing Lemon Yellow Kurti at home">
+            <div class="aap-ugc-cap"><span>Priya S., Mumbai</span><small>Verified Buyer</small></div>
+          </div>
+          <div class="aap-ugc-card">
+            <img src="{{ 'ugc-review-white.jpg' | asset_url }}" loading="lazy" alt="Sneha wearing White 3D Kurta">
+            <div class="aap-ugc-cap"><span>Sneha, Kolkata</span><small>Verified Buyer</small></div>
+          </div>
+          <div class="aap-ugc-card">
+            <img src="{{ 'ugc-review-pink.jpg' | asset_url }}" loading="lazy" alt="Dr. Ananya wearing Pastel Pink Kurti">
+            <div class="aap-ugc-cap"><span>Dr. Ananya, Bangalore</span><small>Verified Buyer</small></div>
+          </div>
+          <div class="aap-ugc-card">
+            <img src="{{ 'ugc-review-blue.jpg' | asset_url }}" loading="lazy" alt="Ridhima K. wearing Azure Blue Kurta">
+            <div class="aap-ugc-cap"><span>Ridhima K., Delhi</span><small>Verified Buyer</small></div>
+          </div>
+          <div class="aap-ugc-card">
+            <img src="{{ 'ugc-review-mint.jpg' | asset_url }}" loading="lazy" alt="Sunaina wearing Mint Green Suit">
+            <div class="aap-ugc-cap"><span>Sunaina, Ahmedabad</span><small>Verified Buyer</small></div>
+          </div>
+        </div>
+
+        <div class="aap-quotes">
+          {%- liquid
+            assign avs = 'ugc-avatar-priya.jpg,ugc-avatar-sneha.jpg,ugc-avatar-ananya.jpg,ugc-avatar-ridhima.jpg,ugc-avatar-sunaina.jpg' | split: ','
+          -%}
+          {%- for block in section.blocks -%}{%- if block.type == 'quote' -%}
+            {%- assign av_idx = forloop.index0 | modulo: 5 -%}
+            {%- assign cur_av = avs[av_idx] -%}
+            <figure {{ block.shopify_attributes }}>
+              <span class="s" aria-hidden="true">★★★★★</span>
+              <blockquote>“{{ block.settings.text }}”</blockquote>
+              <figcaption>
+                <img class="aap-av-img" src="{{ cur_av | asset_url }}" loading="lazy" alt="" width="32" height="32">
+                <span>{{ block.settings.who }}</span>
+                <span class="aap-vb"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1D9BF0"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified buyer</span>
+              </figcaption>
+            </figure>
+          {%- endif -%}{%- endfor -%}
+        </div>
       </div>
     {%- endif -%}
     {%- if has_product_reviews -%}

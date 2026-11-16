@@ -33,22 +33,35 @@ const CLIENT_SECRET = process.env.SHOPIFY_CLIENT_SECRET;
 const BASE_DIR = path.resolve(__dirname, '..', 'shopify-theme');
 
 // Target Themes:
-// 189186605282 = "Araadhya – Storefront fixes preview" (Draft / Active preview in user browser)
-// 189170057442 = "Araadhya – Product page polish v26" (Main Live Theme)
+// 189186605282 = "Araadhya – Storefront fixes preview" (Active Main Live Theme)
 const TARGET_THEMES = process.env.THEME_IDS
   ? process.env.THEME_IDS.split(',').map(s => s.trim())
-  : ['189186605282', '189170057442'];
+  : ['189186605282'];
 
 const ASSETS_TO_PUSH = [
+  'layout/theme.liquid',
   'sections/aa-product.liquid',
   'sections/aa-collection.liquid',
   'sections/aa-price-anchor.liquid',
   'sections/annoucement.liquid',
   'sections/page-search.liquid',
+  'sections/aa-footer.liquid',
+  'sections/aa-reviews.liquid',
   'snippets/aa-currency-switcher.liquid',
   'snippets/search-popup.liquid',
+  'snippets/social-meta-tags.liquid',
   'templates/product.json',
-  'templates/index.json'
+  'templates/index.json',
+  'assets/ugc-review-yellow.jpg',
+  'assets/ugc-review-white.jpg',
+  'assets/ugc-review-pink.jpg',
+  'assets/ugc-review-blue.jpg',
+  'assets/ugc-review-mint.jpg',
+  'assets/ugc-avatar-priya.jpg',
+  'assets/ugc-avatar-sneha.jpg',
+  'assets/ugc-avatar-ananya.jpg',
+  'assets/ugc-avatar-ridhima.jpg',
+  'assets/ugc-avatar-sunaina.jpg'
 ];
 
 function request(options, body = null) {
@@ -104,13 +117,15 @@ async function getThemeInfo(token, themeId) {
   return { id: themeId, name: `Theme #${themeId}`, role: 'unknown' };
 }
 
-async function pushAsset(token, themeId, assetKey, content) {
-  const payload = JSON.stringify({
-    asset: {
-      key: assetKey,
-      value: content
-    }
-  });
+async function pushAsset(token, themeId, assetKey, isBinary, data) {
+  const assetObj = { key: assetKey };
+  if (isBinary) {
+    assetObj.attachment = data.toString('base64');
+  } else {
+    assetObj.value = data;
+  }
+
+  const payload = JSON.stringify({ asset: assetObj });
 
   const res = await request({
     hostname: STORE,
@@ -149,11 +164,12 @@ async function main() {
         continue;
       }
 
-      const content = fs.readFileSync(filePath, 'utf8');
-      process.stdout.write(`  Uploading ${key} (${content.length} bytes)... `);
+      const isBinary = /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(key);
+      const data = isBinary ? fs.readFileSync(filePath) : fs.readFileSync(filePath, 'utf8');
+      process.stdout.write(`  Uploading ${key} (${data.length} bytes)... `);
 
       try {
-        const result = await pushAsset(token, themeId, key, content);
+        const result = await pushAsset(token, themeId, key, isBinary, data);
         console.log(`OK (checksum: ${result.checksum.substring(0, 8)})`);
       } catch (err) {
         console.log(`FAILED!`);

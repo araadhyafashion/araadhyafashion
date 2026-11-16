@@ -1,0 +1,155 @@
+{% liquid
+  assign enable_rtl = settings.enable_rtl
+  assign language_support_rtl = settings.language_support_rtl
+  if enable_rtl and language_support_rtl != blank
+    assign shop_locale = localization.language.iso_code
+    assign language_support_rtl_list = language_support_rtl | split: ','
+    assign is_rtl = language_support_rtl_list | where: shop_locale
+    if is_rtl.size > 0
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+
+  assign body_classes = 'template-' | append: template.name | append: ' ' | append: template.suffix | append: ' m-gradient m-color-' | append: settings.default_color_scheme
+  if settings.page_transition
+    assign body_classes = body_classes | append: ' m:overflow-hidden'
+  endif
+  if template.suffix == 'about-us'
+    assign body_classes = body_classes | append: ' sf__page-about'
+  endif
+%}
+<!doctype html>
+<html
+  class="no-js {% if settings.page_transition %} m:overflow-hidden{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+  data-template="{{ template.name }}"
+  {% if enable_rtl %}
+    dir="rtl"
+  {% endif %}
+>
+  <head>
+{% include 'booster-seo' %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {%- if template.name == 'product' and product.featured_media -%}
+      {%- assign pm = product.media | where: 'media_type', 'image' | first -%}
+      {%- if pm -%}
+    <link rel="preload" as="image" fetchpriority="high" imagesizes="100vw" imagesrcset="{{ pm | image_url: width: 352 }} 352w, {{ pm | image_url: width: 832 }} 832w, {{ pm | image_url: width: 1100 }} 1100w">
+      {%- endif -%}
+    {%- endif -%}
+
+    <link rel="icon" type="image/png" href="{{ 'aa-favicon.png' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'aa-favicon.png' | asset_url }}">
+
+    {%- liquid
+      render 'social-meta-tags'
+      render 'font-face'
+      render 'critical-css'
+
+      echo 'main.css' | asset_url | stylesheet_tag: preload: true
+
+      render 'style-tags'
+    -%}
+
+    <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'theme-global.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.animations != 'none' -%}
+      <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    {%- if request.design_mode -%}
+      <script src="{{ 'theme-editor.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {{ content_for_header }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      if (Shopify.designMode) {
+        document.documentElement.classList.add('shopify-design-mode');
+      }
+    </script>
+    {% render 'theme-data' %}
+    {% render 'custom-code-head' %}
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {{ 'aa-brand.css' | asset_url | stylesheet_tag }}
+
+    {%- if template.name == 'index' -%}
+      <title>ARAADHYA | Handcrafted Lucknowi Chikankari</title>
+      <meta name="description" content="Bespoke hand-embroidered Lucknowi Chikankari kurtis, suit sets & dupattas, crafted slowly by master artisans in Lucknow. Pure breathable fabrics & worldwide delivery.">
+      <meta property="og:title" content="ARAADHYA | Handcrafted Lucknowi Chikankari">
+      <meta property="og:description" content="Bespoke hand-embroidered Lucknowi Chikankari kurtis, suit sets & dupattas, crafted slowly by master artisans in Lucknow. Pure breathable fabrics & worldwide delivery.">
+      <meta property="og:image" content="{{ 'ugc-review-white.jpg' | asset_url }}">
+      <meta property="og:image:secure_url" content="{{ 'ugc-review-white.jpg' | asset_url }}">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="630">
+    {%- else -%}
+      <meta property="og:title" content="{{ page_title }} | ARAADHYA">
+      <meta property="og:description" content="{{ page_description | default: 'Handcrafted Lucknowi Chikankari, made slowly by hand in Lucknow.' }}">
+      {%- if page_image -%}
+        <meta property="og:image" content="https:{{ page_image | image_url: width: 1200 }}">
+      {%- endif -%}
+    {%- endif -%}
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:site_name" content="ARAADHYA">
+    <meta property="og:type" content="website">
+    {%- comment -%} Google Analytics (G-YLVFQLCFL5) is sent by the Google & YouTube app. Do not add gtag here again, or every visit is counted twice. {%- endcomment -%}
+
+  </head>
+
+  <body
+    id="m-theme"
+    class="{{ body_classes }}"
+    {% if template.name == 'product' %}
+      data-product-id="{{ product.id }}"
+    {% endif %}
+  >
+    {%- liquid
+      render 'page-transition'
+      render 'scroll-top-button'
+      sections 'header-group'
+    -%}
+
+    <main role="main" id="MainContent">
+      {{ content_for_layout }}
+    </main>
+
+    {%- liquid
+      sections 'footer-group'
+      render 'script-tags'
+      render 'cookie-banner'
+      render 'custom-code-body'
+    -%}
+
+    <script src="{{ 'product-quick-view.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.enable_predictive_search -%}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if linklists['gift-wrapping'].links != blank
+      and linklists['gift-wrapping'].links.first.type == 'product_link'
+    -%}
+      <script src="{{ 'gift-wrapping.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.show_swatch_option -%}
+      <script src="{{ 'product-card-swatch.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.enable_cart_drawer and template != 'cart' -%}
+      {% render 'cart-drawer' %}
+    {%- endif -%}
+  
+{% render 'magicSidecartScript', email: customer.email, phone: customer.phone %}
+
+{% render 'razorpay-magic-checkout' %}
+</body>
+</html>
