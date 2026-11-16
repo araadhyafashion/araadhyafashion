@@ -862,7 +862,7 @@ a[href*="wa.me"].m-button--whatsapp,
     {%- endif -%}
   </div>
 
-  <div class="aap-toast" role="status" data-toast><span data-toast-msg>Added to cart</span><a href="/cart">View cart</a></div>
+  <div class="aap-toast" role="status" data-toast><span data-toast-msg>Added to cart</span><a href="/cart" onclick="if(window.AACD&&window.AACD.open){event.preventDefault();window.AACD.open();}">View cart</a></div>
   <div class="aap-lb" data-lb hidden role="dialog" aria-label="Zoomed photo"><button type="button" aria-label="Close">×</button><img alt=""></div>
   <div class="aap-bar" data-bar>
     <div class="in">
@@ -1122,8 +1122,14 @@ a[href*="wa.me"].m-button--whatsapp,
       });
     }
 
-    window.AACD.submit(items, buyNow).then(function () {
-      if (!buyNow) alertMsg('Added ' + selectedQuantity + ' × ' + cur.title + ' (Size ' + currentSize + ') to cart');
+    window.AACD.submit(items, buyNow).then(function (res) {
+      if (!buyNow) {
+        if (res && res.alreadyInCart) {
+          alertMsg(res.message || 'This item is already in your cart (1 item limit). Complete your order in the cart!');
+        } else {
+          alertMsg('Added ' + selectedQuantity + ' × ' + cur.title + ' (Size ' + currentSize + ') to cart');
+        }
+      }
     }).catch(function (error) {
       alertMsg(error && error.description || 'Could not update your cart. Please try again.');
     }).finally(function () {

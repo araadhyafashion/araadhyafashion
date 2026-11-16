@@ -147,9 +147,12 @@
     {%- if settings.enable_cart_drawer and template != 'cart' -%}
       {% render 'cart-drawer' %}
     {%- endif -%}
-  
-{% render 'magicSidecartScript', email: customer.email, phone: customer.phone %}
 
-{% render 'razorpay-magic-checkout' %}
+    {%- comment -%}
+      Use native optimized Cart Drawer with Rewards Bar & Upsells.
+      Razorpay 1-Click Magic Checkout handles the checkout modal upon clicking Checkout or Buy Now.
+    {%- endcomment -%}
+
+    {% render 'razorpay-magic-checkout' %}
 </body>
 </html>

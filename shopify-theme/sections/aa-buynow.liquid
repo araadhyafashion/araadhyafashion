@@ -28,10 +28,31 @@
   }
 
   function open() {
+    // 1. Direct native call to Minimog Cart Drawer custom element
+    const drawer = document.getElementById('MinimogCartDrawer') || document.querySelector('m-cart-drawer');
+    if (drawer && typeof drawer.open === 'function') {
+      drawer.open();
+      return;
+    }
+    // 2. Dispatch cart:refresh with open: true for Minimog listener
+    document.dispatchEvent(new CustomEvent('cart:refresh', { detail: { open: true } }));
+
+    // 3. Fallback click on cart icon bubble
     const cartLinks = Array.from(document.querySelectorAll('a.m-cart-icon-bubble'));
     const trigger = cartLinks.find(link => link.getClientRects().length);
-    if (trigger) trigger.click();
-    else window.location.assign(routesRoot + 'cart');
+    if (trigger) {
+      trigger.click();
+      return;
+    }
+    // 4. Ultimate fallback to /cart
+    window.location.assign(routesRoot + 'cart');
+  }
+
+  function close() {
+    const drawer = document.getElementById('MinimogCartDrawer') || document.querySelector('m-cart-drawer');
+    if (drawer && typeof drawer.close === 'function') {
+      drawer.close();
+    }
   }
 
   async function refresh() {
@@ -80,24 +101,42 @@
 
   function submit(items, buyNow) {
     const operation = pending.then(async () => {
-      // Single direct network trip to add items to cart
-      await cartRequest('cart/add.js', { items });
-      
+      let addSucceeded = false;
+      try {
+        // Single direct network trip to add items to cart
+        await cartRequest('cart/add.js', { items });
+        addSucceeded = true;
+      } catch (err) {
+        // If Shopify returns 422 because item is already in cart or inventory is 1
+        const msg = (err && (err.description || err.message)) || '';
+        if (msg.includes('already in your cart') || msg.includes('stock') || msg.includes('availability') || msg.includes('added to your cart')) {
+          document.dispatchEvent(new CustomEvent('cart:refresh', { detail: { open: !buyNow } }));
+          refresh();
+          if (buyNow) {
+            triggerCheckout();
+          } else {
+            open();
+          }
+          return { alreadyInCart: true, message: msg };
+        }
+        throw err;
+      }
+
       if (buyNow) {
         // Fast-path: Trigger Razorpay 1-Click checkout immediately
-        // without competing background GET cart.js calls
         triggerCheckout();
       } else {
-        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        document.dispatchEvent(new CustomEvent('cart:refresh', { detail: { open: true } }));
         refresh();
         open();
       }
+      return { success: true };
     });
     pending = operation.catch(() => {});
     return operation;
   }
 
-  window.AACD = { open, refresh, submit, triggerCheckout };
+  window.AACD = { open, close, refresh, submit, triggerCheckout };
   refresh();
   window.setInterval(refresh, 2500);
   window.addEventListener('focus', refresh);

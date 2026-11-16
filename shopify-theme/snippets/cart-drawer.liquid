@@ -22,7 +22,7 @@
   class="m-cart-drawer"
 >
   <div class="m-cart-drawer__inner m:h-full m-gradient m-color-{{ settings.drawer_popup_color_scheme }}">
-    <button class="m-cart-drawer__close" aria-label="Close">
+    <button class="m-cart-drawer__close" aria-label="Close" onclick="this.closest('m-cart-drawer') && this.closest('m-cart-drawer').close()">
       <svg
         class="m-svg-icon--large"
         fill="currentColor"
