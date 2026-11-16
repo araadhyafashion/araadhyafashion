@@ -57,53 +57,39 @@
   }
 
   async function prepareBuyNow(items) {
-    const [selected, ...addOns] = items;
-    const cart = await cartRequest('cart.js');
-    const line = cart.items.find(item => (
-      item.variant_id === selected.id && !item.selling_plan_allocation &&
-      !Object.keys(item.properties || {}).length
-    ));
-    const present = new Set(cart.items.map(item => item.variant_id));
-    present.add(selected.id);
-    const additions = line ? [] : [selected];
-    for (const addOn of addOns) {
-      if (present.has(addOn.id)) continue;
-      additions.push(addOn);
-      present.add(addOn.id);
-    }
-    if (line && line.quantity !== selected.quantity) {
-      await cartRequest('cart/change.js', { id: line.key, quantity: selected.quantity });
-    }
-    if (additions.length) await cartRequest('cart/add.js', { items: additions });
+    // Ultra-fast single POST to Shopify cart/add.js
+    return await cartRequest('cart/add.js', { items });
   }
 
   function triggerCheckout() {
-    // 1. Try our dedicated Razorpay checkout button intercepted by magic-shopify.js
+    // 1. Dedicated Razorpay checkout button intercepted by magic-shopify.js
     const magicBtn = document.getElementById('aa-magic-checkout-btn');
     if (magicBtn) {
       magicBtn.click();
       return;
     }
-    // 2. Try the cart drawer checkout button
+    // 2. Fallback to cart drawer checkout button
     const drawerBtn = document.querySelector('button[name="checkout"], form[action*="/cart"] button[name="checkout"]');
     if (drawerBtn) {
       drawerBtn.click();
       return;
     }
-    // 3. Fallback
+    // 3. Native checkout fallback
     window.location.assign(routesRoot + 'checkout');
   }
 
   function submit(items, buyNow) {
     const operation = pending.then(async () => {
-      if (buyNow) await prepareBuyNow(items);
-      else await cartRequest('cart/add.js', { items });
-      document.dispatchEvent(new CustomEvent('cart:refresh'));
-      refresh();
+      // Single direct network trip to add items to cart
+      await cartRequest('cart/add.js', { items });
+      
       if (buyNow) {
-        // Trigger Razorpay Magic 1-click checkout
+        // Fast-path: Trigger Razorpay 1-Click checkout immediately
+        // without competing background GET cart.js calls
         triggerCheckout();
       } else {
+        document.dispatchEvent(new CustomEvent('cart:refresh'));
+        refresh();
         open();
       }
     });

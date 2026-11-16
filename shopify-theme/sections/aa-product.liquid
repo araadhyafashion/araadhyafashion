@@ -106,12 +106,17 @@
 .aap-color-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;border:1.5px solid #E5E7EB;background:#FFFFFF;text-decoration:none;font-size:12px;font-weight:500;color:#1F2937;transition:all .2s ease}
 .aap-color-pill:hover,.aap-color-pill.active{border-color:#0B382C;background:#F0FDF4;color:#0B382C;font-weight:700}
 .aap-color-circle{width:14px;height:14px;border-radius:50%;display:inline-block}
-.aap-buy{padding:20px 16px 0;display:flex;flex-direction:column;gap:12px}
+.aap-buy{padding:14px 16px 0;display:flex;flex-direction:column;gap:10px}
 .aap-buy .r{display:flex;gap:10px}
-.aap-atc,.aap-bn{flex:1;height:50px;border-radius:8px;font-weight:700;font-size:15px}
+.aap-atc,.aap-bn{flex:1;height:50px;border-radius:8px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease;text-decoration:none}
 .aap-atc{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
-.aap-bn{border:0;background:var(--acc);color:#fff}
-.aap-atc[disabled],.aap-bn[disabled]{opacity:.45;cursor:not-allowed}
+.aap-atc:hover{background:#F4F9F8}
+.aap-bn{border:0;background:var(--acc);color:#fff;box-shadow:0 4px 14px rgba(31,87,82,.25)}
+.aap-bn:hover{background:var(--acc2);box-shadow:0 6px 18px rgba(31,87,82,.35)}
+.aap-atc[disabled],.aap-bn[disabled]{opacity:.65;cursor:not-allowed}
+.aap-spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:#fff;animation:aapSpin .6s linear infinite;margin-right:8px;vertical-align:middle}
+.aap-atc .aap-spinner{border-color:rgba(31,87,82,0.3);border-top-color:var(--acc)}
+@keyframes aapSpin{to{transform:rotate(360deg)}}
 .aap-sec{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--mut)}
 .aap-pin{margin:20px 16px 0;border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px}
 .aap-pin label{font-size:14px;font-weight:600}
@@ -379,32 +384,10 @@ a[href*="wa.me"].m-button--whatsapp,
           <span class="aap-mrp" data-mrp>MRP {{ compare_price | money_without_trailing_zeros }}</span>
           <span class="aap-off" data-off>{{ discount_pct }}% OFF</span>
         </div>
-
-        <div class="aap-specs-pills">
-          <span class="aap-spec-tag"><strong>Fabric:</strong> 100% Breathable Cotton</span>
-          <span class="aap-spec-tag"><strong>Length:</strong> 44" Calf</span>
-          <span class="aap-spec-tag"><strong>Sleeves:</strong> 3/4th</span>
-          <span class="aap-spec-tag"><strong>Craft:</strong> Lucknowi Hand-Chikan</span>
+        <div class="aap-save">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B382C" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>You save <strong data-save-amt>{{ savings_amount | money_without_trailing_zeros }}</strong></span>
         </div>
-
-        <div class="aap-urgency-badge">
-          <span class="aap-pulse-dot"></span>
-          <span><strong>18 people bought this today</strong> · Dispatched in 24–48 hrs</span>
-        </div>
-
-        <div class="aap-note" data-note hidden></div>
-        <div class="aap-row"><span class="aap-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>FREE SHIPPING</span><span class="aap-small">Inclusive of all taxes</span></div>
-
-        {%- if section.settings.offer_end != blank -%}
-          <div class="aap-timer" data-end="{{ section.settings.offer_end }}" hidden><b>{{ section.settings.offer_label }}</b><span class="t"><span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></span></div>
-        {%- endif -%}
-
-        {%- if section.settings.coupon != blank -%}
-          <div class="aap-coupon" data-coupon="{{ section.settings.coupon | upcase }}" data-auto="{{ section.settings.coupon_auto }}">
-            <div class="aap-cp1" data-c-form><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M3 9V6h18v3a3 3 0 000 6v3H3v-3a3 3 0 000-6z"/><path d="M10 6v12" stroke-dasharray="2 2"/></svg><span>{{ section.settings.coupon_text }} <strong style="letter-spacing:.05em">{{ section.settings.coupon | upcase }}</strong></span><button class="aap-btn aap-btn--sm" type="button" data-c-tap>Copy code</button></div>
-            <div class="aap-small" data-c-err role="status">Enter the code at checkout. Eligibility is confirmed there.</div>
-          </div>
-        {%- endif -%}
       </div>
 
       <div class="aap-opts">
@@ -416,14 +399,15 @@ a[href*="wa.me"].m-button--whatsapp,
           endif
         -%}
         {%- if is_kurti -%}
-          <div class="aap-sibling-colors">
-            <div class="aap-lbl">Color: <strong>{% if p_title_lower contains "yellow" %}Lemon Yellow{% elsif p_title_lower contains "blue" %}Azure Blue{% elsif p_title_lower contains "pink" %}Coral Pink{% elsif p_title_lower contains "grey" or p_title_lower contains "gray" %}Slate Grey{% elsif p_title_lower contains "white" %}Mahi White{% else %}{{ p.title | split: "Chikankari" | first | strip }}{% endif %}</strong></div>
+          <div class="aap-sibling-colors" style="margin-top:0">
+            <div class="aap-lbl">Color: <strong>{% if p_title_lower contains "yellow" %}Lemon Yellow{% elsif p_title_lower contains "blue" %}Azure Blue{% elsif p_title_lower contains "pink" %}Coral Pink{% elsif p_title_lower contains "grey" or p_title_lower contains "gray" %}Slate Grey{% elsif p_title_lower contains "white" %}Mahi White{% elsif p_title_lower contains "green" %}Parrot Green{% else %}{{ p.title | split: "Chikankari" | first | strip }}{% endif %}</strong></div>
             <div class="aap-color-pills">
               <a href="/products/lemon-yellow-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "yellow" %}active{% endif %}"><span class="aap-color-circle" style="background:#FDE047;border:1px solid #CA8A04"></span> Yellow</a>
               <a href="/products/azure-blue-pintuck-yoke-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "blue" %}active{% endif %}"><span class="aap-color-circle" style="background:#38BDF8;border:1px solid #0284C7"></span> Azure Blue</a>
               <a href="/products/coral-pink-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "pink" %}active{% endif %}"><span class="aap-color-circle" style="background:#F472B6;border:1px solid #DB2777"></span> Coral Pink</a>
               <a href="/products/slate-grey-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "grey" or p_title_lower contains "gray" %}active{% endif %}"><span class="aap-color-circle" style="background:#9CA3AF;border:1px solid #4B5563"></span> Slate Grey</a>
               <a href="/products/white-tonal-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "white" %}active{% endif %}"><span class="aap-color-circle" style="background:#FFFFFF;border:1px solid #D1D5DB"></span> White</a>
+              <a href="/products/parrot-green-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "green" %}active{% endif %}"><span class="aap-color-circle" style="background:#22C55E;border:1px solid #16A34A"></span> Parrot Green</a>
             </div>
           </div>
         {%- endif -%}
@@ -457,10 +441,6 @@ a[href*="wa.me"].m-button--whatsapp,
                     <button type="button" aria-label="{{ v | escape }}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}"><i style="background:{{ hex }}"></i></button>
                   {%- endfor -%}
                 </div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
-                <span style="font-size:14px">Quantity</span>
-                <div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div>
               </div>
             </div>
           {%- elsif on == "size" -%}
@@ -530,9 +510,35 @@ a[href*="wa.me"].m-button--whatsapp,
           </div>
         {%- endif -%}
 
-        {%- unless colour_done -%}
-          <div style="display:flex;align-items:center;gap:12px"><span style="font-size:14px">Quantity</span><div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div></div>
-        {%- endunless -%}
+        <div style="display:flex;align-items:center;gap:12px;margin-top:2px">
+          <span style="font-size:14px;font-weight:600">Quantity</span>
+          <div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div>
+        </div>
+      </div>
+
+      <div class="aap-buy">
+        <div class="r"><button class="aap-atc" type="button" data-atc>Add to cart</button><button class="aap-bn" type="button" data-bn>Buy now</button></div>
+        <div class="aap-sec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B635B" stroke-width="1.7" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Secure 1-Click Checkout · UPI · Cards · Net banking · COD</div>
+      </div>
+
+      <div class="aap-info" style="padding-top:14px">
+        <div class="aap-urgency-badge" style="margin:0 0 8px">
+          <span class="aap-pulse-dot"></span>
+          <span><strong>18 people bought this today</strong> · Dispatched in 24–48 hrs</span>
+        </div>
+
+        <div class="aap-row"><span class="aap-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>FREE SHIPPING</span><span class="aap-small">Inclusive of all taxes</span></div>
+
+        {%- if section.settings.offer_end != blank -%}
+          <div class="aap-timer" data-end="{{ section.settings.offer_end }}" hidden><b>{{ section.settings.offer_label }}</b><span class="t"><span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></span></div>
+        {%- endif -%}
+
+        {%- if section.settings.coupon != blank -%}
+          <div class="aap-coupon" data-coupon="{{ section.settings.coupon | upcase }}" data-auto="{{ section.settings.coupon_auto }}" style="margin-top:6px">
+            <div class="aap-cp1" data-c-form><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M3 9V6h18v3a3 3 0 000 6v3H3v-3a3 3 0 000-6z"/><path d="M10 6v12" stroke-dasharray="2 2"/></svg><span>{{ section.settings.coupon_text }} <strong style="letter-spacing:.05em">{{ section.settings.coupon | upcase }}</strong></span><button class="aap-btn aap-btn--sm" type="button" data-c-tap>Copy code</button></div>
+            <div class="aap-small" data-c-err role="status">Enter the code at checkout. Eligibility is confirmed there.</div>
+          </div>
+        {%- endif -%}
       </div>
 
       <!-- High-Converting Bundle Upsells -->
@@ -597,9 +603,13 @@ a[href*="wa.me"].m-button--whatsapp,
         </div>
       </div>
 
-      <div class="aap-buy">
-        <div class="r"><button class="aap-atc" type="button" data-atc>Add to cart</button><button class="aap-bn" type="button" data-bn>Buy now</button></div>
-        <div class="aap-sec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B635B" stroke-width="1.7" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Secure checkout · UPI · Cards · Net banking · COD</div>
+      <div class="aap-info" style="padding-top:8px">
+        <div class="aap-specs-pills" style="margin:0">
+          <span class="aap-spec-tag"><strong>Fabric:</strong> 100% Breathable Cotton</span>
+          <span class="aap-spec-tag"><strong>Length:</strong> 44" Calf</span>
+          <span class="aap-spec-tag"><strong>Sleeves:</strong> 3/4th</span>
+          <span class="aap-spec-tag"><strong>Craft:</strong> Lucknowi Hand-Chikan</span>
+        </div>
       </div>
 
       <div class="aap-pin">
@@ -875,6 +885,8 @@ a[href*="wa.me"].m-button--whatsapp,
     if(m){m.hidden=false;m.textContent='MRP '+inr(ref)}
     if(o){o.hidden=false;o.textContent=Math.round((ref-pr)*100/ref)+'% OFF'}
     if(bm){bm.hidden=false;bm.textContent=inr(ref)}
+    var sv=$('[data-save-amt]');
+    if(sv){sv.textContent=inr(ref-pr)}
     if(nt){nt.hidden=true}
     addTot();
     if(!initial&&v.featured_media&&track){var sl=$$('.aap-slide');sl.forEach(function(s,k){if(+s.dataset.mediaId===v.featured_media.id)go(k)})}
@@ -924,12 +936,30 @@ a[href*="wa.me"].m-button--whatsapp,
 
     submittingCart = true;
     $$('[data-atc],[data-bn]').forEach(function (button) { button.disabled = true; });
+    if (buyNow) {
+      $$('[data-bn]').forEach(function (button) {
+        button.innerHTML = '<span class="aap-spinner"></span> Opening Checkout...';
+      });
+    } else {
+      $$('[data-atc]').forEach(function (button) {
+        button.innerHTML = '<span class="aap-spinner"></span> Adding...';
+      });
+    }
+
     window.AACD.submit(items, buyNow).then(function () {
       if (!buyNow) alertMsg('Added ' + selectedQuantity + ' × ' + cur.title + ' (Size ' + currentSize + ') to cart');
     }).catch(function (error) {
       alertMsg(error && error.description || 'Could not update your cart. Please try again.');
     }).finally(function () {
       submittingCart = false;
+      $$('[data-bn]').forEach(function (button) {
+        button.innerHTML = 'Buy now';
+        button.disabled = false;
+      });
+      $$('[data-atc]').forEach(function (button) {
+        button.innerHTML = 'Add to cart';
+        button.disabled = false;
+      });
       setSize(chosenSize);
     });
   }
