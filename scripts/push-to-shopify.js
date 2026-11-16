@@ -52,6 +52,7 @@ const ASSETS_TO_PUSH = [
   'sections/aa-popup.liquid',
   'snippets/razorpay-magic-checkout.liquid',
   'snippets/magicSidecartScript.liquid',
+  'snippets/cart-drawer.liquid',
   'snippets/aa-currency-switcher.liquid',
   'snippets/search-popup.liquid',
   'snippets/social-meta-tags.liquid',
