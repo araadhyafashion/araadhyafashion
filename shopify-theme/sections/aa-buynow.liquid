@@ -1,3 +1,12 @@
+{%- comment -%}
+  Araadhya Fashion - Buy Now & Magic Checkout Controller
+  Stages selected items into cart and triggers Razorpay 1-Click Magic Checkout
+{%- endcomment -%}
+
+<form id="aa-magic-checkout-form" action="{{ routes.cart_url }}" method="post" style="display:none!important;" aria-hidden="true">
+  <button type="submit" id="aa-magic-checkout-btn" name="checkout" value="Checkout">Checkout</button>
+</form>
+
 <script>
 (() => {
   const routesRoot = window.Shopify?.routes?.root || '/';
@@ -68,6 +77,23 @@
     if (additions.length) await cartRequest('cart/add.js', { items: additions });
   }
 
+  function triggerCheckout() {
+    // 1. Try our dedicated Razorpay checkout button intercepted by magic-shopify.js
+    const magicBtn = document.getElementById('aa-magic-checkout-btn');
+    if (magicBtn) {
+      magicBtn.click();
+      return;
+    }
+    // 2. Try the cart drawer checkout button
+    const drawerBtn = document.querySelector('button[name="checkout"], form[action*="/cart"] button[name="checkout"]');
+    if (drawerBtn) {
+      drawerBtn.click();
+      return;
+    }
+    // 3. Fallback
+    window.location.assign(routesRoot + 'checkout');
+  }
+
   function submit(items, buyNow) {
     const operation = pending.then(async () => {
       if (buyNow) await prepareBuyNow(items);
@@ -75,7 +101,8 @@
       document.dispatchEvent(new CustomEvent('cart:refresh'));
       refresh();
       if (buyNow) {
-        window.location.assign(routesRoot + 'checkout');
+        // Trigger Razorpay Magic 1-click checkout
+        triggerCheckout();
       } else {
         open();
       }
@@ -84,17 +111,9 @@
     return operation;
   }
 
-  window.AACD = { open, refresh, submit };
+  window.AACD = { open, refresh, submit, triggerCheckout };
   refresh();
   window.setInterval(refresh, 2500);
   window.addEventListener('focus', refresh);
-  window.addEventListener('pageshow', () => {
-    lastCount = null;
-    refresh();
-  });
-  document.addEventListener('visibilitychange', refresh);
 })();
 </script>
-{% schema %}
-{ "name": "Araadhya buy now", "tag": "div", "settings": [] }
-{% endschema %}

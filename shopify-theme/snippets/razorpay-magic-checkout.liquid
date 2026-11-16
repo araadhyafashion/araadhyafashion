@@ -1,0 +1,12 @@
+<div id="magic-checkout-data-container">
+  <script src="https://magic-plugins.razorpay.com/shopify/magic-shopify.js" crossorigin="anonymous" defer></script>
+  <script id="RazorpayMagicCheckoutConfig" type="application/json">
+    {
+      "oneClickCheckoutEnabled": true,
+      "buyNowEnabled": true,
+      "config": {{ shop.metafields.magic_checkout.config }},
+      "email": "{{ customer.email }}",
+      "phone": "{{ customer.phone }}"
+    }
+  </script>
+</div>
