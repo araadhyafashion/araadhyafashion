@@ -332,9 +332,9 @@
       <div class="hd"><h2 id="aac-ft-{{ section.id }}">Filter &amp; sort</h2><button type="button" class="aac-x" data-close aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
       <div class="bd">
         <section data-sec="sort"><h3>Sort by</h3>
-          {%- assign sb = c.sort_by | default: c.default_sort_by -%}
+          {%- assign sb = c.sort_by | default: 'price-descending' -%}
           <div class="aac-g2">
-            {%- assign sorts = 'created-descending:Newest,best-selling:Bestselling,price-ascending:Price: low to high,price-descending:Price: high to low' | split: ',' -%}
+            {%- assign sorts = 'price-descending:Price: high to low,created-descending:Newest,best-selling:Bestselling,price-ascending:Price: low to high' | split: ',' -%}
             {%- for so in sorts -%}{%- assign kv = so | split: ':' -%}
               <a class="aac-opt{% if sb == kv[0] %} on{% endif %}" data-sort="{{ kv[0] }}" href="{{ c.url }}?sort_by={{ kv[0] }}">{{ kv[1] }}{% if kv.size > 2 %}:{{ kv[2] }}{% endif %}</a>
             {%- endfor -%}

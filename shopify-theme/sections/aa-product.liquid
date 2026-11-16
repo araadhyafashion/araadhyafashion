@@ -82,7 +82,10 @@
 .aap-pills{display:flex;gap:6px;flex-wrap:wrap}
 .aap-sizes button,.aap-pills button{height:38px;padding:0 12px;border-radius:6px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
 .aap-sizes button.is-on,.aap-pills button.is-on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.aap-sizes button.is-out,.aap-pills button.is-out{background:#F4F1EE;color:#8F877F;border-style:dashed;text-decoration:line-through}
+.aap-sizes button.is-out,.aap-pills button.is-out{background:#F4F1EE;color:#8F877F;border-style:dashed;text-decoration:line-through;cursor:not-allowed}
+.aap-single-size-banner{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:9px 12px;font-size:13px;color:#1F2937;display:flex;align-items:center;gap:8px;margin-top:4px}
+.aap-single-size-banner strong{color:#0B382C;font-weight:700}
+.aap-single-size-banner span{color:#4B5563;font-size:12px}
 .aap-sizehead{display:flex;justify-content:space-between;align-items:center}
 .aap-chart{border:1px solid var(--line);border-radius:8px;overflow-x:auto;margin-top:10px}
 .aap-chart table{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
@@ -471,18 +474,52 @@ a[href*="wa.me"].m-button--whatsapp,
           </div>
         {%- endif -%}
 
-        <!-- Size Selection -->
+        <!-- Size Selection (Dynamic Stock & True Single-Piece Detection) -->
+        {%- liquid
+          assign is_dupatta = false
+          if p.type contains 'Dupatta' or p_title_lower contains 'dupatta'
+            assign is_dupatta = true
+          endif
+
+          assign has_multi_sizes = false
+          if p.variants.size > 1
+            assign has_multi_sizes = true
+          endif
+
+          assign single_size_val = cur.title | default: "50"
+          if single_size_val == "Default Title" or single_size_val == blank
+            assign single_size_val = "50"
+          endif
+        -%}
+
         <div>
-          <div class="aap-sizehead aap-lbl">
-            <span>Select Size (Bust): <strong data-cur-size>{{ cur.options[0] | default: "38" }}</strong></span>
-            <button type="button" class="aap-link" data-chart-btn>Size chart 📏</button>
-          </div>
-          <div class="aap-sizes">
-            {%- assign std_sizes = "38,40,42,44,46,48,50" | split: "," -%}
-            {%- for sz in std_sizes -%}
-              <button type="button" data-size-btn data-val="{{ sz }}" class="{% if forloop.first %}is-on{% endif %}">{{ sz }}</button>
-            {%- endfor -%}
-          </div>
+          {%- if is_dupatta -%}
+            <div class="aap-sizehead aap-lbl">
+              <span>Size: <strong>Free Size</strong></span>
+            </div>
+            <div class="aap-single-size-banner">
+              <strong>Free Size</strong> · <span>Standard 2.25m length with fine zari border</span>
+            </div>
+          {%- elsif has_multi_sizes -%}
+            <div class="aap-sizehead aap-lbl">
+              <span>Select Size (Bust): <strong data-cur-size>{{ cur.title }}</strong></span>
+              <button type="button" class="aap-link" data-chart-btn>Size chart 📏</button>
+            </div>
+            <div class="aap-sizes">
+              {%- for v in p.variants -%}
+                <button type="button" data-size-btn data-val="{{ v.title }}" class="{% if v.id == cur.id %}is-on{% endif %} {% unless v.available %}is-out{% endunless %}" {% unless v.available %}disabled{% endunless %}>{{ v.title }}</button>
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="aap-sizehead aap-lbl">
+              <span>Size: <strong data-cur-size>{{ single_size_val }}</strong></span>
+              <button type="button" class="aap-link" data-chart-btn>Size chart 📏</button>
+            </div>
+            <div class="aap-single-size-banner">
+              <strong>Size {{ single_size_val }}</strong> · <span>Only 1 handcrafted piece available in this size</span>
+            </div>
+          {%- endif -%}
+
           <div class="aap-chart" data-chart hidden>
             <table><thead><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th><th>Length</th></tr></thead><tbody>
               <tr><td>38 (M)</td><td>38"</td><td>34"</td><td>40"</td><td>44"</td></tr>
@@ -547,7 +584,7 @@ a[href*="wa.me"].m-button--whatsapp,
           </div>
           <div class="aap-pay-trust-note">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-            <span>100% Encrypted Checkout · Free Express Dispatch · 7-Day Easy Exchanges</span>
+            <span>100% Encrypted Checkout · Free Express Dispatch · Size Exchange via WhatsApp within 12 hrs</span>
           </div>
         </div>
       </div>
@@ -636,16 +673,33 @@ a[href*="wa.me"].m-button--whatsapp,
           <div class="aap-pin-perks">
             <span>✓ Cash on Delivery Available</span>
             <span>✓ Free Express Shipping</span>
-            <span>✓ Easy 7-Day Exchanges</span>
+            <span>✓ 12-hr WhatsApp Size Exchange</span>
           </div>
         </div>
       </div>
 
       <!-- 6. Collapsible Accordions (Description, Care, Shipping) -->
+      {%- liquid
+        assign p_lower = p.title | downcase
+        assign t_lower = p.tags | join: ' ' | downcase
+        assign d_lower = p.description | downcase
+        assign garment_fabric = '100% Pure Breathable Cotton'
+        if p_lower contains 'crepe' or t_lower contains 'crepe' or d_lower contains 'pure crepe'
+          assign garment_fabric = 'Pure Crepe (Soft, wrinkle-resistant)'
+        elsif p_lower contains 'georgette' or t_lower contains 'georgette' or d_lower contains 'georgette'
+          assign garment_fabric = 'Viscose Georgette'
+        elsif p_lower contains 'linen' or t_lower contains 'linen' or d_lower contains 'linen'
+          assign garment_fabric = 'Pure Handwoven Linen'
+        elsif p_lower contains 'kota' or t_lower contains 'kota' or d_lower contains 'kota'
+          assign garment_fabric = 'Kota Cotton / Doria'
+        elsif p_lower contains 'rayon' or t_lower contains 'rayon' or d_lower contains 'rayon'
+          assign garment_fabric = 'Cotton Rayon'
+        endif
+      -%}
       <div class="aap-acc">
-        <details open><summary>Product Description &amp; Details</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}
+        <details open><summary>Product Description &amp; Details</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari garment crafted with care. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}
           <div class="aap-specs-table">
-            <div><strong>Fabric:</strong> 100% Pure Breathable Cotton</div>
+            <div><strong>Fabric:</strong> {{ garment_fabric }}</div>
             <div><strong>Length:</strong> 44" Calf Length</div>
             <div><strong>Sleeves:</strong> 3/4th Sleeves</div>
             <div><strong>Work:</strong> Hand Chikankari Embroidery, Lucknow</div>
@@ -653,7 +707,7 @@ a[href*="wa.me"].m-button--whatsapp,
           </div>
         </div></details>
         <details><summary>Fabric &amp; Wash Care</summary><div class="b">{% if section.settings.care != blank %}{{ section.settings.care }}{% else %}<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of authentic handwork, not a defect</li></ul>{% endif %}</div></details>
-        <details><summary>Shipping, COD &amp; 7-Day Easy Returns</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li><li>7-day hassle-free replacement or exchange if size doesn't fit</li></ul>{% endif %}</div></details>
+        <details><summary>Shipping, COD &amp; Size Exchange Policy</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li><li>Size exchange: Message us on WhatsApp within 12 hours of delivery for a seamless size exchange. Authentically handcrafted in Lucknow.</li></ul>{% endif %}</div></details>
       </div>
     </div>
   </div>
@@ -782,7 +836,7 @@ a[href*="wa.me"].m-button--whatsapp,
   <div class="aap-bar" data-bar>
     <div class="in">
       <div class="bi">{%- if raw_hero != blank -%}<img src="{{ raw_hero }}" alt="" width="48" height="60" style="width:48px;height:48px;border-radius:6px;object-fit:cover">{%- elsif p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}<span>{{ p.title }}</span></div>
-      <div class="pp"><b data-bar-price>{{ current_price | money_without_trailing_zeros }}</b><s data-bar-mrp style="font-size:12px;color:#9CA3AF;text-decoration:line-through;margin-left:4px">MRP {{ compare_price | money_without_trailing_zeros }}</s><span style="font-size:12px;color:#6B7280;margin-left:4px">Size <strong data-bar-size>38</strong></span></div>
+      <div class="pp"><b data-bar-price>{{ current_price | money_without_trailing_zeros }}</b><s data-bar-mrp style="font-size:12px;color:#9CA3AF;text-decoration:line-through;margin-left:4px">MRP {{ compare_price | money_without_trailing_zeros }}</s><span style="font-size:12px;color:#6B7280;margin-left:4px">Size <strong data-bar-size>{{ single_size_val }}</strong></span></div>
       <button class="aap-atc" type="button" data-atc>Add to cart</button>
       <button class="aap-bn" type="button" data-bn>Buy now</button>
     </div>
@@ -844,13 +898,15 @@ a[href*="wa.me"].m-button--whatsapp,
     });
   });
 
-  var chosenSize = '38';
+  var chosenSize = '{{ single_size_val }}';
   var initBtn = root.querySelector('[data-size-btn].is-on');
   if (initBtn && initBtn.dataset.val) {
     chosenSize = initBtn.dataset.val;
+  } else if (cur && cur.title && cur.title !== 'Default Title') {
+    chosenSize = cur.title;
   } else if (cur && cur.options && cur.options.length) {
     for (var oi = 0; oi < cur.options.length; oi++) {
-      if (['38','40','42','44','46','48','50'].indexOf(cur.options[oi]) !== -1) {
+      if (['36','38','40','42','44','46','48','50'].indexOf(cur.options[oi]) !== -1) {
         chosenSize = cur.options[oi];
         break;
       }
@@ -869,7 +925,6 @@ a[href*="wa.me"].m-button--whatsapp,
     chosenSize = sz;
     $$('[data-size-btn]').forEach(function(b){
       b.classList.toggle('is-on', b.dataset.val === chosenSize);
-      b.classList.remove('is-out');
     });
     $$('[data-cur-size]').forEach(function(el){ el.textContent = chosenSize; });
     $$('[data-bar-size]').forEach(function(el){ el.textContent = chosenSize; });
@@ -879,12 +934,11 @@ a[href*="wa.me"].m-button--whatsapp,
     });
     if (matched) {
       cur = matched;
-    } else {
-      cur = V[0];
+      $$('[data-atc],[data-bn]').forEach(function(b){ b.disabled = !matched.available; });
+      $$('[data-atc]').forEach(function(b){ b.textContent = matched.available ? 'Add to cart' : 'Sold out'; });
+      var om = $('[data-out-msg]'); if (om) om.hidden = matched.available;
+      if (!matched.available && om) om.textContent = 'Size ' + chosenSize + ' is sold out in this design.';
     }
-    $$('[data-atc],[data-bn]').forEach(function(b){ b.disabled = false; });
-    $$('[data-atc]').forEach(function(b){ b.textContent = 'Add to cart'; });
-    var om = $('[data-out-msg]'); if (om) om.hidden = true;
     addTot();
   }
 
@@ -1012,7 +1066,7 @@ a[href*="wa.me"].m-button--whatsapp,
       return;
     }
     var selectedQuantity = qty;
-    var currentSize = chosenSize || '38';
+    var currentSize = chosenSize || '{{ single_size_val }}';
     var properties = {
       'Size': currentSize,
       'Bust Measurement': currentSize + ' inches',

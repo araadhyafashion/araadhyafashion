@@ -39,60 +39,23 @@
         {% if template.name != 'cart' %}
           <foxkit-cart-countdown></foxkit-cart-countdown>
         {% endif %}
-        {%- liquid
-          assign goal_shipping = 49900
-          assign goal_discount = 99900
-          assign goal_gift = 149900
-          assign cart_total = cart.total_price
-
-          if cart_total >= goal_gift
-            assign progress_pct = 100
-            assign rewards_msg = '🎉 Unlocked: FREE Shipping + 10% OFF + Free Gift!'
-          elsif cart_total >= goal_discount
-            assign diff = goal_gift | minus: cart_total
-            assign diff_money = diff | money
-            assign progress_pct = 80
-            assign rewards_msg = '🎉 FREE Shipping & 10% OFF Unlocked! Add ' | append: diff_money | append: ' for a Free Gift 🎁'
-          elsif cart_total >= goal_shipping
-            assign diff = goal_discount | minus: cart_total
-            assign diff_money = diff | money
-            assign progress_pct = 50
-            assign rewards_msg = '🎉 Yay! FREE Shipping Unlocked! Add ' | append: diff_money | append: ' for Extra 10% OFF!'
-          else
-            assign diff = goal_shipping | minus: cart_total
-            assign diff_money = diff | money
-            assign progress_pct = 15
-            assign rewards_msg = 'Add ' | append: diff_money | append: ' more to unlock FREE Express Shipping 🚚'
-          endif
-        -%}
-
         <div class="m-cart-tier-goal">
-          <div class="m-cart-tier-header">
-            <span class="m-cart-tier-msg">{{ rewards_msg }}</span>
+          <div class="m-cart-perks-row">
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Free Express Shipping across India</span>
+            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Cash on Delivery Available</span>
           </div>
-          <div class="m-cart-tier-track">
-            <div class="m-cart-tier-fill" style="width: {{ progress_pct }}%;"></div>
-            <div class="m-cart-tier-node {% if cart_total >= goal_shipping %}is-reached{% endif %}" style="left: 33%;">
-              <span class="m-node-icon">🚚</span>
-              <span class="m-node-label">Free Ship</span>
-            </div>
-            <div class="m-cart-tier-node {% if cart_total >= goal_discount %}is-reached{% endif %}" style="left: 66%;">
-              <span class="m-node-icon">%</span>
-              <span class="m-node-label">10% Off</span>
-            </div>
-            <div class="m-cart-tier-node {% if cart_total >= goal_gift %}is-reached{% endif %}" style="left: 100%;">
-              <span class="m-node-icon">🎁</span>
-              <span class="m-node-label">Free Gift</span>
-            </div>
+          <div class="m-cart-code-prompt">
+            <span>Extra 10% off your order with code <strong>WELCOME10</strong> at checkout</span>
           </div>
         </div>
 
         <style>
-        .m-cart-tier-goal{padding:10px 14px 14px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;margin:8px 0 12px}
-        .m-cart-tier-header{font-size:12px;font-weight:700;color:#166534;margin-bottom:8px;text-align:center}
-        .m-cart-tier-track{position:relative;height:6px;background:#DCFCE7;border-radius:3px;margin:12px 14px 20px}
-        .m-cart-tier-fill{height:100%;background:#16A34A;border-radius:3px;transition:width .4s ease}
-        .m-cart-tier-node{position:absolute;top:50%;transform:translate(-50%, -50%);display:flex;flex-direction:column;align-items:center;pointer-events:none}
+        .m-cart-tier-goal{padding:10px 14px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;margin:8px 0 12px;display:flex;flex-direction:column;gap:6px}
+        .m-cart-perks-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;font-weight:600;color:#166534}
+        .m-cart-perks-row span{display:inline-flex;align-items:center;gap:4px}
+        .m-cart-code-prompt{font-size:11px;color:#047857;background:#DCFCE7;padding:4px 8px;border-radius:6px;text-align:center}
+        .m-cart-code-prompt strong{color:#065F46;letter-spacing:.03em}
+        </style>
         .m-node-icon{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #D1D5DB;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
         .m-cart-tier-node.is-reached .m-node-icon{background:#16A34A;border-color:#16A34A;color:#fff}
         .m-node-label{font-size:10px;font-weight:600;color:#4B5563;white-space:nowrap;margin-top:4px}
