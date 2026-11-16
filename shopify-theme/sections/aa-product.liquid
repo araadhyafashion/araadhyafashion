@@ -87,28 +87,41 @@
 .aap-chart{border:1px solid var(--line);border-radius:8px;overflow-x:auto;margin-top:10px}
 .aap-chart table{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
 .aap-chart th{background:var(--soft);padding:8px}.aap-chart td{padding:7px}
-.aap-add{display:flex;flex-direction:column;gap:8px}
-.aap-addi{display:flex;align-items:center;gap:10px;border:1px solid #E5DDD3;border-radius:10px;padding:8px 10px;cursor:pointer;background:#fff}
-.aap-addi:has(input[data-addon]:checked){border-color:var(--acc);background:#F4F9F8}
-.aap-addi input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc);flex:0 0 18px;margin:0}
-.aap-addi img{width:44px;height:56px;object-fit:cover;border-radius:6px;flex:0 0 44px;background:var(--soft)}
-.aap-addi .t{flex:1;min-width:0;font-size:13px;line-height:1.3}
-.aap-addi .t small{display:block;color:var(--mut);font-size:12px}
-.aap-addi select{height:34px;border:1px solid #CFC6BC;border-radius:6px;font-size:12px;padding:0 6px;max-width:140px;font-family:inherit}
-.aap-specs-pills{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px}
-.aap-spec-tag{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:6px;padding:4px 8px;font-size:11px;color:#374151;white-space:nowrap}
-.aap-spec-tag strong{color:#111827;font-weight:600}
-.aap-urgency-badge{display:flex;align-items:center;gap:8px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;padding:8px 12px;border-radius:8px;font-size:12px;margin:8px 0}
+/* Sleek Complete the Look (Pair & Save) */
+.aap-add-wrap{margin-top:10px}
+.aap-add{display:flex;flex-direction:column;gap:10px;background:#FAFAF9;border:1px solid #E7E5E4;border-radius:12px;padding:12px 14px}
+.aap-ctl-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
+.aap-ctl-title{font-family:Marcellus,serif;font-size:16px;color:var(--ink);font-weight:500}
+.aap-ctl-sub{display:block;font-size:11px;color:var(--mut);margin-top:1px}
+.aap-ctl-badge{font-size:11px;font-weight:700;color:#065F46;background:#D1FAE5;padding:2px 8px;border-radius:4px;letter-spacing:.03em}
+.aap-addi{display:flex;align-items:center;gap:12px;border:1px solid #E7E5E4;border-radius:8px;padding:8px 12px;cursor:pointer;background:#fff;transition:all .15s ease}
+.aap-addi:hover{border-color:var(--acc)}
+.aap-addi:has(input[data-addon]:checked){border-color:var(--acc);background:#F0FDF4;box-shadow:0 1px 3px rgba(11,56,44,0.06)}
+.aap-addi input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc);flex:0 0 18px;margin:0;cursor:pointer}
+.aap-addi img{width:46px;height:58px;object-fit:cover;border-radius:6px;flex:0 0 46px;background:var(--soft);border:1px solid #E5E7EB}
+.aap-addi .t{flex:1;min-width:0;font-size:12px;line-height:1.3}
+.aap-addi .t strong{display:block;font-size:13px;color:var(--ink);font-weight:600}
+.aap-addi .t small{display:block;color:var(--mut);font-size:11px;margin-top:1px}
+.aap-addi .t .aap-addon-pricing{font-size:12px;font-weight:600;color:var(--acc);margin-top:2px}
+.aap-addi .t .aap-addon-pricing s{color:#9CA3AF;font-weight:400;font-size:11px;margin-left:4px}
+.aap-addi select{height:34px;border:1px solid #D1D5DB;border-radius:6px;font-size:12px;font-weight:500;color:#1F2937;padding:0 26px 0 10px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234B5563' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;-webkit-appearance:none;min-width:130px;max-width:160px;cursor:pointer;font-family:inherit;transition:border-color .15s ease}
+.aap-addi select:hover,.aap-addi select:focus{border-color:var(--acc);outline:none}
+
+.aap-rating-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;margin-top:2px}
+.aap-craft-badge{color:#065F46;background:#ECFDF5;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.02em}
+.aap-highlights-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;color:#4B5563;background:#F9FAFB;border:1px solid #F3F4F6;padding:7px 12px;border-radius:6px;margin:2px 0}
+.aap-specs-pills{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0}
+.aap-spec-tag{background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:3px 8px;font-size:11px;color:#4B5563;font-weight:500}
 .aap-pulse-dot{width:8px;height:8px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 0 rgba(239,68,68,0.7);animation:pulseDot 1.8s infinite;flex-shrink:0}
 @keyframes pulseDot{0%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0)}}
-.aap-sibling-colors{margin:8px 0 6px}
+.aap-sibling-colors{margin:6px 0 4px}
 .aap-color-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .aap-color-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:16px;border:1.5px solid #E5E7EB;background:#FFFFFF;text-decoration:none;font-size:11px;font-weight:500;color:#1F2937;transition:all .2s ease}
 .aap-color-pill:hover,.aap-color-pill.active{border-color:#0B382C;background:#F0FDF4;color:#0B382C;font-weight:700}
 .aap-color-circle{width:12px;height:12px;border-radius:50%;display:inline-block}
-.aap-buy{padding:10px 16px 0;display:flex;flex-direction:column;gap:8px}
+.aap-buy{padding:8px 0 0;display:flex;flex-direction:column;gap:8px}
 .aap-buy .r{display:flex;gap:10px}
-.aap-atc,.aap-bn{flex:1;height:50px;border-radius:8px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease;text-decoration:none}
+.aap-atc,.aap-bn{flex:1;height:48px;border-radius:8px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transition:all .2s ease;text-decoration:none}
 .aap-atc{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
 .aap-atc:hover{background:#F4F9F8}
 .aap-bn{border:0;background:var(--acc);color:#fff;box-shadow:0 4px 14px rgba(31,87,82,.25)}
@@ -120,7 +133,7 @@
 .aap-sec{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--mut)}
 
 /* 1. Prepaid Offers Toggle (Compact Side-by-Side) */
-.aap-pay-mode{display:grid;grid-template-columns:1.15fr 1fr;gap:8px;margin:8px 0 4px}
+.aap-pay-mode{display:grid;grid-template-columns:1.15fr 1fr;gap:8px;margin:6px 0 2px}
 .aap-pay-opt{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1.5px solid #E5E7EB;border-radius:8px;cursor:pointer;background:#FAFAFA;transition:all .2s ease;user-select:none}
 .aap-pay-opt:hover{background:#F9FBFB;border-color:#A7D5C9}
 .aap-pay-opt.is-active{background:#F0FDF4;border-color:#0B382C;box-shadow:0 1px 4px rgba(11,56,44,0.08)}
@@ -139,28 +152,21 @@
 /* 4. Sleek Unified Payment Strip */
 .aap-pay-strip{display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 0 2px}
 .aap-pay-icons{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
-.aap-pay-icon-tag{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600;color:#374151;display:inline-flex;align-items:center;gap:4px}
-.aap-pay-trust-note{font-size:11px;color:#4B5563;display:flex;align-items:center;gap:5px}
+.aap-pay-icon-tag{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:4px;padding:3px 8px;font-size:11px;font-weight:600;color:#374151;white-space:nowrap}
+.aap-pay-trust-note{font-size:11px;color:#4B5563;display:flex;align-items:center;gap:6px;text-align:center}
 
-/* 3. Pincode & Faster Shipping Estimator (Slide 3) */
-.aap-pin-box{border:1px solid #E5E7EB;border-radius:10px;padding:12px 14px;background:#FAFAFA;margin:14px 0 0}
-.aap-pin-header{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#1F5752;margin-bottom:8px}
-.aap-pin-form{display:flex;gap:8px;margin-bottom:10px}
-.aap-pin-form input{flex:1;height:40px;border:1px solid #D1D5DB;border-radius:6px;padding:0 12px;font-size:13px;font-family:inherit;background:#fff}
-.aap-pin-form input:focus{outline:none;border-color:#1F5752}
-.aap-pin-form button{height:40px;padding:0 16px;background:#1F5752;color:#fff;border:0;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
-.aap-pin-results{display:flex;flex-direction:column;gap:8px;padding-top:8px;border-top:1px dashed #E5E7EB;font-size:12px}
+/* 3. Pincode & Delivery Estimator */
+.aap-pin-box{border:1px solid #E5E7EB;border-radius:10px;padding:12px 14px;background:#FAFAFA;margin:12px 0 0}
+.aap-pin-header{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--acc);margin-bottom:8px}
+.aap-pin-form{display:flex;gap:8px;margin-bottom:8px}
+.aap-pin-form input{flex:1;height:38px;border:1px solid #D1D5DB;border-radius:6px;padding:0 12px;font-size:13px;font-family:inherit;background:#fff}
+.aap-pin-form input:focus{outline:none;border-color:var(--acc)}
+.aap-pin-form button{height:38px;padding:0 16px;background:var(--acc);color:#fff;border:0;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+.aap-pin-results{display:flex;flex-direction:column;gap:6px;padding-top:8px;border-top:1px dashed #E5E7EB;font-size:12px}
 .aap-pin-row{display:flex;align-items:center;gap:8px}
 .aap-pin-badge{background:#FEF3C7;color:#92400E;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
 .aap-pin-badge.green{background:#DCFCE7;color:#166534}
 .aap-pin-perks{display:flex;gap:12px;flex-wrap:wrap;color:#059669;font-weight:600;font-size:11px;margin-top:2px}
-.aap-pin{margin:20px 16px 0;border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px}
-.aap-pin label{font-size:14px;font-weight:600}
-.aap-pin .r{display:flex;gap:8px}
-.aap-pin button{height:44px;padding:0 16px;border:1px solid var(--ink);background:#fff;border-radius:6px;font-weight:600}
-.aap-pin p{margin:0;font-size:13px;color:var(--acc)}
-.aap-trust{margin:20px 16px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.aap-trust div{background:var(--soft);border-radius:8px;padding:12px;display:flex;gap:8px;align-items:center;font-size:12px}
 .aap-acc{margin:24px 16px 0;border-bottom:1px solid var(--line)}
 .aap-acc details{border-top:1px solid var(--line)}
 .aap-acc summary{list-style:none;min-height:52px;display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600;cursor:pointer}
@@ -395,15 +401,26 @@ a[href*="wa.me"].m-button--whatsapp,
     </div>
 
     <div class="aap-right">
+      <!-- 1. Header Information -->
       <div class="aap-info">
-        <div class="aap-th"><h1 class="aap-title">{{ p.title }}</h1><div class="aap-icons"><button type="button" class="aap-share aap-wl m-wishlist-button" aria-label="Add to wishlist" data-product-handle="{{ p.handle }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button><button type="button" class="aap-share" aria-label="Share this product" data-share><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button></div></div>
-        {%- if rating and rcount > 0 -%}
-          {%- assign rv = rating.rating | round -%}
-          {%- capture product_rating -%}<span class="aap-stars">{% for i in (1..5) %}{% if i <= rv %}★{% else %}☆{% endif %}{% endfor %}</span><strong>{{ rating.rating | round: 1 }}</strong><span class="n">{{ rcount }} reviews</span>{%- endcapture -%}
-          <a class="aap-rate" href="#aap-reviews">{{ product_rating }}</a>
-        {%- else -%}
-          <a class="aap-rate" href="#aap-reviews"><span class="aap-stars">★★★★★</span><strong>4.8</strong><span class="n">128 reviews</span></a>
-        {%- endif -%}
+        <div class="aap-th">
+          <h1 class="aap-title">{{ p.title }}</h1>
+          <div class="aap-icons">
+            <button type="button" class="aap-share aap-wl m-wishlist-button" aria-label="Add to wishlist" data-product-handle="{{ p.handle }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
+            <button type="button" class="aap-share" aria-label="Share this product" data-share><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button>
+          </div>
+        </div>
+
+        <div class="aap-rating-row">
+          {%- if rating and rcount > 0 -%}
+            {%- assign rv = rating.rating | round -%}
+            {%- capture product_rating -%}<span class="aap-stars">{% for i in (1..5) %}{% if i <= rv %}★{% else %}☆{% endif %}{% endfor %}</span><strong>{{ rating.rating | round: 1 }}</strong><span class="n">({{ rcount }} reviews)</span>{%- endcapture -%}
+            <a class="aap-rate" href="#aap-reviews">{{ product_rating }}</a>
+          {%- else -%}
+            <a class="aap-rate" href="#aap-reviews"><span class="aap-stars">★★★★★</span><strong>4.8</strong><span class="n">(128 reviews)</span></a>
+          {%- endif -%}
+          <span class="aap-craft-badge">100% Handcrafted Lucknowi Chikan</span>
+        </div>
 
         {%- liquid
           assign current_price = cur.price
@@ -424,13 +441,23 @@ a[href*="wa.me"].m-button--whatsapp,
           <span class="aap-now" data-price>{{ current_price | money_without_trailing_zeros }}</span>
           <span class="aap-mrp" data-mrp>MRP {{ compare_price | money_without_trailing_zeros }}</span>
           <span class="aap-off" data-off>{{ discount_pct }}% OFF</span>
+          <span class="aap-save">You Save <strong data-save-amt>{{ savings_amount | money_without_trailing_zeros }}</strong></span>
         </div>
-        <div class="aap-save">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B382C" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <span>You save <strong data-save-amt>{{ savings_amount | money_without_trailing_zeros }}</strong></span>
+
+        <div class="aap-highlights-bar">
+          <span><span class="aap-pulse-dot"></span> In high demand · Dispatches in 24–48 hrs</span>
+          <span>🚚 Free Express Delivery across India</span>
+        </div>
+
+        <div class="aap-specs-pills">
+          <span class="aap-spec-tag">100% Breathable Cotton</span>
+          <span class="aap-spec-tag">Calf Length: 44"</span>
+          <span class="aap-spec-tag">Sleeves: 3/4th</span>
+          <span class="aap-spec-tag">Artisan Hand-Chikan</span>
         </div>
       </div>
 
+      <!-- 2. Color & Size Selections + Prepaid Toggle -->
       <div class="aap-opts">
         {%- liquid
           assign p_title_lower = p.title | downcase
@@ -440,7 +467,7 @@ a[href*="wa.me"].m-button--whatsapp,
           endif
         -%}
         {%- if is_kurti -%}
-          <div class="aap-sibling-colors" style="margin-top:0">
+          <div class="aap-sibling-colors">
             <div class="aap-lbl">Color: <strong>{% if p_title_lower contains "yellow" %}Lemon Yellow{% elsif p_title_lower contains "blue" %}Azure Blue{% elsif p_title_lower contains "pink" %}Coral Pink{% elsif p_title_lower contains "grey" or p_title_lower contains "gray" %}Slate Grey{% elsif p_title_lower contains "white" %}Mahi White{% elsif p_title_lower contains "green" %}Parrot Green{% elsif p_title_lower contains "berry" or p_title_lower contains "magenta" %}Berry Magenta{% else %}{{ p.title | split: "Chikankari" | first | strip }}{% endif %}</strong></div>
             <div class="aap-color-pills">
               <a href="/products/berry-magenta-chikankari-kurti" class="aap-color-pill {% if p_title_lower contains "berry" or p_title_lower contains "magenta" %}active{% endif %}"><span class="aap-color-circle" style="background:#831843;border:1px solid #701A75"></span> Magenta</a>
@@ -454,107 +481,30 @@ a[href*="wa.me"].m-button--whatsapp,
           </div>
         {%- endif -%}
 
-        {%- assign colour_done = false -%}
-        {%- assign size_done = false -%}
-        {%- for opt in p.options_with_values -%}
-          {%- assign on = opt.name | downcase -%}
-          {%- if on == "colour" or on == "color" -%}
-            {%- assign colour_done = true -%}
-            <div class="aap-colrow">
-              <div>
-                <div class="aap-lbl">{{ opt.name }}: <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value }}</strong></div>
-                <div class="aap-sw">
-                  {%- for v in opt.values -%}
-                    {%- liquid
-                      assign vd = v | downcase | strip
-                      assign hex = "#DDD3C8"
-                      assign pcs = settings.product_colors | split: ","
-                      for pc in pcs
-                        assign parts = pc | strip | split: ":"
-                        assign nm = parts.first | downcase | strip
-                        if nm == vd
-                          assign hex = parts.last | strip
-                        endif
-                      endfor
-                      if v.swatch.color
-                        assign hex = v.swatch.color
-                      endif
-                    -%}
-                    <button type="button" aria-label="{{ v | escape }}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}"><i style="background:{{ hex }}"></i></button>
-                  {%- endfor -%}
-                </div>
-              </div>
-            </div>
-          {%- elsif on == "size" -%}
-            {%- assign size_done = true -%}
-            <div>
-              <div class="aap-sizehead aap-lbl" style="margin-bottom:10px">
-                <span>Select Size (Bust): <strong data-cur-size>{{ cur.options[forloop.index0] | default: "38" }}</strong></span>
-                <button type="button" class="aap-link" data-chart-btn>Size chart</button>
-              </div>
-              <div class="aap-sizes">
-                {%- liquid
-                  assign std_sizes = "38,40,42,44,46,48,50" | split: ","
-                  assign cur_sz = cur.options[forloop.index0] | default: "38"
-                -%}
-                {%- for sz in std_sizes -%}
-                  <button type="button" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ sz }}" data-size-btn class="{% if sz == cur_sz or forloop.first and cur_sz == blank %}is-on{% endif %}">{{ sz }}</button>
-                {%- endfor -%}
-              </div>
-              <div class="aap-chart" data-chart hidden>
-                <table><thead><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th><th>Length</th></tr></thead><tbody>
-                  <tr><td>38 (M)</td><td>38"</td><td>34"</td><td>40"</td><td>44"</td></tr>
-                  <tr><td>40 (L)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
-                  <tr><td>42 (XL)</td><td>42"</td><td>38"</td><td>44"</td><td>44"</td></tr>
-                  <tr><td>44 (2XL)</td><td>44"</td><td>40"</td><td>46"</td><td>44"</td></tr>
-                  <tr><td>46 (3XL)</td><td>46"</td><td>42"</td><td>48"</td><td>44"</td></tr>
-                  <tr><td>48 (4XL)</td><td>48"</td><td>44"</td><td>50"</td><td>44"</td></tr>
-                  <tr><td>50 (5XL)</td><td>50"</td><td>46"</td><td>52"</td><td>44"</td></tr>
-                </tbody></table>
-                <p class="aap-small" style="margin:8px">All measurements in inches. The size number equals your kurti bust measurement. Between sizes? We recommend choosing the larger size for a relaxed, elegant Chikankari drape.</p>
-              </div>
-              <div class="aap-err" data-out-msg hidden style="margin-top:8px"></div>
-            </div>
-          {%- elsif p.has_only_default_variant == false -%}
-            <div>
-              <div class="aap-lbl">{{ opt.name }}: <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value }}</strong></div>
-              <div class="aap-pills">
-                {%- for v in opt.values -%}<button type="button" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}">{{ v }}</button>{%- endfor -%}
-              </div>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if size_done == false and is_kurti -%}
-          <div>
-            <div class="aap-sizehead aap-lbl" style="margin-bottom:10px">
-              <span>Select Size (Bust): <strong data-cur-size>38</strong></span>
-              <button type="button" class="aap-link" data-chart-btn>Size chart</button>
-            </div>
-            <div class="aap-sizes">
-              {%- assign std_sizes = "38,40,42,44,46,48,50" | split: "," -%}
-              {%- for sz in std_sizes -%}
-                <button type="button" data-size-btn data-val="{{ sz }}" class="{% if forloop.first %}is-on{% endif %}">{{ sz }}</button>
-              {%- endfor -%}
-            </div>
-            <div class="aap-chart" data-chart hidden>
-              <table><thead><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th><th>Length</th></tr></thead><tbody>
-                <tr><td>38 (M)</td><td>38"</td><td>34"</td><td>40"</td><td>44"</td></tr>
-                <tr><td>40 (L)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
-                <tr><td>42 (XL)</td><td>42"</td><td>38"</td><td>44"</td><td>44"</td></tr>
-                <tr><td>44 (2XL)</td><td>44"</td><td>40"</td><td>46"</td><td>44"</td></tr>
-                <tr><td>46 (3XL)</td><td>46"</td><td>42"</td><td>48"</td><td>44"</td></tr>
-                <tr><td>48 (4XL)</td><td>48"</td><td>44"</td><td>50"</td><td>44"</td></tr>
-                <tr><td>50 (5XL)</td><td>50"</td><td>46"</td><td>52"</td><td>44"</td></tr>
-              </tbody></table>
-              <p class="aap-small" style="margin:8px">All measurements in inches. Size number equals kurti bust measurement.</p>
-            </div>
+        <!-- Size Selection -->
+        <div>
+          <div class="aap-sizehead aap-lbl">
+            <span>Select Size (Bust): <strong data-cur-size>{{ cur.options[0] | default: "38" }}</strong></span>
+            <button type="button" class="aap-link" data-chart-btn>Size chart 📏</button>
           </div>
-        {%- endif -%}
-
-        <div style="display:flex;align-items:center;gap:12px;margin-top:2px">
-          <span style="font-size:14px;font-weight:600">Quantity</span>
-          <div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div>
+          <div class="aap-sizes">
+            {%- assign std_sizes = "38,40,42,44,46,48,50" | split: "," -%}
+            {%- for sz in std_sizes -%}
+              <button type="button" data-size-btn data-val="{{ sz }}" class="{% if forloop.first %}is-on{% endif %}">{{ sz }}</button>
+            {%- endfor -%}
+          </div>
+          <div class="aap-chart" data-chart hidden>
+            <table><thead><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th><th>Length</th></tr></thead><tbody>
+              <tr><td>38 (M)</td><td>38"</td><td>34"</td><td>40"</td><td>44"</td></tr>
+              <tr><td>40 (L)</td><td>40"</td><td>36"</td><td>42"</td><td>44"</td></tr>
+              <tr><td>42 (XL)</td><td>42"</td><td>38"</td><td>44"</td><td>44"</td></tr>
+              <tr><td>44 (2XL)</td><td>44"</td><td>40"</td><td>46"</td><td>44"</td></tr>
+              <tr><td>46 (3XL)</td><td>46"</td><td>42"</td><td>48"</td><td>44"</td></tr>
+              <tr><td>48 (4XL)</td><td>48"</td><td>44"</td><td>50"</td><td>44"</td></tr>
+              <tr><td>50 (5XL)</td><td>50"</td><td>46"</td><td>52"</td><td>44"</td></tr>
+            </tbody></table>
+            <p class="aap-small" style="margin:8px">All measurements in inches. Size number equals kurti bust measurement. Between sizes? We recommend choosing the larger size for a relaxed drape.</p>
+          </div>
         </div>
 
         <!-- 1. Prepaid Offers Toggle (Compact Side-by-Side) -->
@@ -590,15 +540,15 @@ a[href*="wa.me"].m-button--whatsapp,
         </div>
       </div>
 
+      <!-- 3. CTAs: Add to Cart, Buy Now, Clean Unified Payment Strip -->
       <div class="aap-buy">
         <div class="r">
           <button class="aap-atc" type="button" data-atc>Add to cart</button>
           <button class="aap-bn" type="button" data-bn>Buy now · <span data-bn-price>{{ online_init_price | money_without_trailing_zeros }}</span></button>
         </div>
-        <!-- 4. Clean Unified Payment & Trust Strip -->
         <div class="aap-pay-strip">
           <div class="aap-pay-icons">
-            <span class="aap-pay-icon-tag"><span style="color:#0B382C">⚡</span> UPI</span>
+            <span class="aap-pay-icon-tag">⚡ UPI</span>
             <span class="aap-pay-icon-tag"><span style="color:#2563EB;font-weight:700">G</span>Pay</span>
             <span class="aap-pay-icon-tag"><span style="color:#7C3AED;font-weight:700">Phone</span>Pe</span>
             <span class="aap-pay-icon-tag"><span style="color:#0284C7;font-weight:700">Pay</span>tm</span>
@@ -612,44 +562,28 @@ a[href*="wa.me"].m-button--whatsapp,
         </div>
       </div>
 
-      <div class="aap-info" style="padding-top:14px">
-        <div class="aap-urgency-badge" style="margin:0 0 8px">
-          <span class="aap-pulse-dot"></span>
-          <span><strong>18 people bought this today</strong> · Dispatched in 24–48 hrs</span>
-        </div>
-
-        <div class="aap-row"><span class="aap-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>FREE SHIPPING</span><span class="aap-small">Inclusive of all taxes</span></div>
-
-        {%- if section.settings.offer_end != blank -%}
-          <div class="aap-timer" data-end="{{ section.settings.offer_end }}" hidden><b>{{ section.settings.offer_label }}</b><span class="t"><span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></span></div>
-        {%- endif -%}
-
-        {%- if section.settings.coupon != blank -%}
-          <div class="aap-coupon" data-coupon="{{ section.settings.coupon | upcase }}" data-auto="{{ section.settings.coupon_auto }}" style="margin-top:6px">
-            <div class="aap-cp1" data-c-form><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M3 9V6h18v3a3 3 0 000 6v3H3v-3a3 3 0 000-6z"/><path d="M10 6v12" stroke-dasharray="2 2"/></svg><span>{{ section.settings.coupon_text }} <strong style="letter-spacing:.05em">{{ section.settings.coupon | upcase }}</strong></span><button class="aap-btn aap-btn--sm" type="button" data-c-tap>Copy code</button></div>
-            <div class="aap-small" data-c-err role="status">Enter the code at checkout. Eligibility is confirmed there.</div>
-          </div>
-        {%- endif -%}
-      </div>
-
-      <!-- High-Converting Bundle Upsells -->
-      <div class="aap-opts" style="padding-top:16px">
+      <!-- 4. Complete the Look (Pair & Save) with Authentic Studio Cutouts & SVG Chevron Dropdowns -->
+      <div class="aap-add-wrap">
         <div class="aap-add">
-          <div class="aap-lbl" style="margin:0;display:flex;align-items:center;justify-content:space-between">
-            <span>Complete the Look <small style="color:#059669;font-weight:600;font-size:11px;background:#ECFDF5;padding:2px 8px;border-radius:4px;margin-left:6px">PAIR & SAVE</small></span>
+          <div class="aap-ctl-header">
+            <div>
+              <span class="aap-ctl-title">Complete the Look</span>
+              <span class="aap-ctl-sub">Matching accessories crafted for this Kurti</span>
+            </div>
+            <span class="aap-ctl-badge">PAIR &amp; SAVE</span>
           </div>
 
-          <!-- Addon 1: Pure Cotton Inner Slip -->
+          <!-- Addon 1: Pure Cotton Kurti Inner Slip -->
           <label class="aap-addi">
             <input type="checkbox" data-addon data-addon-name="Pure Cotton Kurti Inner Slip" data-price="19900" aria-label="Add Pure Cotton Kurti Inner Slip">
-            <img src="{{ "ugc-review-white.jpg" | asset_url }}" loading="lazy" alt="Pure Cotton Kurti Inner Slip">
+            <img src="{{ 'addon-inner-slip.jpg' | asset_url }}" loading="lazy" alt="Pure Cotton Kurti Inner Slip">
             <span class="t">
               <strong>Pure Cotton Kurti Inner Slip</strong>
-              <small style="color:#4B5563">Essential opaque lining for Chikankari</small>
-              <small>+ <span data-addon-price>₹199</span> <s style="color:#9CA3AF;font-size:11px">₹499</s></small>
+              <small>Essential opaque lining for Chikankari</small>
+              <div class="aap-addon-pricing">+ <span data-addon-price>₹199</span> <s>₹499</s></div>
             </span>
             <select data-addon-v aria-label="Size for Inner Slip">
-              <option value="matching" data-price="19900" data-opt="Matching Kurti Size">Matching Size</option>
+              <option value="matching" data-price="19900" data-opt="Matching Kurti Size" data-matching="true">Size 38 (Matches Kurti)</option>
               <option value="38" data-price="19900" data-opt="Size 38 (M)">Size 38 (M)</option>
               <option value="40" data-price="19900" data-opt="Size 40 (L)">Size 40 (L)</option>
               <option value="42" data-price="19900" data-opt="Size 42 (XL)">Size 42 (XL)</option>
@@ -663,11 +597,11 @@ a[href*="wa.me"].m-button--whatsapp,
           <!-- Addon 2: Cotton Comfort Pants / Leggings -->
           <label class="aap-addi">
             <input type="checkbox" data-addon data-addon-name="Cotton Stretch Comfort Pants" data-price="29900" aria-label="Add Cotton Stretch Comfort Pants">
-            <img src="{{ "ugc-review-yellow.jpg" | asset_url }}" loading="lazy" alt="Cotton Stretch Comfort Pants">
+            <img src="{{ 'addon-pants.jpg' | asset_url }}" loading="lazy" alt="Cotton Stretch Comfort Pants">
             <span class="t">
               <strong>Cotton Stretch Comfort Pants</strong>
-              <small style="color:#4B5563">Elasticated waist with deep pocket</small>
-              <small>+ <span data-addon-price>₹299</span> <s style="color:#9CA3AF;font-size:11px">₹799</s></small>
+              <small>Elasticated waist with deep pocket</small>
+              <div class="aap-addon-pricing">+ <span data-addon-price>₹299</span> <s>₹799</s></div>
             </span>
             <select data-addon-v aria-label="Size for Comfort Pants">
               <option value="free" data-price="29900" data-opt="Off-White Free Size (Waist 28-36)">Off-White (28-36)</option>
@@ -678,11 +612,11 @@ a[href*="wa.me"].m-button--whatsapp,
           <!-- Addon 3: Dupatta -->
           <label class="aap-addi">
             <input type="checkbox" data-addon data-addon-name="Handcrafted Kota Doria Dupatta" data-price="39900" aria-label="Add Handcrafted Kota Doria Dupatta">
-            <img src="{{ "ugc-review-blue.jpg" | asset_url }}" loading="lazy" alt="Handcrafted Kota Doria Dupatta">
+            <img src="{{ 'addon-dupatta.jpg' | asset_url }}" loading="lazy" alt="Handcrafted Kota Doria Dupatta">
             <span class="t">
               <strong>Handcrafted Kota Doria Dupatta</strong>
-              <small style="color:#4B5563">Lightweight 2.25m with fine zari border</small>
-              <small>+ <span data-addon-price>₹399</span> <s style="color:#9CA3AF;font-size:11px">₹999</s></small>
+              <small>Lightweight 2.25m with fine zari border</small>
+              <div class="aap-addon-pricing">+ <span data-addon-price>₹399</span> <s>₹999</s></div>
             </span>
             <select data-addon-v aria-label="Option for Dupatta">
               <option value="white" data-price="39900" data-opt="Classic Pure White">Classic Pure White</option>
@@ -694,16 +628,7 @@ a[href*="wa.me"].m-button--whatsapp,
         </div>
       </div>
 
-      <div class="aap-info" style="padding-top:8px">
-        <div class="aap-specs-pills" style="margin:0">
-          <span class="aap-spec-tag"><strong>Fabric:</strong> 100% Breathable Cotton</span>
-          <span class="aap-spec-tag"><strong>Length:</strong> 44" Calf</span>
-          <span class="aap-spec-tag"><strong>Sleeves:</strong> 3/4th</span>
-          <span class="aap-spec-tag"><strong>Craft:</strong> Lucknowi Hand-Chikan</span>
-        </div>
-      </div>
-
-      <!-- 3. Faster Shipping & Pincode Estimator (Slide 3) -->
+      <!-- 5. Faster Shipping & Pincode Estimator -->
       <div class="aap-pin-box">
         <div class="aap-pin-header">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="2" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -716,35 +641,24 @@ a[href*="wa.me"].m-button--whatsapp,
         <div class="aap-pin-results" data-pin-result>
           <div class="aap-pin-row">
             <span class="aap-pin-badge">⚡ EXPRESS</span>
-            <span>Get it by <strong data-express-date>loading...</strong> · Order in <span data-cutoff-timer style="color:#B45309;font-weight:700">3h 25m</span></span>
-          </div>
-          <div class="aap-pin-row">
-            <span class="aap-pin-badge green">FREE</span>
-            <span>Standard Delivery by <strong data-standard-date>loading...</strong> (Inclusive of all taxes)</span>
+            <span>Get it by <strong data-express-date>loading...</strong> · Dispatched in 24–48 hrs</span>
           </div>
           <div class="aap-pin-perks">
             <span>✓ Cash on Delivery Available</span>
+            <span>✓ Free Express Shipping</span>
             <span>✓ Easy 7-Day Exchanges</span>
-            <span>✓ Dispatched in 24–48 Hrs</span>
           </div>
         </div>
       </div>
 
-      <div class="aap-trust">
-        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M4 20l9-9M13 11l3-7 4 4-7 3z"/><path d="M4 20c2-1 3-3 3-3"/></svg><span>Hand-embroidered in Lucknow</span></div>
-        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg><span>Cash on delivery available</span></div>
-        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span>Free shipping on every order</span></div>
-        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg><span>{{ section.settings.trust4 }}</span></div>
-      </div>
-
+      <!-- 6. Collapsible Accordions (Description, Care, Shipping) -->
       <div class="aap-acc">
-        <details open><summary>Description</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}</div></details>
-        <details><summary>Fabric &amp; care</summary><div class="b">{% if section.settings.care != blank %}{{ section.settings.care }}{% else %}<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of handwork, not a defect</li></ul>{% endif %}</div></details>
-        <details><summary>Shipping &amp; delivery</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li></ul>{% endif %}</div></details>
+        <details open><summary>Product Description &amp; Details</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}</div></details>
+        <details><summary>Fabric &amp; Wash Care</summary><div class="b">{% if section.settings.care != blank %}{{ section.settings.care }}{% else %}<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of authentic handwork, not a defect</li></ul>{% endif %}</div></details>
+        <details><summary>Shipping, COD &amp; 7-Day Easy Returns</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li><li>7-day hassle-free replacement or exchange if size doesn't fit</li></ul>{% endif %}</div></details>
       </div>
     </div>
   </div>
-
   <div class="aap-rest">
 
     {%- if section.settings.craft_text != blank -%}
@@ -945,6 +859,14 @@ a[href*="wa.me"].m-button--whatsapp,
     }
   }
 
+  function updateSlipMatch(sz) {
+    var matchOpts = root.querySelectorAll('[data-addon-v] [data-matching]');
+    matchOpts.forEach(function(opt){
+      opt.textContent = 'Size ' + sz + ' (Matches Kurti)';
+      opt.dataset.opt = 'Size ' + sz + ' (Matches Kurti)';
+    });
+  }
+
   function setSize(sz) {
     chosenSize = sz;
     $$('[data-size-btn]').forEach(function(b){
@@ -953,6 +875,7 @@ a[href*="wa.me"].m-button--whatsapp,
     });
     $$('[data-cur-size]').forEach(function(el){ el.textContent = chosenSize; });
     $$('[data-bar-size]').forEach(function(el){ el.textContent = chosenSize; });
+    updateSlipMatch(chosenSize);
     var matched = V.find(function(v){
       return v.title === chosenSize || (v.options && v.options.indexOf(chosenSize) !== -1);
     });
@@ -1012,6 +935,7 @@ a[href*="wa.me"].m-button--whatsapp,
   $$('[data-opt]:not([data-size-btn])').forEach(function(b){b.onclick=function(){sel[+b.dataset.opt]=b.dataset.val;render()}});
   $$('[data-qminus]').forEach(function(b){b.onclick=function(){qty=Math.max(1,qty-1);$$('[data-qty]').forEach(function(q){q.textContent=qty});addTot();}});
   $$('[data-qplus]').forEach(function(b){b.onclick=function(){qty=Math.min(10,qty+1);$$('[data-qty]').forEach(function(q){q.textContent=qty});addTot();}});
+  updateSlipMatch(chosenSize);
   var cb=$('[data-chart-btn]'); if(cb)cb.onclick=function(){var c=$('[data-chart]');c.hidden=!c.hidden};
   var toast = $('[data-toast]');
   var toastTimer;
