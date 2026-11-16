@@ -71,7 +71,8 @@ const ASSETS_TO_PUSH = [
   'assets/product-hero-azure-blue.jpg',
   'assets/product-hero-coral-pink.jpg',
   'assets/product-hero-slate-grey.jpg',
-  'assets/product-hero-white-tonal.jpg'
+  'assets/product-hero-white-tonal.jpg',
+  'assets/product-hero-parrot-green.jpg'
 ];
 
 function request(options, body = null) {

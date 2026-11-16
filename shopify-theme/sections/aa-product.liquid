@@ -296,7 +296,9 @@ a[href*="wa.me"].m-button--whatsapp,
           assign raw_hero = blank
           assign p_handle_lower = p.handle | downcase
           assign p_title_lower = p.title | downcase
-          if p_handle_lower contains 'lemon-yellow' or p_title_lower contains 'yellow'
+          if p_handle_lower contains 'parrot-green' or p_title_lower contains 'parrot' or p_title_lower contains 'green'
+            assign raw_hero = 'product-hero-parrot-green.jpg' | asset_url
+          elsif p_handle_lower contains 'lemon-yellow' or p_title_lower contains 'yellow'
             assign raw_hero = 'product-hero-lemon-yellow.jpg' | asset_url
           elsif p_handle_lower contains 'azure-blue' or p_handle_lower contains 'blue' or p_title_lower contains 'blue'
             assign raw_hero = 'product-hero-azure-blue.jpg' | asset_url
