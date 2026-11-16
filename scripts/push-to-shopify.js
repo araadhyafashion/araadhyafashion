@@ -73,7 +73,10 @@ const ASSETS_TO_PUSH = [
   'assets/product-hero-coral-pink.jpg',
   'assets/product-hero-slate-grey.jpg',
   'assets/product-hero-white-tonal.jpg',
-  'assets/product-hero-parrot-green.jpg'
+  'assets/product-hero-parrot-green.jpg',
+  'assets/addon-inner-slip.jpg',
+  'assets/addon-pants.jpg',
+  'assets/addon-dupatta.jpg'
 ];
 
 function request(options, body = null) {
