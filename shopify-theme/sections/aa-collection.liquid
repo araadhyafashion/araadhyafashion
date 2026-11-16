@@ -52,8 +52,8 @@
 .aac-wl{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:17px;border:0;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:var(--ink);padding:0}
 .aac-wl.added-to-wishlist{color:#A23B2A}.aac-wl.added-to-wishlist path{fill:#A23B2A}
 .aac-card.sold .aac-imgs{opacity:.55}
-.aac-card{gap:0}
-.aac-card h2{margin:10px 0 0;font-size:13.5px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.aac-card{display:flex;flex-direction:column;height:100%;gap:0}
+.aac-card h2{margin:10px 0 0;font-size:13.5px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
 .aac-card h2 a{color:var(--ink);text-decoration:none}
 .aac-pr{margin-top:5px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .aac-pr b{font-size:16px;font-weight:700;color:var(--ink)}
@@ -62,8 +62,8 @@
 .aac-meta{margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--mut)}
 .aac-sz{display:flex;gap:4px;flex-wrap:wrap}
 .aac-sz span{font-size:11px;font-weight:700;color:var(--acc);background:#EEF5F3;border-radius:4px;padding:3px 7px}
-.aac-act{margin-top:10px;display:grid;grid-template-columns:42px 1fr;gap:6px}
-.aac-act button{height:40px;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;padding:0}
+.aac-act{margin-top:auto!important;padding-top:10px;display:grid;grid-template-columns:42px 1fr;gap:6px}
+.aac-act button{height:42px;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;padding:0}
 .aac-cart{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
 .aac-buy{border:0;background:var(--acc);color:#fff}
 .aac-act button[disabled]{border:1px solid #DDD3C8;background:#F4F0EC;color:#A39A91;cursor:not-allowed}
@@ -238,8 +238,9 @@
           if p.available == false
             assign badge = 'Sold out'
             assign bcls = 'so'
-          elsif tot == 1
-            assign badge = 'Only 1 left'
+          elsif tot <= 2 and tot > 0
+            assign badge = 'Limited Stock'
+            assign bcls = 'new'
           elsif ct > new_cut
             assign badge = 'New'
             assign bcls = 'new'

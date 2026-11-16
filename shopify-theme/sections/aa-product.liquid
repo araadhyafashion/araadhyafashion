@@ -190,17 +190,71 @@
 }
 @media(max-width:989px){.aap-bar .in{display:flex;align-items:center;gap:10px;width:100%}}
 
+/* Fix blank gap above footer & hide empty recently viewed container */
+m-recently-viewed:empty,
+.m-recently-viewed:has([data-products-container]:empty),
+.m-recently-viewed[data-empty="true"],
+.shopify-section:empty {
+  display:none!important;
+}
+
+/* Floating WhatsApp position fix - never covers buttons or checkout bars */
+.whatsapp-button,
+a[href*="wa.me"].m-button--whatsapp,
+.aap-wa-floating,
+[data-whatsapp-widget],
+.joinchat {
+  position:fixed!important;
+  right:16px!important;
+  bottom:88px!important;
+  z-index:995!important;
+}
+@media(min-width:990px){
+  .whatsapp-button,
+  a[href*="wa.me"].m-button--whatsapp,
+  .aap-wa-floating,
+  [data-whatsapp-widget],
+  .joinchat {
+    bottom:24px!important;
+    right:24px!important;
+  }
+}
+
+/* Mobile Product Layout: PHOTO FIRST, then Title, Price, Size, CTA */
 .aap-size-summary{display:none}
 @media(max-width:989px){
+  .aap{padding-bottom:110px!important}
   .aap-top{display:flex;flex-direction:column}
-  .aap-top > .aap-right,.aap-top .aap-info,.aap-top .aap-th{display:contents}
-  .aap-top .aap-title{order:-4;margin:0 16px}
-  .aap-top .aap-price{order:-3;margin:4px 16px 0}
-  .aap-top .aap-size-summary{display:block;order:-2;margin:4px 16px 12px;color:var(--mut);font-size:13px}
-  .aap-top > .aap-gal-wrap{order:-1}
-  .aap-top .aap-icons{justify-content:flex-end;margin:6px 16px 0}
-  .aap-top .aap-info > :not(.aap-th,.aap-price,.aap-size-summary){margin:10px 16px 0}
+  .aap-top > .aap-gal-wrap{order:1;width:100%}
+  .aap-top > .aap-right{order:2;width:100%}
+  .aap-top .aap-info{display:flex;flex-direction:column;gap:10px;padding:16px 16px 0}
+  .aap-top .aap-th{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .aap-top .aap-title{font-size:22px;line-height:1.25;margin:0}
+  .aap-top .aap-price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .aap-top .aap-size-summary{display:block;color:var(--mut);font-size:13px;margin:2px 0 0}
+  .aap-top .aap-icons{display:flex;gap:8px;flex:0 0 auto}
+  
+  /* Mobile Sticky Bottom Action Bar: Always available & docked cleanly */
+  .aap-bar{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:998;
+    background:#fff;
+    border-top:1px solid var(--line);
+    padding:10px 14px max(10px, env(safe-area-inset-bottom));
+    display:flex;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 -4px 18px rgba(30,27,24,.1);
+    transform:none!important;
+  }
+  .aap-bar .in{display:flex;align-items:center;gap:10px;width:100%}
+  .aap-bar .pp{display:flex;flex-direction:column;min-width:72px}
+  .aap-bar .pp b{font-size:18px;color:var(--ink);line-height:1.1}
   .aap-bar .aap-size-summary{display:block;color:var(--mut);font-size:11px;line-height:1.2;white-space:nowrap}
+  .aap-bar .aap-atc,.aap-bar .aap-bn{flex:1;height:46px;font-size:14px;border-radius:8px;padding:0 8px}
 }
 </style>
 
@@ -400,10 +454,18 @@
 
     {%- if section.settings.craft_text != blank -%}
       <div class="aap-craft">
-        <small>THE CRAFT</small>
-        <h2>{{ section.settings.craft_title }}</h2>
-        <p>{{ section.settings.craft_text }}</p>
-        {%- if section.settings.craft_image -%}{{ section.settings.craft_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: 'Close-up of chikankari embroidery' }}{%- elsif p.media.size > 2 -%}{{ p.media[2] | image_url: width: 900 | image_tag: loading: 'lazy', alt: 'Close-up of the embroidery' }}{%- endif -%}
+        <div class="aap-craft-text">
+          <small>THE CRAFT</small>
+          <h2>{{ section.settings.craft_title }}</h2>
+          <p>{{ section.settings.craft_text }}</p>
+        </div>
+        <div class="aap-craft-media">
+          {%- if section.settings.craft_image -%}
+            {{ section.settings.craft_image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: 'Handcrafted Lucknow Chikankari Artisan Embroidery', class: 'aap-craft-img' }}
+          {%- elsif p.featured_media -%}
+            {{ p.featured_media | image_url: width: 1000 | image_tag: loading: 'lazy', alt: p.title, class: 'aap-craft-img' }}
+          {%- endif -%}
+        </div>
       </div>
     {%- endif -%}
 

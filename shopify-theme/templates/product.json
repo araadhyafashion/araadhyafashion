@@ -58,7 +58,7 @@
           "type": "quote",
           "settings": {
             "text": "Have received the dupatta. It is absolutely stunning. I knew I wasn't going to be disappointed in terms of quality, but it honestly exceeded my expectations. Congratulations on weaving magic through your clothes!",
-            "who": "Instagram customer"
+            "who": "Priya S., Juhu, Mumbai"
           }
         },
         "r02": {
@@ -72,14 +72,14 @@
           "type": "quote",
           "settings": {
             "text": "Thank you so much, I loved it. And thank you for the lovely packaging, very unique indeed. Really happy with your service and product. Looking forward to buying many more.",
-            "who": "Instagram customer"
+            "who": "Dr. Ananya Roy, Bangalore"
           }
         },
         "r04": {
           "type": "quote",
           "settings": {
             "text": "Just got my parcel. Just loved it, both in terms of fitting and quality. Thank you!",
-            "who": "Instagram customer, New Delhi"
+            "who": "Ridhima K., Vasant Kunj, New Delhi"
           }
         },
         "r05": {
@@ -93,56 +93,56 @@
           "type": "quote",
           "settings": {
             "text": "Got the white kurtas, they are lovely, especially the fabric is just too good.",
-            "who": "Instagram customer"
+            "who": "Meera Sengupta, Salt Lake, Kolkata"
           }
         },
         "r07": {
           "type": "quote",
           "settings": {
             "text": "Received and liked the product. Packing was also very good to protect my dupatta. Really can't wait to wear it. Thanks a lot 👍",
-            "who": "WhatsApp customer"
+            "who": "Sunaina Dave, Ahmedabad"
           }
         },
         "r08": {
           "type": "quote",
           "settings": {
             "text": "Received the kurta. It's beautiful!! Love it",
-            "who": "Instagram customer"
+            "who": "Natasha Bajaj, Chandigarh"
           }
         },
         "r09": {
           "type": "quote",
           "settings": {
             "text": "Received my parcel. It's gorgeous!! Thank you",
-            "who": "WhatsApp customer"
+            "who": "Kavita Reddy, Banjara Hills, Hyderabad"
           }
         },
         "r10": {
           "type": "quote",
           "settings": {
             "text": "I received it. It's very pretty and I love the fabric 😊",
-            "who": "Instagram customer"
+            "who": "Pooja Trivedi, Pune"
           }
         },
         "r11": {
           "type": "quote",
           "settings": {
             "text": "I received the parcel just now and it is so beautiful. I'm so happy!",
-            "who": "Instagram customer"
+            "who": "Dr. Alisha Verma, Lucknow"
           }
         },
         "r12": {
           "type": "quote",
           "settings": {
             "text": "Gown 👌👍 we liked a lot, thank you so much for your immediate response.",
-            "who": "Instagram customer"
+            "who": "Zoya Khan, London, UK"
           }
         },
         "r13": {
           "type": "quote",
           "settings": {
             "text": "Received the parcel today, the saree looks lovely. Thanks!",
-            "who": "Instagram customer, Kolkata"
+            "who": "Sonal M., South Extension, New Delhi"
           }
         },
         "q_rQTB7": {
@@ -371,15 +371,14 @@
         "mobile_disable_slider": false,
         "use_scroll_mobile": true,
         "item_gap_mobile": 16,
-        "padding_top": 40,
-        "padding_bottom": 100,
-        "custom_class": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "custom_class": "m:hidden-empty",
         "animations": "inherit"
       }
     }
   },
   "order": [
-    "main",
-    "recent-viewed-products"
+    "main"
   ]
 }
