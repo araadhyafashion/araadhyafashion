@@ -341,7 +341,7 @@ a[href*="wa.me"].m-button--whatsapp,
           <span class="aap-mrp" data-mrp>MRP {{ compare_price | money_without_trailing_zeros }}</span>
           <span class="aap-off" data-off>{{ discount_pct }}% OFF</span>
         </div>
-        <div class="aap-save-badge">You save {{ savings_amount | money_without_trailing_zeros }}</div>
+        <div class="aap-save-badge" data-save-badge>You save {{ savings_amount | money_without_trailing_zeros }}</div>
 
         <div class="aap-specs-pills">
           <span class="aap-spec-tag"><strong>Fabric:</strong> 100% Breathable Cotton</span>
@@ -711,7 +711,7 @@ a[href*="wa.me"].m-button--whatsapp,
   <div class="aap-bar" data-bar>
     <div class="in">
       <div class="bi">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}<span>{{ p.title }}</span></div>
-      <div class="pp"><b data-bar-price>{{ current_price | money_without_trailing_zeros }}</b><span style="font-size:12px;color:#6B7280;margin-left:4px">Size <strong data-bar-size>38</strong></span></div>
+      <div class="pp"><b data-bar-price>{{ current_price | money_without_trailing_zeros }}</b><s data-bar-mrp style="font-size:12px;color:#9CA3AF;text-decoration:line-through;margin-left:4px">MRP {{ compare_price | money_without_trailing_zeros }}</s><span style="font-size:12px;color:#6B7280;margin-left:4px">Size <strong data-bar-size>38</strong></span></div>
       <button class="aap-atc" type="button" data-atc>Add to cart</button>
       <button class="aap-bn" type="button" data-bn>Buy now</button>
     </div>
@@ -828,9 +828,17 @@ a[href*="wa.me"].m-button--whatsapp,
     if(!v) return;
     var pr=v.price, cp=v.compare_at_price;
     $('[data-price]').textContent=inr(pr); $('[data-bar-price]').textContent=inr(pr);
-    var m=$('[data-mrp]'),o=$('[data-off]'),bm=$('[data-bar-mrp]'),nt=$('[data-note]');
+    var m=$('[data-mrp]'),o=$('[data-off]'),bm=$('[data-bar-mrp]'),sb=$('[data-save-badge]'),nt=$('[data-note]');
     var ref=(cp&&cp>pr)?cp:0;
-    if(ref){m.hidden=false;m.textContent=(cp&&cp>pr?'MRP ':'')+inr(ref);o.hidden=false;o.textContent=Math.round((ref-pr)*100/ref)+'% OFF';bm.hidden=false;bm.textContent=inr(ref)}else{m.hidden=true;o.hidden=true;bm.hidden=true}
+    if(!ref){
+      if(pr<=60000) ref = 129900;
+      else if(pr<=200000) ref = 349900;
+      else ref = Math.round(pr * 1.35);
+    }
+    if(m){m.hidden=false;m.textContent='MRP '+inr(ref)}
+    if(o){o.hidden=false;o.textContent=Math.round((ref-pr)*100/ref)+'% OFF'}
+    if(bm){bm.hidden=false;bm.textContent=inr(ref)}
+    if(sb){sb.hidden=false;sb.textContent='You save '+inr(ref-pr)}
     if(nt){nt.hidden=true}
     addTot();
     if(!initial&&v.featured_media&&track){var sl=$$('.aap-slide');sl.forEach(function(s,k){if(+s.dataset.mediaId===v.featured_media.id)go(k)})}
