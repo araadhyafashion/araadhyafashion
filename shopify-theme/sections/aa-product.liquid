@@ -109,9 +109,9 @@
 
 .aap-rating-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;margin-top:2px}
 .aap-craft-badge{color:#065F46;background:#ECFDF5;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.02em}
-.aap-highlights-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;color:#4B5563;background:#F9FAFB;border:1px solid #F3F4F6;padding:7px 12px;border-radius:6px;margin:2px 0}
-.aap-specs-pills{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0}
-.aap-spec-tag{background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:3px 8px;font-size:11px;color:#4B5563;font-weight:500}
+.aap-subtax{font-size:12px;color:#6B7280;margin:4px 0 0;line-height:1.4}
+.aap-specs-table{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding:12px;background:#F9FAFB;border-radius:8px;font-size:12px;border:1px solid #E5E7EB}
+.aap-specs-table div strong{color:#111827}
 .aap-pulse-dot{width:8px;height:8px;border-radius:50%;background:#EF4444;box-shadow:0 0 0 0 rgba(239,68,68,0.7);animation:pulseDot 1.8s infinite;flex-shrink:0}
 @keyframes pulseDot{0%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0.7)}70%{transform:scale(1);box-shadow:0 0 0 6px rgba(239,68,68,0)}100%{transform:scale(0.95);box-shadow:0 0 0 0 rgba(239,68,68,0)}}
 .aap-sibling-colors{margin:6px 0 4px}
@@ -444,17 +444,7 @@ a[href*="wa.me"].m-button--whatsapp,
           <span class="aap-save">You Save <strong data-save-amt>{{ savings_amount | money_without_trailing_zeros }}</strong></span>
         </div>
 
-        <div class="aap-highlights-bar">
-          <span><span class="aap-pulse-dot"></span> In high demand · Dispatches in 24–48 hrs</span>
-          <span>🚚 Free Express Delivery across India</span>
-        </div>
-
-        <div class="aap-specs-pills">
-          <span class="aap-spec-tag">100% Breathable Cotton</span>
-          <span class="aap-spec-tag">Calf Length: 44"</span>
-          <span class="aap-spec-tag">Sleeves: 3/4th</span>
-          <span class="aap-spec-tag">Artisan Hand-Chikan</span>
-        </div>
+        <div class="aap-subtax">Inclusive of all taxes · Free Express Shipping across India</div>
       </div>
 
       <!-- 2. Color & Size Selections + Prepaid Toggle -->
@@ -653,7 +643,15 @@ a[href*="wa.me"].m-button--whatsapp,
 
       <!-- 6. Collapsible Accordions (Description, Care, Shipping) -->
       <div class="aap-acc">
-        <details open><summary>Product Description &amp; Details</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}</div></details>
+        <details open><summary>Product Description &amp; Details</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}
+          <div class="aap-specs-table">
+            <div><strong>Fabric:</strong> 100% Pure Breathable Cotton</div>
+            <div><strong>Length:</strong> 44" Calf Length</div>
+            <div><strong>Sleeves:</strong> 3/4th Sleeves</div>
+            <div><strong>Work:</strong> Hand Chikankari Embroidery, Lucknow</div>
+            <div><strong>Fit:</strong> Straight Comfort Fit</div>
+          </div>
+        </div></details>
         <details><summary>Fabric &amp; Wash Care</summary><div class="b">{% if section.settings.care != blank %}{{ section.settings.care }}{% else %}<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of authentic handwork, not a defect</li></ul>{% endif %}</div></details>
         <details><summary>Shipping, COD &amp; 7-Day Easy Returns</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li><li>7-day hassle-free replacement or exchange if size doesn't fit</li></ul>{% endif %}</div></details>
       </div>
