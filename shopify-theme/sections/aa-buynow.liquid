@@ -1,0 +1,96 @@
+<script>
+(() => {
+  const routesRoot = window.Shopify?.routes?.root || '/';
+  let pending = Promise.resolve();
+  let refreshing = false;
+  let lastCount = null;
+
+  async function cartRequest(path, body) {
+    const options = { cache: 'no-store', headers: { Accept: 'application/json' } };
+    if (body) {
+      options.method = 'POST';
+      options.headers['Content-Type'] = 'application/json';
+      options.body = JSON.stringify(body);
+    }
+    const response = await fetch(routesRoot + path, options);
+    const data = await response.json();
+    if (!response.ok) throw data;
+    return data;
+  }
+
+  function open() {
+    const cartLinks = Array.from(document.querySelectorAll('a.m-cart-icon-bubble'));
+    const trigger = cartLinks.find(link => link.getClientRects().length);
+    if (trigger) trigger.click();
+    else window.location.assign(routesRoot + 'cart');
+  }
+
+  async function refresh() {
+    if (document.hidden || refreshing) return;
+    refreshing = true;
+    try {
+      const cart = await cartRequest('cart.js');
+      if (cart.item_count === lastCount) return;
+      lastCount = cart.item_count;
+      const count = lastCount > 99 ? '99+' : String(lastCount);
+      document.querySelectorAll('.m-cart-count-bubble, m-cart-count, [data-cart-count], .cart-count-bubble span').forEach(element => {
+        element.textContent = count;
+        element.classList.toggle('m:hidden', lastCount === 0);
+        element.style.display = lastCount === 0 ? 'none' : '';
+      });
+      document.querySelectorAll('a.m-cart-icon-bubble').forEach(element => {
+        element.setAttribute('aria-label', `Cart, ${count} ${lastCount === 1 ? 'item' : 'items'}`);
+      });
+    } catch (error) {
+    } finally {
+      refreshing = false;
+    }
+  }
+
+  async function prepareBuyNow(items) {
+    const [selected, ...addOns] = items;
+    const cart = await cartRequest('cart.js');
+    const line = cart.items.find(item => (
+      item.variant_id === selected.id && !item.selling_plan_allocation &&
+      !Object.keys(item.properties || {}).length
+    ));
+    const present = new Set(cart.items.map(item => item.variant_id));
+    present.add(selected.id);
+    const additions = line ? [] : [selected];
+    for (const addOn of addOns) {
+      if (present.has(addOn.id)) continue;
+      additions.push(addOn);
+      present.add(addOn.id);
+    }
+    if (line && line.quantity !== selected.quantity) {
+      await cartRequest('cart/change.js', { id: line.key, quantity: selected.quantity });
+    }
+    if (additions.length) await cartRequest('cart/add.js', { items: additions });
+  }
+
+  function submit(items, buyNow) {
+    const operation = pending.then(async () => {
+      if (buyNow) await prepareBuyNow(items);
+      else await cartRequest('cart/add.js', { items });
+      document.dispatchEvent(new CustomEvent('cart:refresh'));
+      refresh();
+      if (buyNow) open();
+    });
+    pending = operation.catch(() => {});
+    return operation;
+  }
+
+  window.AACD = { open, refresh, submit };
+  refresh();
+  window.setInterval(refresh, 2500);
+  window.addEventListener('focus', refresh);
+  window.addEventListener('pageshow', () => {
+    lastCount = null;
+    refresh();
+  });
+  document.addEventListener('visibilitychange', refresh);
+})();
+</script>
+{% schema %}
+{ "name": "Araadhya buy now", "tag": "div", "settings": [] }
+{% endschema %}

@@ -1,0 +1,49 @@
+{%- if template.name == 'product' -%}
+{%- liquid
+  comment
+    Every number comes from the product's own metafields. Empty = that row is hidden.
+    custom.rating_value (decimal 0-5), custom.rating_count (integer), custom.recent_buyers (integer)
+  endcomment
+  assign r_val = product.metafields.custom.rating_value.value
+  assign r_cnt = product.metafields.custom.rating_count.value | default: 0
+  assign buyers = product.metafields.custom.recent_buyers.value | default: 0
+-%}
+<style>
+.aa-rt{display:flex;align-items:center;gap:6px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;color:#1E1B18;text-decoration:none;margin:4px 0 2px}
+.aa-rt .st{position:relative;display:inline-block;font-size:14px;letter-spacing:1px;line-height:1;color:#D9D2C9}
+.aa-rt .st span{position:absolute;inset:0;overflow:hidden;white-space:nowrap;color:#B7791F}
+.aa-rt b{font-weight:700}
+.aa-rt u{color:#6B635B;text-underline-offset:2px}
+.aa-hot{display:flex;align-items:center;gap:8px;background:#F6F1EB;border-radius:8px;padding:9px 12px;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;color:#3A342F;margin:6px 0 2px}
+.aa-hot b{color:#1E1B18}
+.aap-coupon .aa-cin{display:flex;gap:8px}
+.aap-coupon .aa-cin input{flex:1;min-width:0;height:46px;border:1px solid #CFC6BC;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;text-transform:uppercase;background:#fff}
+.aap-coupon .aa-cin input::placeholder{text-transform:uppercase;color:#8F877F}
+.aap-coupon .aa-cin button{height:46px;padding:0 20px;border:0;border-radius:6px;background:#1F5752;color:#fff;font-weight:700;font-size:14px;font-family:inherit;cursor:pointer}
+.aap-coupon .aa-ctap{border:0;background:none;padding:2px 0;color:#1F5752;font-weight:700;font-size:13px;text-decoration:underline;text-underline-offset:2px;cursor:pointer;text-align:left;font-family:inherit}
+.aap-coupon .aa-cmsg{font-size:12px;color:#1F5752}
+.aap-coupon.aa-v2{padding:12px;gap:10px}
+</style>
+{%- if r_val and r_cnt > 0 -%}
+  {%- assign pct = r_val | times: 20 | at_most: 100 -%}
+  <a class="aa-rt" href="#aap-reviews" data-aa-rt hidden aria-label="Rated {{ r_val | round: 1 }} out of 5, {{ r_cnt }} reviews"><span class="st" aria-hidden="true">★★★★★<span style="width:{{ pct }}%">★★★★★</span></span><b>{{ r_val | round: 1 }}</b><u>{{ r_cnt }} reviews</u></a>
+{%- endif -%}
+{%- if buyers > 0 -%}
+  <div class="aa-hot" data-aa-hot hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A23B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-2 2-5 5-5 8 0 4 3 7 7 7z"/></svg><span><b>{{ buyers }} people</b> bought this in the last 24 hours</span></div>
+{%- endif -%}
+<script>
+(function(){
+  var th=document.querySelector('.aap-th');
+  var rt=document.querySelector('[data-aa-rt]'), hot=document.querySelector('[data-aa-hot]');
+  var old=document.querySelector('.aap-rate'); if(old&&rt)old.remove();
+  var anchor=th;
+  if(rt&&anchor){anchor.parentNode.insertBefore(rt,anchor.nextSibling);rt.hidden=false;anchor=rt}
+  if(hot&&anchor){anchor.parentNode.insertBefore(hot,anchor.nextSibling);hot.hidden=false}
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{ "name": "Araadhya rating", "tag": "div", "settings": [
+  { "type": "paragraph", "content": "Per product (Products > product > Metafields): Rating value + Rating count show the stars under the title; 'Bought in last 24 hours' shows the activity bar. Empty fields stay hidden." }
+] }
+{% endschema %}

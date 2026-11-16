@@ -1,0 +1,652 @@
+{%- liquid
+  assign p = product
+  assign cur = p.selected_or_first_available_variant
+  assign wa = section.settings.whatsapp | remove: ' ' | remove: '+'
+  assign rating = p.metafields.reviews.rating.value
+  assign rcount = p.metafields.reviews.rating_count.value | default: 0
+  assign crumb = p.collections.first
+  assign has_q = false
+  assign has_product_reviews = false
+  for block in section.blocks
+    if block.type == 'quote'
+      assign has_q = true
+    elsif block.type == '@app'
+      assign has_product_reviews = true
+    endif
+  endfor
+-%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+.aap{--ink:#1E1B18;--mut:#6B635B;--line:#EEE7E0;--soft:#F7F1EC;--acc:#1F5752;--acc2:#163F3B;--red:#A23B2A;--gold:#B7791F;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:#fff;max-width:1200px;margin:0 auto;padding-bottom:96px}
+.aap *{box-sizing:border-box}
+.aap h1,.aap h2{font-family:Marcellus,serif;font-weight:400;margin:0}
+.aap button{font-family:inherit;cursor:pointer}
+.aap a{color:var(--acc)}
+.aap-top{display:block}
+.aap-crumb{font-size:12px;color:var(--mut);padding:10px 16px}
+.aap-crumb a{color:var(--mut);text-decoration:none}
+.aap-gal{position:relative}
+.aap-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:var(--soft)}
+.aap-track::-webkit-scrollbar{display:none}
+.aap-slide{flex:0 0 100%;scroll-snap-align:start;aspect-ratio:3/4}
+.aap-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.aap-badge{position:absolute;top:12px;left:12px;background:#fff;font-size:11px;font-weight:600;padding:5px 10px;border-radius:20px;letter-spacing:.04em}
+.aap-nav{position:absolute;top:50%;margin-top:-22px;width:44px;height:44px;border-radius:22px;border:0;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center}
+.aap-prev{left:8px}.aap-next{right:8px}
+.aap-count{position:absolute;bottom:12px;right:12px;background:rgba(30,27,24,.75);color:#fff;font-size:11px;padding:4px 9px;border-radius:12px}
+.aap-thumbs{display:flex;gap:8px;padding:10px 16px;overflow-x:auto}
+.aap-thumb{flex:0 0 56px;height:72px;border-radius:6px;border:1px solid #E8E0D8;padding:0;overflow:hidden;background:var(--soft)}
+.aap-thumb.is-on{border:2px solid var(--ink)}
+.aap-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.aap-info{padding:6px 16px 0;display:flex;flex-direction:column;gap:10px}
+.aap-title{font-size:24px;line-height:1.25}
+.aap-rate{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);text-decoration:none}
+.aap-rate span.n{color:var(--mut)}
+.aap-rate[href] span.n{text-decoration:underline}
+.aap-stars{color:var(--gold);letter-spacing:1px}
+.aap-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:6px}
+.aap-now{font-size:28px;font-weight:700}
+.aap-mrp{font-size:16px;color:var(--mut);text-decoration:line-through}
+.aap-off{font-size:13px;font-weight:700;color:#fff;background:var(--red);padding:3px 8px;border-radius:4px}
+.aap-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.aap-pill{display:inline-flex;align-items:center;gap:6px;background:#E7F2EF;color:var(--acc);font-size:12px;font-weight:700;letter-spacing:.04em;padding:6px 10px;border-radius:20px}
+.aap-small{font-size:12px;color:var(--mut)}
+.aap-timer{display:flex;align-items:center;justify-content:space-between;border:1px solid #F0D9CF;background:#FFF7F3;border-radius:8px;padding:10px 12px}
+.aap-timer b{font-size:13px;color:#8A2F21}
+.aap-timer .t{display:flex;gap:4px;font-variant-numeric:tabular-nums;color:#8A2F21;font-weight:700}
+.aap-timer .t span{background:#8A2F21;color:#fff;font-size:14px;padding:4px 7px;border-radius:4px}
+.aap-coupon{border:1px dashed var(--acc);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;background:#F4F9F8}
+.aap-coupon [hidden]{display:none!important}
+.aap-cp1{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc2)}
+.aap-cp1 > span{flex:1;min-width:0}
+.aap-pin input{flex:1;min-width:0;height:44px;border:1px solid #CFC6BC;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit}
+.aap-btn{height:44px;padding:0 16px;border:0;border-radius:6px;background:var(--acc);color:#fff;font-weight:600;font-size:14px}
+.aap-btn--sm{height:34px;padding:0 14px;font-size:13px;flex:0 0 auto}
+.aap-link{border:0;background:none;color:var(--acc);font-size:13px;font-weight:600;text-decoration:underline;padding:6px 0;text-align:left}
+.aap-err{font-size:12px;color:var(--red)}
+.aap-opts{padding:20px 16px 0;display:flex;flex-direction:column;gap:20px}
+.aap-colrow{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.aap-lbl{font-size:14px;margin-bottom:10px}
+.aap-sw{display:flex;gap:8px;flex-wrap:wrap}
+.aap-sw button{width:44px;height:44px;border-radius:22px;padding:3px;border:2px solid transparent;background:#fff}
+.aap-sw button.is-on{border-color:var(--ink)}
+.aap-sw button i{display:block;width:100%;height:100%;border-radius:50%;border:1px solid #DDD3C8}
+.aap-qty{display:flex;align-items:center;border:1px solid #CFC6BC;border-radius:6px}
+.aap-qty button{width:40px;height:44px;border:0;background:none;font-size:18px}
+.aap-qty span{min-width:24px;text-align:center;font-weight:600}
+.aap-sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.aap-pills{display:flex;gap:8px;flex-wrap:wrap}
+.aap-sizes button,.aap-pills button{height:44px;padding:0 14px;border-radius:6px;font-size:14px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aap-sizes button.is-on,.aap-pills button.is-on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.aap-sizes button.is-out,.aap-pills button.is-out{background:#F4F1EE;color:#8F877F;border-style:dashed;text-decoration:line-through}
+.aap-sizehead{display:flex;justify-content:space-between;align-items:center}
+.aap-chart{border:1px solid var(--line);border-radius:8px;overflow-x:auto;margin-top:10px}
+.aap-chart table{width:100%;border-collapse:collapse;font-size:12px;text-align:center}
+.aap-chart th{background:var(--soft);padding:8px}.aap-chart td{padding:7px}
+.aap-add{display:flex;flex-direction:column;gap:8px}
+.aap-addi{display:flex;align-items:center;gap:10px;border:1px solid #E5DDD3;border-radius:10px;padding:8px 10px;cursor:pointer;background:#fff}
+.aap-addi:has(input[data-addon]:checked){border-color:var(--acc);background:#F4F9F8}
+.aap-addi input[type=checkbox]{width:18px;height:18px;accent-color:var(--acc);flex:0 0 18px;margin:0}
+.aap-addi img{width:44px;height:56px;object-fit:cover;border-radius:6px;flex:0 0 44px;background:var(--soft)}
+.aap-addi .t{flex:1;min-width:0;font-size:13px;line-height:1.3}
+.aap-addi .t small{display:block;color:var(--mut);font-size:12px}
+.aap-addi select{height:34px;border:1px solid #CFC6BC;border-radius:6px;font-size:12px;padding:0 6px;max-width:110px;font-family:inherit}
+.aap-buy{padding:20px 16px 0;display:flex;flex-direction:column;gap:12px}
+.aap-buy .r{display:flex;gap:10px}
+.aap-atc,.aap-bn{flex:1;height:50px;border-radius:8px;font-weight:700;font-size:15px}
+.aap-atc{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
+.aap-bn{border:0;background:var(--acc);color:#fff}
+.aap-atc[disabled],.aap-bn[disabled]{opacity:.45;cursor:not-allowed}
+.aap-sec{display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--mut)}
+.aap-pin{margin:20px 16px 0;border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.aap-pin label{font-size:14px;font-weight:600}
+.aap-pin .r{display:flex;gap:8px}
+.aap-pin button{height:44px;padding:0 16px;border:1px solid var(--ink);background:#fff;border-radius:6px;font-weight:600}
+.aap-pin p{margin:0;font-size:13px;color:var(--acc)}
+.aap-trust{margin:20px 16px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.aap-trust div{background:var(--soft);border-radius:8px;padding:12px;display:flex;gap:8px;align-items:center;font-size:12px}
+.aap-acc{margin:24px 16px 0;border-bottom:1px solid var(--line)}
+.aap-acc details{border-top:1px solid var(--line)}
+.aap-acc summary{list-style:none;min-height:52px;display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:600;cursor:pointer}
+.aap-acc summary::-webkit-details-marker{display:none}
+.aap-acc summary:after{content:'+';font-size:20px;font-weight:400}
+.aap-acc details[open] summary:after{content:'−'}
+.aap-acc .b{font-size:14px;line-height:1.6;color:#3A342F;padding-bottom:16px}
+.aap-acc .b ul{padding-left:18px;margin:6px 0}
+.aap-craft{margin:28px 16px 0;background:var(--soft);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.aap-craft small{font-size:11px;letter-spacing:.12em;color:var(--mut);font-weight:600}
+.aap-craft h2{font-size:22px}
+.aap-craft p{margin:0;font-size:14px;line-height:1.6;color:#3A342F}
+.aap-craft img{width:100%;border-radius:8px;display:block}
+.aap-h2{font-size:22px;padding:32px 16px 12px}
+.aap-reviews{padding:0 16px}
+.aap-quotes{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scroll-snap-type:x mandatory}
+.aap-quotes figure{flex:0 0 260px;scroll-snap-align:start;margin:0;background:var(--soft);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.aap-quotes .s{color:var(--gold);font-size:13px;letter-spacing:1px}
+.aap-quotes blockquote{margin:0;font-size:14px;line-height:1.55;flex:1}
+.aap-quotes figcaption{font-size:12px;color:var(--mut);display:flex;align-items:center;flex-wrap:wrap}
+.aap-faq{padding:0 16px}
+.aap-faq details{border-bottom:1px solid var(--line)}
+.aap-faq summary{list-style:none;min-height:52px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;font-weight:600;cursor:pointer}
+.aap-faq summary::-webkit-details-marker{display:none}
+.aap-faq summary:after{content:'+';font-size:20px;font-weight:400}
+.aap-faq details[open] summary:after{content:'−'}
+.aap-faq .b{font-size:14px;line-height:1.6;color:#3A342F;padding-bottom:14px}
+.aap-wa{display:flex;align-items:center;justify-content:center;gap:8px;height:46px;border-radius:8px;background:#F4F9F8;color:var(--acc);font-weight:600;font-size:14px;text-decoration:none;margin-top:12px}
+.aap-ctl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 16px}
+.aap-ctl a{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px;font-size:13px}
+.aap-ctl img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;background:var(--soft)}
+.aap-ctl s{color:var(--mut)}
+.aap-bar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;border-top:1px solid var(--line);padding:10px 12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 -4px 16px rgba(30,27,24,.06)}
+.aap-bar .pp{display:flex;flex-direction:column;min-width:84px}
+.aap-bar .pp b{font-size:17px}.aap-bar .pp s{font-size:11px;color:var(--mut)}
+.aap-bar .aap-atc,.aap-bar .aap-bn{height:48px;font-size:14px}
+.aap-toast{position:fixed;left:16px;right:16px;bottom:84px;z-index:51;background:var(--ink);color:#fff;border-radius:8px;padding:12px 14px;font-size:13px;display:none;justify-content:space-between;align-items:center}
+.aap-toast.on{display:flex}.aap-toast a{color:#fff;font-weight:700}
+.aap-note{font-size:12px;color:var(--acc);font-weight:600}
+.aap-bar{transform:translateY(110%);transition:transform .25s ease}
+.aap-bar.is-on{transform:none}
+.aap-bar .bi{display:none}
+.aap-bar .aap-atc,.aap-bar .aap-bn{white-space:nowrap;padding:0 14px}
+.aap-th{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.aap-icons{display:flex;gap:8px;flex:0 0 auto}
+.aap-share{flex:0 0 40px;width:40px;height:40px;border-radius:20px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.aap-wl.added-to-wishlist{color:var(--red);border-color:#E9C9C2}.aap-wl.added-to-wishlist path{fill:var(--red)}
+.aap-slide img{cursor:zoom-in}
+.aap-lb{position:fixed;inset:0;z-index:10001;background:rgba(15,15,15,.92);display:flex;align-items:center;justify-content:center;cursor:zoom-out}
+.aap-lb[hidden]{display:none}
+.aap-lb img{max-width:96vw;max-height:92vh;object-fit:contain}
+.aap-lb button{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:22px;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:24px}
+.aap-vb{display:inline-flex;align-items:center;gap:4px;color:#1D7BC4;font-weight:600;margin-left:8px}
+.aap-revsub{font-size:13px;color:var(--mut);padding:0 16px 14px;margin:0}
+.aap-jm{margin-top:16px}
+.aap-jm .jdgm-rev-widg[data-number-of-reviews="0"] .jdgm-rev-widg__summary-text{display:none}
+@media(min-width:990px){
+ .aap{max-width:1360px}
+ .aap-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;padding:0 32px;align-items:start}
+ .aap-top .aap-gal-wrap{position:sticky;top:110px}
+ .aap-crumb{padding-left:32px}
+ .aap-info,.aap-opts,.aap-buy{padding-left:0;padding-right:0}
+ .aap-pin,.aap-trust,.aap-acc{margin-left:0;margin-right:0}
+ .aap-title{font-size:30px}
+ .aap-rest{padding:0 32px}
+ .aap-h2{padding-left:0;padding-right:0;font-size:26px}
+ .aap-reviews,.aap-faq,.aap-quotes,.aap-ctl,.aap-revsub{padding-left:0;padding-right:0}
+ .aap-craft{margin:40px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:12px 40px;align-items:center;padding:32px}
+ .aap-craft img{grid-column:2;grid-row:1/span 3;max-height:380px;object-fit:cover}
+ .aap-faq{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+ .aap-faq .aap-wa{grid-column:1/-1;max-width:420px}
+ .aap-quotes figure{flex-basis:300px}
+ .aap-ctl{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .aap-bar{padding:12px 32px}
+ .aap-bar .in{max-width:1296px;margin:0 auto;display:flex;align-items:center;gap:16px;width:100%}
+ .aap-bar .bi{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+ .aap-bar .bi img{width:44px;height:56px;object-fit:cover;border-radius:6px}
+ .aap-bar .bi span{font-family:Marcellus,serif;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .aap-bar .aap-atc,.aap-bar .aap-bn{flex:0 0 190px}
+ .aap-toast{left:auto;right:32px;width:420px;bottom:96px}
+}
+@media(max-width:989px){.aap-bar .in{display:flex;align-items:center;gap:10px;width:100%}}
+
+.aap-size-summary{display:none}
+@media(max-width:989px){
+  .aap-top{display:flex;flex-direction:column}
+  .aap-top > .aap-right,.aap-top .aap-info,.aap-top .aap-th{display:contents}
+  .aap-top .aap-title{order:-4;margin:0 16px}
+  .aap-top .aap-price{order:-3;margin:4px 16px 0}
+  .aap-top .aap-size-summary{display:block;order:-2;margin:4px 16px 12px;color:var(--mut);font-size:13px}
+  .aap-top > .aap-gal-wrap{order:-1}
+  .aap-top .aap-icons{justify-content:flex-end;margin:6px 16px 0}
+  .aap-top .aap-info > :not(.aap-th,.aap-price,.aap-size-summary){margin:10px 16px 0}
+  .aap-bar .aap-size-summary{display:block;color:var(--mut);font-size:11px;line-height:1.2;white-space:nowrap}
+}
+</style>
+
+<div class="aap" id="aap-{{ section.id }}">
+  <nav class="aap-crumb" aria-label="Breadcrumb"><a href="/">Home</a>{% if crumb %} / <a href="{{ crumb.url }}">{{ crumb.title }}</a>{% endif %} / <span style="color:var(--ink)">{{ p.title }}</span></nav>
+
+  {%- capture aap_size_summary -%}
+  {%- for opt in p.options_with_values -%}
+    {%- assign option_name = opt.name | downcase -%}
+    {%- if option_name == 'size' -%}
+      <span class="aap-size-summary">{{ opt.name | escape }} <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value | escape }}</strong></span>
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+  <div class="aap-top">
+    <div class="aap-gal-wrap">
+      <div class="aap-gal">
+        <div class="aap-track" data-track>
+          {%- for m in p.media -%}
+            {%- if m.media_type == 'image' -%}
+              <div class="aap-slide" data-media-id="{{ m.id }}">{{ m | image_url: width: 1100 | image_tag: loading: 'lazy', alt: m.alt | default: p.title, sizes: '(min-width: 990px) 50vw, 100vw' }}</div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if section.settings.badge != blank -%}<span class="aap-badge">{{ section.settings.badge }}</span>{%- endif -%}
+        {%- if p.media.size > 1 -%}
+          <button class="aap-nav aap-prev" type="button" aria-label="Previous photo" data-prev><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E1B18" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button class="aap-nav aap-next" type="button" aria-label="Next photo" data-next><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E1B18" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          <span class="aap-count"><span data-idx>1</span> / {{ p.media.size }}</span>
+        {%- endif -%}
+      </div>
+      {%- if p.media.size > 1 -%}
+        <div class="aap-thumbs">
+          {%- for m in p.media -%}
+            <button type="button" class="aap-thumb{% if forloop.first %} is-on{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Photo {{ forloop.index }}">{{ m | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="aap-right">
+      <div class="aap-info">
+        <div class="aap-th"><h1 class="aap-title">{{ p.title }}</h1><div class="aap-icons"><button type="button" class="aap-share aap-wl m-wishlist-button" aria-label="Add to wishlist" data-product-handle="{{ p.handle }}"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button><button type="button" class="aap-share" aria-label="Share this product" data-share><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></svg></button></div></div>
+        {%- if rating and rcount > 0 -%}
+          {%- assign rv = rating.rating | round -%}
+          {%- capture product_rating -%}<span class="aap-stars">{% for i in (1..5) %}{% if i <= rv %}★{% else %}☆{% endif %}{% endfor %}</span><strong>{{ rating.rating | round: 1 }}</strong><span class="n">{{ rcount }} reviews</span>{%- endcapture -%}
+          {%- if has_product_reviews -%}
+            <a class="aap-rate" href="#aap-reviews">{{ product_rating }}</a>
+          {%- else -%}
+            <span class="aap-rate">{{ product_rating }}</span>
+          {%- endif -%}
+        {%- endif -%}
+        <div class="aap-price">
+          <span class="aap-now" data-price>{{ cur.price | money_without_trailing_zeros }}</span>
+          <span class="aap-mrp" data-mrp {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>MRP {{ cur.compare_at_price | money_without_trailing_zeros }}</span>
+          {%- if cur.compare_at_price > cur.price -%}{%- assign off = cur.compare_at_price | minus: cur.price | times: 100 | divided_by: cur.compare_at_price -%}{%- endif -%}
+          <span class="aap-off" data-off {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>{{ off }}% OFF</span>
+        </div>
+        {{ aap_size_summary }}
+        <div class="aap-note" data-note hidden></div>
+        <div class="aap-row"><span class="aap-pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>FREE SHIPPING</span><span class="aap-small">Inclusive of all taxes</span></div>
+
+        {%- if section.settings.offer_end != blank -%}
+          <div class="aap-timer" data-end="{{ section.settings.offer_end }}" hidden><b>{{ section.settings.offer_label }}</b><span class="t"><span data-h>00</span>:<span data-m>00</span>:<span data-s>00</span></span></div>
+        {%- endif -%}
+
+        {%- if section.settings.coupon != blank -%}
+          <div class="aap-coupon" data-coupon="{{ section.settings.coupon | upcase }}" data-auto="{{ section.settings.coupon_auto }}">
+            <div class="aap-cp1" data-c-form><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M3 9V6h18v3a3 3 0 000 6v3H3v-3a3 3 0 000-6z"/><path d="M10 6v12" stroke-dasharray="2 2"/></svg><span>{{ section.settings.coupon_text }} <strong style="letter-spacing:.05em">{{ section.settings.coupon | upcase }}</strong></span><button class="aap-btn aap-btn--sm" type="button" data-c-tap>Copy code</button></div>
+            <div class="aap-small" data-c-err role="status">Enter the code at checkout. Eligibility is confirmed there.</div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="aap-opts">
+        {%- assign colour_done = false -%}
+        {%- for opt in p.options_with_values -%}
+          {%- assign on = opt.name | downcase -%}
+          {%- if on == 'colour' or on == 'color' -%}
+            {%- assign colour_done = true -%}
+            <div class="aap-colrow">
+              <div>
+                <div class="aap-lbl">{{ opt.name }}: <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value }}</strong></div>
+                <div class="aap-sw">
+                  {%- for v in opt.values -%}
+                    {%- liquid
+                      assign vd = v | downcase | strip
+                      assign hex = '#DDD3C8'
+                      assign pcs = settings.product_colors | split: ','
+                      for pc in pcs
+                        assign parts = pc | strip | split: ':'
+                        assign nm = parts.first | downcase | strip
+                        if nm == vd
+                          assign hex = parts.last | strip
+                        endif
+                      endfor
+                      if v.swatch.color
+                        assign hex = v.swatch.color
+                      endif
+                    -%}
+                    <button type="button" aria-label="{{ v | escape }}" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}"><i style="background:{{ hex }}"></i></button>
+                  {%- endfor -%}
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end">
+                <span style="font-size:14px">Quantity</span>
+                <div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div>
+              </div>
+            </div>
+          {%- elsif on == 'size' -%}
+            <div>
+              <div class="aap-sizehead aap-lbl" style="margin-bottom:10px"><span>Size: <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value }}</strong></span><button type="button" class="aap-link" data-chart-btn>Size chart</button></div>
+              <div class="aap-sizes">
+                {%- for v in opt.values -%}<button type="button" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}">{{ v }}</button>{%- endfor -%}
+              </div>
+              <div class="aap-chart" data-chart hidden>
+                <table><thead><tr><th>Size</th><th>Also called</th><th>Bust</th><th>Waist</th><th>Hip</th></tr></thead><tbody>
+                  <tr><td>36</td><td>S</td><td>36</td><td>30</td><td>38</td></tr><tr><td>38</td><td>M</td><td>38</td><td>32</td><td>40</td></tr><tr><td>40</td><td>L</td><td>40</td><td>34</td><td>42</td></tr><tr><td>42</td><td>XL</td><td>42</td><td>36</td><td>44</td></tr><tr><td>44</td><td>XXL</td><td>44</td><td>38</td><td>46</td></tr><tr><td>46</td><td>3XL</td><td>46</td><td>40</td><td>48</td></tr><tr><td>48</td><td>4XL</td><td>48</td><td>42</td><td>50</td></tr><tr><td>50</td><td>5XL</td><td>50</td><td>44</td><td>52</td></tr>
+                </tbody></table>
+                <p class="aap-small" style="margin:8px">General size guide in inches. The size number is the bust size. Between sizes? Pick the larger one. See the product description for measurements for this style when available. <a href="/pages/size-guide">Full size guide</a></p>
+              </div>
+              <div class="aap-err" data-out-msg hidden style="margin-top:8px"></div>
+            </div>
+          {%- elsif p.has_only_default_variant == false -%}
+            <div>
+              <div class="aap-lbl">{{ opt.name }}: <strong data-sel="{{ forloop.index0 }}">{{ opt.selected_value }}</strong></div>
+              <div class="aap-pills">
+                {%- for v in opt.values -%}<button type="button" data-opt="{{ forloop.parentloop.index0 }}" data-val="{{ v | escape }}" class="{% if v == opt.selected_value %}is-on{% endif %}">{{ v }}</button>{%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- unless colour_done -%}
+          <div style="display:flex;align-items:center;gap:12px"><span style="font-size:14px">Quantity</span><div class="aap-qty"><button type="button" aria-label="Decrease quantity" data-qminus>−</button><span data-qty>1</span><button type="button" aria-label="Increase quantity" data-qplus>+</button></div></div>
+        {%- endunless -%}
+      </div>
+
+      {%- liquid
+        assign ptl = p.type | downcase
+        assign show_add = false
+        assign ats = section.settings.addon_types | downcase | split: ','
+        for t in ats
+          assign tt = t | strip
+          if tt != blank and ptl contains tt
+            assign show_add = true
+          endif
+        endfor
+      -%}
+      {%- if show_add -%}
+        {%- capture addhtml -%}
+          {%- for n in (1..2) -%}
+            {%- assign akey = 'addon_' | append: n -%}
+            {%- assign ahandle = section.settings[akey] | strip -%}
+            {%- assign ac = collections[ahandle] -%}
+            {%- assign picked = false -%}
+            {%- for ap in ac.products -%}
+              {%- if picked == false and ap.available and ap.id != p.id -%}
+                {%- assign picked = true -%}
+                <label class="aap-addi"><input type="checkbox" data-addon aria-label="Add {{ ap.title | escape }}">{%- if ap.featured_image -%}{{ ap.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}<span class="t">{{ ap.title }}<small>+ <span data-addon-price>{{ ap.first_available_variant.price | money_without_trailing_zeros }}</span></small></span>{%- if ap.has_only_default_variant -%}<input type="hidden" data-addon-v value="{{ ap.first_available_variant.id }}" data-price="{{ ap.first_available_variant.price }}">{%- else -%}<select data-addon-v aria-label="Choose option for {{ ap.title | escape }}">{%- for v in ap.variants -%}{%- if v.available -%}<option value="{{ v.id }}" data-price="{{ v.price }}">{{ v.title }}</option>{%- endif -%}{%- endfor -%}</select>{%- endif -%}</label>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if addhtml contains 'aap-addi' -%}
+          <div class="aap-opts" style="padding-top:16px"><div class="aap-add"><div class="aap-lbl" style="margin:0">{{ section.settings.addon_title }}</div>{{ addhtml }}<p class="aap-small" data-addon-tot hidden style="margin:0"></p></div></div>
+        {%- endif -%}
+      {%- endif -%}
+
+      <div class="aap-buy">
+        <div class="r"><button class="aap-atc" type="button" data-atc>Add to cart</button><button class="aap-bn" type="button" data-bn>Buy now</button></div>
+        <div class="aap-sec"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B635B" stroke-width="1.7" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Secure checkout · UPI · Cards · Net banking · COD</div>
+      </div>
+
+      <div class="aap-pin">
+        <strong>Standard delivery in India</strong>
+        <p>Usually dispatched in 1–2 working days and delivered in 3–5 working days after dispatch.</p>
+        <p>Enter your address at checkout to confirm delivery and cash on delivery availability.</p>
+      </div>
+
+      <div class="aap-trust">
+        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M4 20l9-9M13 11l3-7 4 4-7 3z"/><path d="M4 20c2-1 3-3 3-3"/></svg><span>Hand-embroidered in Lucknow</span></div>
+        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg><span>Cash on delivery available</span></div>
+        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg><span>Free shipping on every order</span></div>
+        <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/></svg><span>{{ section.settings.trust4 }}</span></div>
+      </div>
+
+      <div class="aap-acc">
+        <details open><summary>Description</summary><div class="b">{{ p.description }}</div></details>
+        <details><summary>Fabric &amp; care</summary><div class="b">{{ section.settings.care }}</div></details>
+        <details><summary>Shipping &amp; delivery</summary><div class="b">{{ section.settings.shipping }}</div></details>
+      </div>
+    </div>
+  </div>
+
+  <div class="aap-rest">
+
+    {%- if section.settings.craft_text != blank -%}
+      <div class="aap-craft">
+        <small>THE CRAFT</small>
+        <h2>{{ section.settings.craft_title }}</h2>
+        <p>{{ section.settings.craft_text }}</p>
+        {%- if section.settings.craft_image -%}{{ section.settings.craft_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: 'Close-up of chikankari embroidery' }}{%- elsif p.media.size > 2 -%}{{ p.media[2] | image_url: width: 900 | image_tag: loading: 'lazy', alt: 'Close-up of the embroidery' }}{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if has_q -%}
+      <h2 class="aap-h2"{% unless has_product_reviews %} id="aap-reviews"{% endunless %}>What customers say about Araadhya</h2>
+      <p class="aap-revsub">{{ section.settings.quotes_sub }}</p>
+      <div class="aap-quotes">
+        {%- for block in section.blocks -%}{%- if block.type == 'quote' -%}<figure {{ block.shopify_attributes }}><span class="s" aria-hidden="true">★★★★★</span><blockquote>“{{ block.settings.text }}”</blockquote><figcaption>{{ block.settings.who }}<span class="aap-vb"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1D9BF0"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified buyer</span></figcaption></figure>{%- endif -%}{%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- if has_product_reviews -%}
+      <h2 class="aap-h2" id="aap-reviews">Customer reviews</h2>
+    <div class="aap-reviews aap-jm">
+      {%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- endif -%}{%- endfor -%}
+    </div>
+    {%- endif -%}
+
+    {%- liquid
+      assign ptype = p.type | downcase
+      assign simc = blank
+      if ptype contains 'suit'
+        assign simc = collections['suit-sets']
+      elsif ptype contains 'co-ord'
+        assign simc = collections['co-ord-sets']
+      elsif ptype contains 'kurt'
+        assign simc = collections['chikankari-kurtas']
+      endif
+      assign ctl = section.settings.ctl_collection
+      assign seen = ',' | append: p.id | append: ','
+      assign shown = 0
+    -%}
+    {%- capture simhtml -%}
+      {%- for cp in simc.products -%}
+        {%- assign key = ',' | append: cp.id | append: ',' -%}
+        {%- if shown < 4 and cp.available -%}{%- unless seen contains key -%}
+          {%- assign seen = seen | append: cp.id | append: ',' -%}{%- assign shown = shown | plus: 1 -%}
+          <a href="{{ cp.url }}">{{ cp.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: cp.title }}<span>{{ cp.title }}</span><span><strong>{{ cp.price | money_without_trailing_zeros }}</strong>{% if cp.compare_at_price > cp.price %} <s>{{ cp.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}</span></a>
+        {%- endunless -%}{%- endif -%}
+      {%- endfor -%}
+      {%- for cp in ctl.products -%}
+        {%- assign key = ',' | append: cp.id | append: ',' -%}
+        {%- if shown < 4 and cp.available -%}{%- unless seen contains key -%}
+          {%- assign seen = seen | append: cp.id | append: ',' -%}{%- assign shown = shown | plus: 1 -%}
+          <a href="{{ cp.url }}">{{ cp.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: cp.title }}<span>{{ cp.title }}</span><span><strong>{{ cp.price | money_without_trailing_zeros }}</strong>{% if cp.compare_at_price > cp.price %} <s>{{ cp.compare_at_price | money_without_trailing_zeros }}</s>{% endif %}</span></a>
+        {%- endunless -%}{%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if shown > 0 -%}
+      <h2 class="aap-h2">{{ section.settings.sim_title }}</h2>
+      <div class="aap-ctl">{{ simhtml }}</div>
+    {%- endif -%}
+
+    {%- assign has_faq = false -%}{%- for block in section.blocks -%}{%- if block.type == 'faq' -%}{%- assign has_faq = true -%}{%- endif -%}{%- endfor -%}
+    {%- if has_faq -%}
+      <h2 class="aap-h2">Questions, answered</h2>
+      <div class="aap-faq">
+        {%- for block in section.blocks -%}{%- if block.type == 'faq' -%}<details {{ block.shopify_attributes }}><summary>{{ block.settings.q }}</summary><div class="b">{{ block.settings.a }}</div></details>{%- endif -%}{%- endfor -%}
+        {%- if wa != blank -%}<a class="aap-wa" href="https://wa.me/{{ wa }}?text={{ 'Hi! I have a question about ' | append: p.title | url_encode }}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1112 20a8 8 0 01-4-1z"/></svg>Still unsure? Chat with us on WhatsApp</a>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="aap-toast" role="status" data-toast><span data-toast-msg>Added to cart</span><a href="/cart">View cart</a></div>
+  <div class="aap-lb" data-lb hidden role="dialog" aria-label="Zoomed photo"><button type="button" aria-label="Close">×</button><img alt=""></div>
+  <div class="aap-bar" data-bar>
+    <div class="in">
+      <div class="bi">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}<span>{{ p.title }}</span></div>
+      <div class="pp"><b data-bar-price>{{ cur.price | money_without_trailing_zeros }}</b><s data-bar-mrp {% unless cur.compare_at_price > cur.price %}hidden{% endunless %}>{{ cur.compare_at_price | money_without_trailing_zeros }}</s>{{ aap_size_summary }}</div>
+      <button class="aap-atc" type="button" data-atc>Add to cart</button>
+      <button class="aap-bn" type="button" data-bn>Buy now</button>
+    </div>
+  </div>
+
+  <script type="application/json" data-product>{{ p | json }}</script>
+  <script type="application/json" data-cur>{{ cur.id }}</script>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('aap-{{ section.id }}'); if(!root) return;
+  var P=JSON.parse(root.querySelector('[data-product]').textContent);
+  var curId=JSON.parse(root.querySelector('[data-cur]').textContent);
+  var V=P.variants, cur=V.find(function(v){return v.id===curId})||V[0];
+  var sel=cur.options.slice(), qty=1, initial=true;
+  var $=function(s){return root.querySelector(s)}, $$=function(s){return Array.prototype.slice.call(root.querySelectorAll(s))};
+  function inr(c){return '₹'+Math.round(c/100).toLocaleString('en-IN')}
+  /* gallery */
+  var track=$('[data-track]');
+  function go(i){var w=track.clientWidth;track.scrollTo({left:i*w,behavior:'smooth'})}
+  function idx(){return Math.round(track.scrollLeft/Math.max(1,track.clientWidth))}
+  if(track){
+    track.addEventListener('scroll',function(){var i=idx();var n=$('[data-idx]');if(n)n.textContent=i+1;$$('[data-thumb]').forEach(function(t,k){t.classList.toggle('is-on',k===i)})},{passive:true});
+    var pv=$('[data-prev]'),nx=$('[data-next]'),cnt=track.children.length;
+    if(pv)pv.onclick=function(){go((idx()-1+cnt)%cnt)};
+    if(nx)nx.onclick=function(){go((idx()+1)%cnt)};
+    $$('[data-thumb]').forEach(function(t){t.onclick=function(){go(+t.dataset.thumb)}});
+  }
+  function findV(o){return V.find(function(v){return v.options.every(function(x,i){return x===o[i]})})}
+  /* add-ons */
+  function addSum(){var s=0;$$('[data-addon]').forEach(function(cb){if(cb.checked){var v=cb.closest('.aap-addi').querySelector('[data-addon-v]');var o=v&&v.tagName==='SELECT'?v.options[v.selectedIndex]:v;s+=+((o&&o.dataset.price)||0)}});return s}
+  function addTot(){var t=$('[data-addon-tot]');if(!t||!cur)return;var s=addSum();t.hidden=!s;t.textContent=s?'Total with add-ons: '+inr(cur.price*qty+s):''}
+  $$('[data-addon],[data-addon-v]').forEach(function(x){x.addEventListener('change',function(){if(x.tagName==='SELECT'){var row=x.closest('.aap-addi');row.querySelector('[data-addon]').checked=true;var o=x.options[x.selectedIndex];var pe=row.querySelector('[data-addon-price]');if(pe&&o)pe.textContent=inr(+o.dataset.price)}addTot()})});
+  function render(){
+    var v=findV(sel); cur=v||null;
+    $$('[data-opt]').forEach(function(b){
+      var oi=+b.dataset.opt, val=b.dataset.val; b.classList.toggle('is-on',sel[oi]===val);
+      var test=sel.slice(); test[oi]=val; var tv=findV(test);
+      b.classList.toggle('is-out',!tv||!tv.available);
+    });
+    $$('[data-sel]').forEach(function(s){s.textContent=sel[+s.dataset.sel]});
+    var okb=!!(v&&v.available);
+    $$('[data-atc],[data-bn]').forEach(function(b){b.disabled=!okb});
+    $$('[data-atc]').forEach(function(b){b.textContent=v?(v.available?'Add to cart':'Sold out'):'Unavailable'});
+    var om=$('[data-out-msg]'); if(om){om.hidden=okb; om.textContent=v?'This size is sold out in this colour. Pick another size or colour.':'This combination isn’t available.'}
+    if(!v) return;
+    var pr=v.price, cp=v.compare_at_price;
+    $('[data-price]').textContent=inr(pr); $('[data-bar-price]').textContent=inr(pr);
+    var m=$('[data-mrp]'),o=$('[data-off]'),bm=$('[data-bar-mrp]'),nt=$('[data-note]');
+    var ref=(cp&&cp>pr)?cp:0;
+    if(ref){m.hidden=false;m.textContent=(cp&&cp>pr?'MRP ':'')+inr(ref);o.hidden=false;o.textContent=Math.round((ref-pr)*100/ref)+'% OFF';bm.hidden=false;bm.textContent=inr(ref)}else{m.hidden=true;o.hidden=true;bm.hidden=true}
+    if(nt){nt.hidden=true}
+    addTot();
+    if(!initial&&v.featured_media&&track){var sl=$$('.aap-slide');sl.forEach(function(s,k){if(+s.dataset.mediaId===v.featured_media.id)go(k)})}
+    try{var u=new URL(location.href);u.searchParams.set('variant',v.id);history.replaceState(null,'',u)}catch(e){}
+  }
+  $$('[data-opt]').forEach(function(b){b.onclick=function(){sel[+b.dataset.opt]=b.dataset.val;render()}});
+  $$('[data-qminus]').forEach(function(b){b.onclick=function(){qty=Math.max(1,qty-1);$$('[data-qty]').forEach(function(q){q.textContent=qty});render()}});
+  $$('[data-qplus]').forEach(function(b){b.onclick=function(){qty=Math.min(10,qty+1);$$('[data-qty]').forEach(function(q){q.textContent=qty});render()}});
+  var cb=$('[data-chart-btn]'); if(cb)cb.onclick=function(){var c=$('[data-chart]');c.hidden=!c.hidden};
+  var toast = $('[data-toast]');
+  var toastTimer;
+  var submittingCart = false;
+  function alertMsg(message) {
+    $('[data-toast-msg]').textContent = message;
+    toast.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('on'); }, 5000);
+  }
+  function submitCart(buyNow) {
+    if (!cur || !cur.available || submittingCart) return;
+    if (!window.AACD || !window.AACD.submit) {
+      alertMsg('The cart is still loading. Please try again.');
+      return;
+    }
+    var selectedQuantity = qty;
+    var selectedTitle = cur.title;
+    var items = [{ id: cur.id, quantity: selectedQuantity }];
+    $$('[data-addon]').forEach(function (checkbox) {
+      if (!checkbox.checked) return;
+      var variant = checkbox.closest('.aap-addi').querySelector('[data-addon-v]');
+      if (variant && variant.value) items.push({ id: Number(variant.value), quantity: 1 });
+    });
+    submittingCart = true;
+    $$('[data-atc],[data-bn]').forEach(function (button) { button.disabled = true; });
+    window.AACD.submit(items, buyNow).then(function () {
+      if (!buyNow) alertMsg('Added ' + selectedQuantity + ' × ' + selectedTitle + ' to cart');
+    }).catch(function (error) {
+      alertMsg(error && error.description || 'Could not update your cart. Please try again.');
+    }).finally(function () {
+      submittingCart = false;
+      render();
+    });
+  }
+  $$('[data-atc]').forEach(function (button) {
+    button.onclick = function () { submitCart(false); };
+  });
+  $$('[data-bn]').forEach(function (button) {
+    button.onclick = function () { submitCart(true); };
+  });
+  var offer = $('[data-coupon]');
+  if (offer) {
+    var code = offer.dataset.coupon;
+    var copy = $('[data-c-tap]');
+    var status = $('[data-c-err]');
+    if (code && copy && status) {
+      copy.onclick = function () {
+        var instruction = 'Enter ' + code + ' at checkout. Eligibility is confirmed there.';
+        status.textContent = instruction;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(code).then(function () {
+            status.textContent = 'Code copied. ' + instruction;
+          }).catch(function () {});
+        }
+      };
+    }
+  }
+  /* sticky bar: visible whenever the main buttons are off screen */
+  var bar=$('[data-bar]'),inl=$('.aap-buy');
+  if(bar&&inl&&'IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){bar.classList.toggle('is-on',!e.isIntersecting)})}).observe(inl)}else if(bar){bar.classList.add('is-on')}
+  /* countdown – only for a real offer end date */
+  var tEl=$('[data-end]');
+  if(tEl){var end=Date.parse(tEl.dataset.end);
+    if(!isNaN(end)){var p2=function(n){return String(n).padStart(2,'0')};
+      var tick=function(){var s=Math.floor((end-Date.now())/1000);if(s<=0){tEl.hidden=true;return}tEl.hidden=false;var h=Math.floor(s/3600);tEl.querySelector('[data-h]').textContent=p2(h);tEl.querySelector('[data-m]').textContent=p2(Math.floor(s%3600/60));tEl.querySelector('[data-s]').textContent=p2(s%60)};
+      tick();setInterval(tick,1000)}}
+  /* share */
+  var sh=$('[data-share]');
+  if(sh)sh.onclick=function(){var d={title:P.title,url:location.origin+location.pathname};if(navigator.share){navigator.share(d).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(d.url).then(function(){alertMsg('Link copied')})}};
+  /* zoom */
+  var lb=$('[data-lb]');
+  if(lb){var li=lb.querySelector('img');
+    $$('.aap-slide img').forEach(function(im){im.addEventListener('click',function(){li.src=(im.currentSrc||im.src).replace(/width=\d+/,'width=2000');lb.hidden=false;document.documentElement.style.overflow='hidden'})});
+    lb.addEventListener('click',function(){lb.hidden=true;li.removeAttribute('src');document.documentElement.style.overflow=''});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!lb.hidden)lb.click()});
+  }
+  render(); initial=false;
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Araadhya product page",
+  "tag": "section",
+  "class": "aap-section",
+  "settings": [
+    { "type": "text", "id": "badge", "label": "Photo badge", "default": "HAND-EMBROIDERED" },
+    { "type": "text", "id": "coupon", "label": "Coupon code (leave blank to hide)", "default": "WELCOME10" },
+    { "type": "text", "id": "coupon_text", "label": "Coupon line", "default": "Extra 10% off your first order with code" },
+    { "type": "checkbox", "id": "coupon_auto", "label": "Apply coupon automatically", "default": true },
+    { "type": "text", "id": "offer_end", "label": "Offer countdown end (blank = hidden)", "info": "Format 2026-11-30T23:59:00+05:30. Only use a real offer end date that matches a discount in Shopify." },
+    { "type": "text", "id": "offer_label", "label": "Countdown label", "default": "Festive offer ends in" },
+    { "type": "text", "id": "trust4", "label": "4th trust badge", "default": "Quality checked before dispatch" },
+    { "type": "number", "id": "min_days", "label": "Delivery estimate – min days", "default": 3 },
+    { "type": "number", "id": "max_days", "label": "Delivery estimate – max days", "default": 7 },
+    { "type": "richtext", "id": "care", "label": "Fabric & care", "default": "<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of handwork, not a defect</li></ul>" },
+    { "type": "richtext", "id": "shipping", "label": "Shipping & delivery", "default": "<ul><li>Free shipping on all orders across India; we also ship worldwide</li><li>Dispatched in 1–2 working days; delivered in 3–5 working days after dispatch</li></ul>" },
+    { "type": "text", "id": "craft_title", "label": "Craft heading", "default": "Every stitch, by hand" },
+    { "type": "textarea", "id": "craft_text", "label": "Craft text", "default": "Each piece is hand-embroidered by artisans in Lucknow using traditional chikankari stitches like ghaspatti, phanda and murri — no two pieces are exactly alike." },
+    { "type": "image_picker", "id": "craft_image", "label": "Craft image (optional)" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number", "default": "919137899409" },
+    { "type": "text", "id": "quotes_sub", "label": "Line above customer quotes", "default": "Feedback on Araadhya orders, shared via Instagram and WhatsApp." },
+    { "type": "text", "id": "sim_title", "label": "Similar products heading", "default": "You may also like" },
+    { "type": "collection", "id": "ctl_collection", "label": "Similar products – backup collection" },
+    { "type": "header", "content": "Complete the look add-ons" },
+    { "type": "text", "id": "addon_title", "label": "Add-ons heading", "default": "Complete the look" },
+    { "type": "text", "id": "addon_types", "label": "Show add-ons on product types containing", "default": "kurta,kurti", "info": "Comma separated. Suit sets already include a bottom and dupatta, so they are left out." },
+    { "type": "text", "id": "addon_1", "label": "Add-on 1 collection handle", "default": "bottom-wear", "info": "The first available product from this collection is offered." },
+    { "type": "text", "id": "addon_2", "label": "Add-on 2 collection handle", "default": "dupatta" }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    { "type": "faq", "name": "FAQ", "settings": [ { "type": "text", "id": "q", "label": "Question" }, { "type": "richtext", "id": "a", "label": "Answer" } ] },
+    { "type": "quote", "name": "Customer quote", "settings": [ { "type": "textarea", "id": "text", "label": "Quote" }, { "type": "text", "id": "who", "label": "Name / city", "default": "Happy customer" } ] }
+  ]
+}
+{% endschema %}

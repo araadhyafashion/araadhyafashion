@@ -1,0 +1,92 @@
+{%- if template.name == 'product' and product -%}
+{%- liquid
+  assign p = product
+  assign bh = section.settings.bundle_handle | strip
+  assign bcol = collections[bh]
+  assign inb = false
+  if bh != blank and bcol.handle == bh
+    for c in p.collections
+      if c.handle == bh
+        assign inb = true
+      endif
+    endfor
+  endif
+-%}
+<style>
+.aap-save{display:inline-block;margin-top:4px;font-size:13px;font-weight:600;color:#1F7A4D;background:#EAF6EF;border-radius:4px;padding:3px 8px}
+.aap-savew{flex-basis:100%}
+.aap-bundle{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.35;color:#163F3B;border-top:1px dashed #BFD8D4;padding-top:8px}
+.aap-bundle[hidden]{display:none}
+.aap-bundle span{flex:1;min-width:0}
+.aap-bundle a{font-weight:600;color:#1F5752;white-space:nowrap;text-decoration:underline}
+.aap-pays{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.aap-pays svg{width:38px;height:24px;display:block}
+.aap-tb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.aap-tb div{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-size:11px;line-height:1.25;color:#1E1B18;background:#FAF7F3;border-radius:6px;padding:8px 4px}
+.aap-pin p b{color:#1E1B18}
+.aap-pin button[disabled]{opacity:.6}
+.aap-timer .t{align-items:center}
+.aap-timer .t i{font-style:normal;font-size:11px;font-weight:600;color:#8A2F21;margin:0 4px 0 2px}
+</style>
+<template id="aa-boost-tpl">
+  <div class="aap-savew"><span class="aap-save" data-save hidden></span></div>
+  {%- if inb and section.settings.bundle_text != blank -%}
+  <div class="aap-bundle" data-bundle><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H8a2.5 2.5 0 110-5c3 0 4 5 4 5zM12 7h4a2.5 2.5 0 100-5c-3 0-4 5-4 5z"/></svg><span>{{ section.settings.bundle_text }}</span><a href="{{ bcol.url }}">Pick one more</a></div>
+  {%- endif -%}
+  <div class="aap-pays" data-pays aria-label="Payment methods we accept">{%- assign pts = section.settings.pay_icons | split: ',' -%}{%- for t in pts -%}{{ t | strip | payment_type_svg_tag }}{%- endfor -%}</div>
+  <div class="aap-tb" data-tb>
+    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg>Secure payments</div>
+    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg>Cash on delivery</div>
+    <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.6" aria-hidden="true"><path d="M4 12a8 8 0 0114-5.3M20 12a8 8 0 01-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg>Easy exchange</div>
+  </div>
+</template>
+<script>
+(function(){
+  var root=document.querySelector('.aap'),tpl=document.getElementById('aa-boost-tpl');
+  if(!root||!tpl)return;
+  var T=tpl.content;
+  function q(s){return root.querySelector(s)}
+  function num(el){if(!el||el.hidden)return 0;return +((el.textContent||'').replace(/[^\d]/g,''))||0}
+  /* 4) You save */
+  var price=q('.aap-price');
+  if(price){price.appendChild(T.querySelector('.aap-savew').cloneNode(true));
+    var sv=price.querySelector('[data-save]');
+    var upd=function(){var now=num(q('[data-price]')),mrp=num(q('[data-mrp]')),qn=+(((q('[data-qty]')||{}).textContent)||1)||1,s=mrp>now?(mrp-now)*qn:0;
+      var t=s?'You save ₹'+s.toLocaleString('en-IN')+(qn>1?' on '+qn:''):'';if(sv.textContent!==t)sv.textContent=t;if(sv.hidden!==!s)sv.hidden=!s};
+    upd();new MutationObserver(upd).observe(root.querySelector('.aap-info'),{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['hidden']});
+    root.addEventListener('click',function(){setTimeout(upd,0)});
+  }
+  /* 7) bundle offer */
+  var bd=T.querySelector('[data-bundle]'),cbox=q('.aap-coupon');
+  if(bd){if(cbox){cbox.appendChild(bd.cloneNode(true))}else{var w=document.createElement('div');w.className='aap-coupon';w.appendChild(bd.cloneNode(true));q('.aap-info').appendChild(w)}}
+  /* 6) payment logos + trust under the buttons */
+  var sec=q('.aap-sec');
+  if(sec){sec.lastChild.textContent='100% secure payments · Cash on delivery available';
+    sec.parentNode.appendChild(T.querySelector('[data-pays]').cloneNode(true));
+    sec.parentNode.appendChild(T.querySelector('[data-tb]').cloneNode(true));}
+  /* Diwali offer countdown: only on kurtis that are part of the 2-kurti offer, and only until it ends */
+  var tEl=q('.aap-timer'),inb={{ inb | json }},offEnd=Date.parse('{{ section.settings.offer_end }}');
+  if(tEl){
+    if(!inb||isNaN(offEnd)||offEnd<=Date.now()){tEl.parentNode.removeChild(tEl)}
+    else{var n=tEl.cloneNode(true);n.querySelector('b').textContent={{ section.settings.offer_label | json }};n.querySelector('.t').innerHTML='<span data-d>0</span><i>d</i><span data-h>00</span><i>h</i><span data-m>00</span><i>m</i><span data-s>00</span><i>s</i>';tEl.parentNode.replaceChild(n,tEl);
+      var p2=function(x){return String(x).padStart(2,'0')};
+      var tk=function(){var s=Math.floor((offEnd-Date.now())/1000);if(s<=0){n.hidden=true;var bl=q('.aap-bundle');if(bl)bl.hidden=true;return}n.hidden=false;n.querySelector('[data-d]').textContent=Math.floor(s/86400);n.querySelector('[data-h]').textContent=p2(Math.floor(s%86400/3600));n.querySelector('[data-m]').textContent=p2(Math.floor(s%3600/60));n.querySelector('[data-s]').textContent=p2(s%60)};
+      tk();setInterval(tk,1000)}}
+  if(!isNaN(offEnd)&&offEnd<=Date.now()){var bl0=q('.aap-bundle');if(bl0)bl0.hidden=true}
+})();
+</script>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Product page boosts",
+  "settings": [
+    { "type": "text", "id": "bundle_text", "label": "Bundle offer line", "default": "Buy 2 eligible ₹499 kurtis for 15% off. Confirm your discount at checkout." },
+    { "type": "text", "id": "bundle_handle", "label": "Bundle collection handle", "default": "under-499", "info": "Shown only on products in this collection. Must match the automatic discount in Shopify." },
+    { "type": "text", "id": "pay_icons", "label": "Payment icons", "default": "upi,google_pay,phonepe,paytm,visa,master,rupay" },
+    { "type": "text", "id": "offer_end", "label": "Diwali offer end", "default": "2026-11-10T23:59:00+05:30", "info": "Must match the end date of the automatic discount in Shopify." },
+    { "type": "text", "id": "offer_label", "label": "Countdown label", "default": "Diwali offer · extra 15% on any 2 kurtis ends in" },
+    { "type": "number", "id": "min_days", "label": "Delivery estimate – min working days", "default": 4 },
+    { "type": "number", "id": "max_days", "label": "Delivery estimate – max working days", "default": 7 }
+  ]
+}
+{% endschema %}

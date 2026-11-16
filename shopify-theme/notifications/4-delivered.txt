@@ -1,0 +1,84 @@
+{%- assign t_url = fulfillment.tracking_urls.first | default: fulfillment.tracking_url -%}
+{%- assign t_num = fulfillment.tracking_numbers.first | default: fulfillment.tracking_number -%}
+{%- if t_url == blank -%}{%- assign t_url = shop.url | append: '/pages/track-order' -%}{%- endif -%}
+{%- assign fname = customer.first_name | default: billing_address.first_name | default: 'there' -%}
+{%- assign wa = '919137899409' -%}
+{%- capture wa_text -%}Hi! I have a question about my order {{ order_name }}{%- endcapture -%}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order {{ order_name }}</title>
+<style>
+  body{margin:0;padding:0;background:#F7F1EC}
+  a{color:#1F5752}
+  @media (max-width:620px){
+    .wrap{width:100%!important}
+    .pad{padding-left:18px!important;padding-right:18px!important}
+    .stack{display:block!important;width:100%!important;padding:0!important}
+    .stack-gap{padding-top:12px!important}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F7F1EC;font-family:Helvetica,Arial,sans-serif;color:#1E1B18">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F1EC">
+<tr><td align="center" style="padding:24px 10px">
+<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;background:#FFFDFB;border:1px solid #E5DDD3;border-radius:14px;overflow:hidden">
+  <tr><td align="center" style="padding:18px 24px;border-bottom:1px solid #EEE7E0">
+    {%- if shop.email_logo_url -%}
+      <img src="{{ shop.email_logo_url }}" alt="Araadhya" width="{{ shop.email_logo_width | default: 160 }}" style="display:block;max-width:180px;height:auto">
+    {%- else -%}
+      <span style="font-family:Georgia,'Times New Roman',serif;font-size:20px;letter-spacing:6px;color:#1E1B18">ARAADHYA</span>
+    {%- endif -%}
+  </td></tr>
+  <tr><td class="pad" align="center" style="padding:28px 32px 8px">
+    <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" style="width:52px;height:52px;border-radius:26px;background:#E7F2EF;color:#1F5752;font-size:24px;line-height:52px">&#10003;</td></tr></table>
+    <h1 style="margin:14px 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:26px;line-height:1.3;color:#1E1B18">Delivered</h1>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#6B635B">Hi {{ fname }}, order {{ order_name }} has been delivered. We hope you love wearing it.</p>
+  </td></tr>
+  <tr><td class="pad" style="padding:20px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff">
+      <tr><td style="padding:16px 18px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td style="font-size:15px;font-weight:bold">Delivered</td>
+          <td align="right" style="font-size:15px;font-weight:bold;color:#1F5752"></td>
+        </tr></table>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px"><tr><td width="12" style="width:12px"><div style="width:12px;height:12px;border-radius:6px;background:#1F5752"></div></td><td><div style="height:2px;background:#1F5752"></div></td><td width="12" style="width:12px"><div style="width:12px;height:12px;border-radius:6px;background:#1F5752"></div></td><td><div style="height:2px;background:#1F5752"></div></td><td width="12" style="width:12px"><div style="width:12px;height:12px;border-radius:6px;background:#1F5752"></div></td><td><div style="height:2px;background:#1F5752"></div></td><td width="12" style="width:12px"><div style="width:12px;height:12px;border-radius:6px;background:#1F5752"></div></td></tr></table>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:6px"><tr><td align="left" style="font-size:12px;color:#1F5752;font-weight:bold">Confirmed</td><td align="center" style="font-size:12px;color:#1F5752;font-weight:bold">Shipped</td><td align="center" style="font-size:12px;color:#1F5752;font-weight:bold">Out for delivery</td><td align="right" style="font-size:12px;color:#1F5752;font-weight:bold">Delivered</td></tr></table>
+        
+      </td></tr>
+    </table>
+  </td></tr>
+  <tr><td class="pad" style="padding:20px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff">
+      <tr><td style="padding:16px 18px 6px;font-size:15px;font-weight:bold">In this parcel · {{ order_name }}</td></tr>
+      {%- for line in fulfillment.fulfillment_line_items -%}
+      <tr><td style="padding:8px 18px 12px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td width="60" valign="top" style="width:60px">{%- if line.line_item.image -%}<img src="{{ line.line_item | img_url: 'compact_cropped' }}" alt="" width="56" style="display:block;width:56px;height:auto;border-radius:8px">{%- endif -%}</td>
+          <td valign="top" style="padding-left:12px">
+            <div style="font-size:14px;font-weight:bold;line-height:1.4">{{ line.line_item.product.title | default: line.line_item.title }}</div>
+            <div style="font-size:13px;color:#6B635B">{% if line.line_item.variant_title != blank and line.line_item.variant_title != 'Default Title' %}Size {{ line.line_item.variant_title }} · {% endif %}Qty {{ line.quantity }}</div>
+          </td>
+        </tr></table>
+      </td></tr>
+      {%- endfor -%}
+    </table>
+  </td></tr>
+  <tr><td class="pad" style="padding:20px 32px 8px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td align="center" style="background:#1F5752;border-radius:8px"><a href="{{ shop.url }}/collections/under-499" style="display:block;padding:14px 10px;color:#ffffff;font-size:15px;font-weight:bold;text-decoration:none">Shop more chikankari</a></td></tr>
+      <tr><td style="height:10px;line-height:10px;font-size:0">&nbsp;</td></tr>
+      <tr><td align="center" style="border:1px solid #CFC6BC;border-radius:8px"><a href="https://wa.me/{{ wa }}?text={{ wa_text | url_encode }}" style="display:block;padding:13px 10px;color:#1E1B18;font-size:15px;text-decoration:none">Questions? Chat on WhatsApp</a></td></tr>
+    </table>
+  </td></tr>
+  <tr><td class="pad" align="center" style="padding:22px 32px 26px;border-top:1px solid #EEE7E0">
+    <p style="margin:0 0 6px;font-size:13px;color:#6B635B"><a href="{{ shop.url }}" style="color:#1F5752;font-weight:bold;text-decoration:none">Continue shopping</a></p>
+    <p style="margin:0;font-size:12px;line-height:1.6;color:#8F877F">Hand-embroidered in Lucknow · Free shipping across India<br>WhatsApp +91 91378 99409 · <a href="mailto:araadhyafashion@gmail.com" style="color:#8F877F">araadhyafashion@gmail.com</a></p>
+  </td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

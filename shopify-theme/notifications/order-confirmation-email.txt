@@ -1,0 +1,153 @@
+{%- comment -%}
+Araadhya – Order confirmation email
+Paste into: Shopify Admin → Settings → Notifications → Customer notifications → Order confirmation → Edit code (Email body HTML)
+Subject line suggestion: Order {{ order_name }} confirmed – thank you, {{ customer.first_name | default: billing_address.first_name }}
+{%- endcomment -%}
+{%- assign fname = customer.first_name | default: billing_address.first_name | default: 'there' -%}
+{%- assign wa = '919137899409' -%}
+{%- capture wa_text -%}Hi! I need help with my order {{ order_name }}{%- endcapture -%}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order {{ order_name }} confirmed</title>
+<style>
+  body{margin:0;padding:0;background:#F7F1EC}
+  a{color:#1F5752}
+  @media (max-width:620px){
+    .wrap{width:100%!important}
+    .pad{padding-left:18px!important;padding-right:18px!important}
+    .stack{display:block!important;width:100%!important}
+    .stack-gap{padding-top:12px!important;padding-left:0!important}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F7F1EC;font-family:Helvetica,Arial,sans-serif;color:#1E1B18">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F1EC">
+<tr><td align="center" style="padding:24px 10px">
+
+<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" style="width:600px;background:#FFFDFB;border:1px solid #E5DDD3;border-radius:14px;overflow:hidden">
+
+  <!-- header -->
+  <tr><td align="center" style="padding:18px 24px;border-bottom:1px solid #EEE7E0">
+    {%- if shop.email_logo_url -%}
+      <img src="{{ shop.email_logo_url }}" alt="Araadhya" width="{{ shop.email_logo_width | default: 160 }}" style="display:block;max-width:180px;height:auto">
+    {%- else -%}
+      <span style="font-family:Georgia,'Times New Roman',serif;font-size:20px;letter-spacing:6px;color:#1E1B18">ARAADHYA</span>
+    {%- endif -%}
+  </td></tr>
+
+  <!-- thank you -->
+  <tr><td class="pad" align="center" style="padding:28px 32px 8px">
+    <table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" style="width:52px;height:52px;border-radius:26px;background:#E7F2EF;color:#1F5752;font-size:26px;line-height:52px">&#10003;</td></tr></table>
+    <h1 style="margin:14px 0 6px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:26px;line-height:1.3;color:#1E1B18">Thank you, {{ fname }}</h1>
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#6B635B">Order {{ order_name }} is confirmed. Your piece will be checked and packed by hand before it leaves us.</p>
+  </td></tr>
+
+  <!-- delivery progress -->
+  <tr><td class="pad" style="padding:20px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff">
+      <tr><td style="padding:16px 18px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td style="font-size:15px;font-weight:bold">Estimated delivery</td>
+          <td align="right" style="font-size:15px;font-weight:bold;color:#1F5752">4–7 working days</td>
+        </tr></table>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px"><tr>
+          <td width="12" style="width:12px"><div style="width:12px;height:12px;border-radius:6px;background:#1F5752"></div></td>
+          <td><div style="height:2px;background:#CFE3DE"></div></td>
+          <td width="12" style="width:12px"><div style="width:10px;height:10px;border-radius:6px;border:1px solid #1F5752"></div></td>
+          <td><div style="height:2px;background:#EEE7E0"></div></td>
+          <td width="12" style="width:12px"><div style="width:10px;height:10px;border-radius:6px;border:1px solid #CFC6BC"></div></td>
+          <td><div style="height:2px;background:#EEE7E0"></div></td>
+          <td width="12" style="width:12px"><div style="width:10px;height:10px;border-radius:6px;border:1px solid #CFC6BC"></div></td>
+        </tr></table>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:6px"><tr>
+          <td style="font-size:12px;color:#1F5752;font-weight:bold">Confirmed</td>
+          <td align="center" style="font-size:12px;color:#6B635B">Packed</td>
+          <td align="center" style="font-size:12px;color:#6B635B">Shipped</td>
+          <td align="right" style="font-size:12px;color:#6B635B">Delivered</td>
+        </tr></table>
+        <p style="margin:12px 0 0;font-size:13px;line-height:1.5;color:#6B635B">Dispatched in 1–2 working days. You'll get a tracking link by SMS and email as soon as it ships.</p>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- order summary -->
+  <tr><td class="pad" style="padding:20px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff">
+      <tr><td style="padding:16px 18px 6px;font-size:15px;font-weight:bold">Order summary</td></tr>
+      {%- for line in line_items -%}
+      <tr><td style="padding:8px 18px;border-bottom:1px solid #F1EBE4">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+          <td width="60" valign="top" style="width:60px">
+            {%- if line.image -%}<img src="{{ line | img_url: 'compact_cropped' }}" alt="" width="56" style="display:block;width:56px;height:auto;border-radius:8px">{%- endif -%}
+          </td>
+          <td valign="top" style="padding-left:12px">
+            <div style="font-size:14px;font-weight:bold;line-height:1.4">{{ line.product.title | default: line.title }}</div>
+            <div style="font-size:13px;color:#6B635B">{% if line.variant_title != blank and line.variant_title != 'Default Title' %}Size {{ line.variant_title }} · {% endif %}Qty {{ line.quantity }}</div>
+          </td>
+          <td valign="top" align="right" style="font-size:14px;font-weight:bold;white-space:nowrap">{{ line.final_line_price | money_without_trailing_zeros }}</td>
+        </tr></table>
+      </td></tr>
+      {%- endfor -%}
+      <tr><td style="padding:12px 18px 4px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+          <tr><td style="font-size:14px;color:#6B635B;padding:2px 0">Subtotal</td><td align="right" style="font-size:14px;color:#6B635B">{{ subtotal_price | money_without_trailing_zeros }}</td></tr>
+          {%- if discounts_amount > 0 -%}
+          <tr><td style="font-size:14px;color:#1F5752;padding:2px 0">Discount</td><td align="right" style="font-size:14px;color:#1F5752">−{{ discounts_amount | money_without_trailing_zeros }}</td></tr>
+          {%- endif -%}
+          <tr><td style="font-size:14px;color:#6B635B;padding:2px 0">Delivery</td><td align="right" style="font-size:14px;color:#1F5752">{% if shipping_price > 0 %}{{ shipping_price | money_without_trailing_zeros }}{% else %}Free{% endif %}</td></tr>
+          <tr><td style="font-size:16px;font-weight:bold;padding:10px 0 12px;border-top:1px solid #EEE7E0">Total</td><td align="right" style="font-size:16px;font-weight:bold;padding:10px 0 12px;border-top:1px solid #EEE7E0">{{ total_price | money_without_trailing_zeros }}</td></tr>
+        </table>
+      </td></tr>
+    </table>
+  </td></tr>
+
+  <!-- address + payment -->
+  <tr><td class="pad" style="padding:16px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      {%- if shipping_address -%}
+      <td class="stack" valign="top" width="50%" style="width:50%;padding-right:6px">
+        <div style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff;padding:14px 16px">
+          <div style="font-size:12px;color:#6B635B;margin-bottom:4px">Delivering to</div>
+          <div style="font-size:14px;line-height:1.5">{{ shipping_address.name }}<br>{{ shipping_address.address1 }}{% if shipping_address.address2 != blank %}, {{ shipping_address.address2 }}{% endif %}<br>{{ shipping_address.city }} {{ shipping_address.zip }}</div>
+        </div>
+      </td>
+      {%- endif -%}
+      <td class="stack stack-gap" valign="top" width="50%" style="width:50%;padding-left:6px">
+        <div style="border:1px solid #EEE7E0;border-radius:12px;background:#ffffff;padding:14px 16px">
+          <div style="font-size:12px;color:#6B635B;margin-bottom:4px">Payment</div>
+          <div style="font-size:14px;line-height:1.5">{% if financial_status == 'paid' %}Paid online{% else %}Cash on delivery{% endif %}<br><span style="color:#6B635B">{% if financial_status == 'paid' %}Nothing to pay at the door{% else %}We'll confirm on WhatsApp before dispatch{% endif %}</span></div>
+        </div>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <!-- exchange note -->
+  <tr><td class="pad" style="padding:16px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F7F1EC;border-radius:10px"><tr>
+      <td style="padding:12px 14px;font-size:13px;line-height:1.55;color:#3A342F">Size not quite right? Message us on WhatsApp within 12 hours of delivery and we'll happily exchange it.</td>
+    </tr></table>
+  </td></tr>
+
+  <!-- buttons -->
+  <tr><td class="pad" style="padding:20px 32px 8px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td align="center" style="background:#1F5752;border-radius:8px"><a href="https://wa.me/{{ wa }}?text={{ wa_text | url_encode }}" style="display:block;padding:14px 10px;color:#ffffff;font-size:15px;font-weight:bold;text-decoration:none">Chat with us on WhatsApp</a></td></tr>
+      <tr><td style="height:10px;line-height:10px;font-size:0">&nbsp;</td></tr>
+      <tr><td align="center" style="border:1px solid #1F5752;border-radius:8px"><a href="{{ shop.url }}" style="display:block;padding:13px 10px;color:#1F5752;font-size:15px;font-weight:bold;text-decoration:none">Continue shopping</a></td></tr>
+    </table>
+    <p style="margin:16px 0 0;text-align:center;font-size:13px;color:#6B635B">Tag us <a href="https://instagram.com/araadhyafashion" style="color:#1F5752">@araadhyafashion</a> when you wear it</p>
+  </td></tr>
+
+  <!-- footer -->
+  <tr><td class="pad" align="center" style="padding:20px 32px 26px;border-top:1px solid #EEE7E0;margin-top:12px">
+    <p style="margin:0;font-size:12px;line-height:1.6;color:#8F877F">Hand-embroidered in Lucknow · Free shipping across India<br>Questions? WhatsApp +91 91378 99409 · <a href="mailto:araadhyafashion@gmail.com" style="color:#8F877F">araadhyafashion@gmail.com</a></p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

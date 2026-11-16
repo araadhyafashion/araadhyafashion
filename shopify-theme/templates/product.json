@@ -1,0 +1,385 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "aa-product",
+      "blocks": {
+        "faq_1": {
+          "type": "faq",
+          "settings": {
+            "q": "Is the embroidery done by hand?",
+            "a": "<p>Yes. Every piece is hand-embroidered by artisans in Lucknow, so tiny variations are a sign of real handwork.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq",
+          "settings": {
+            "q": "Will the colour fade or bleed after washing?",
+            "a": "<p>Hand wash separately in cold water for the first wash, dry in shade and dry clean dark shades. With this care the colour stays rich.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq",
+          "settings": {
+            "q": "How do I pick the right size?",
+            "a": "<p>Use the size chart above, or our <a href=\"/pages/size-guide\">full size guide</a>. The size number is your bust in inches. Between two sizes? Pick the larger one, or WhatsApp us and we'll help.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq",
+          "settings": {
+            "q": "Is cash on delivery available?",
+            "a": "<p>Yes, COD is available across India. We confirm COD orders on WhatsApp before dispatch.</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq",
+          "settings": {
+            "q": "When will my order arrive?",
+            "a": "<p>Orders are dispatched in 1–2 working days and usually delivered 3–5 working days after dispatch. We also ship worldwide (4–7 working days after dispatch).</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq",
+          "settings": {
+            "q": "Will the fabric shrink?",
+            "a": "<p>Slight shrinkage (up to 5%) is natural in handcrafted fabrics. With proper care it stays around 2%.</p>"
+          }
+        },
+        "r01": {
+          "type": "quote",
+          "settings": {
+            "text": "Have received the dupatta. It is absolutely stunning. I knew I wasn't going to be disappointed in terms of quality, but it honestly exceeded my expectations. Congratulations on weaving magic through your clothes!",
+            "who": "Instagram customer"
+          }
+        },
+        "r02": {
+          "type": "quote",
+          "settings": {
+            "text": "Received the package and it's absolutely brilliant. Thank you so much, I look forward to shopping with you a lot more. This was for my birthday and it really is perfect.",
+            "who": "Sneha, Kolkata"
+          }
+        },
+        "r03": {
+          "type": "quote",
+          "settings": {
+            "text": "Thank you so much, I loved it. And thank you for the lovely packaging, very unique indeed. Really happy with your service and product. Looking forward to buying many more.",
+            "who": "Instagram customer"
+          }
+        },
+        "r04": {
+          "type": "quote",
+          "settings": {
+            "text": "Just got my parcel. Just loved it, both in terms of fitting and quality. Thank you!",
+            "who": "Instagram customer, New Delhi"
+          }
+        },
+        "r05": {
+          "type": "quote",
+          "settings": {
+            "text": "Received the suits. Thank you! They are all very elegant.",
+            "who": "Manika, Bhopal"
+          }
+        },
+        "r06": {
+          "type": "quote",
+          "settings": {
+            "text": "Got the white kurtas, they are lovely, especially the fabric is just too good.",
+            "who": "Instagram customer"
+          }
+        },
+        "r07": {
+          "type": "quote",
+          "settings": {
+            "text": "Received and liked the product. Packing was also very good to protect my dupatta. Really can't wait to wear it. Thanks a lot 👍",
+            "who": "WhatsApp customer"
+          }
+        },
+        "r08": {
+          "type": "quote",
+          "settings": {
+            "text": "Received the kurta. It's beautiful!! Love it",
+            "who": "Instagram customer"
+          }
+        },
+        "r09": {
+          "type": "quote",
+          "settings": {
+            "text": "Received my parcel. It's gorgeous!! Thank you",
+            "who": "WhatsApp customer"
+          }
+        },
+        "r10": {
+          "type": "quote",
+          "settings": {
+            "text": "I received it. It's very pretty and I love the fabric 😊",
+            "who": "Instagram customer"
+          }
+        },
+        "r11": {
+          "type": "quote",
+          "settings": {
+            "text": "I received the parcel just now and it is so beautiful. I'm so happy!",
+            "who": "Instagram customer"
+          }
+        },
+        "r12": {
+          "type": "quote",
+          "settings": {
+            "text": "Gown 👌👍 we liked a lot, thank you so much for your immediate response.",
+            "who": "Instagram customer"
+          }
+        },
+        "r13": {
+          "type": "quote",
+          "settings": {
+            "text": "Received the parcel today, the saree looks lovely. Thanks!",
+            "who": "Instagram customer, Kolkata"
+          }
+        },
+        "q_rQTB7": {
+          "type": "quote",
+          "settings": {
+            "text": "Very happy with this dress! Love the design, and the fabric is very soft. Anyone thinking of this one, hurry and get it.",
+            "who": "Simran"
+          }
+        },
+        "q_x89pn": {
+          "type": "quote",
+          "settings": {
+            "text": "Very soft and comfortable material. Very good for summer. Sizing is very inclusive. Very happy with my purchase 😃",
+            "who": "Kirandeep"
+          }
+        },
+        "q_aFAaR": {
+          "type": "quote",
+          "settings": {
+            "text": "Absolutely loved the piece ❤. Beautiful colour and threadwork. Will shop more!",
+            "who": "Sonia"
+          }
+        },
+        "q_dfe3i": {
+          "type": "quote",
+          "settings": {
+            "text": "The softest fabric in a vibrant orange hue — this kurta feels as warm and radiant as summer itself. The fit is effortless, and the embroidery adds a refined touch.",
+            "who": "Pathuma"
+          }
+        },
+        "q_BmQry": {
+          "type": "quote",
+          "settings": {
+            "text": "Loved the soft fabric and delicate embroidery. Perfect for daily wear — looks graceful without trying too hard!",
+            "who": "Anjali"
+          }
+        },
+        "q_qLfTR": {
+          "type": "quote",
+          "settings": {
+            "text": "This beautifully embroidered, soft kameez is ideal and so comfortable in this heat. Looking forward to buying more.",
+            "who": "Krishna"
+          }
+        },
+        "q_gFVed": {
+          "type": "quote",
+          "settings": {
+            "text": "Beautiful and gorgeous product. The material is so soft ❤️❤️",
+            "who": "Betty"
+          }
+        },
+        "q_tch01": {
+          "type": "quote",
+          "settings": {
+            "text": "Received this beautiful mul cotton kurta, very soft and comfortable. The embroidery is very neat. Loving it ❤️",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch02": {
+          "type": "quote",
+          "settings": {
+            "text": "Wore this to Durga Puja. Almost everyone complimented me. Thank you for such a lovely colour.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch03": {
+          "type": "quote",
+          "settings": {
+            "text": "I bought this muslin kurta last year and the fabric is so soft and comfortable.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch04": {
+          "type": "quote",
+          "settings": {
+            "text": "Wore this on a family trip. The colour is soothing and the work is very intricate and beautiful.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch05": {
+          "type": "quote",
+          "settings": {
+            "text": "I always love styling kotas from your store. The kurtas are very comfortable and the colours are very vibrant.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch06": {
+          "type": "quote",
+          "settings": {
+            "text": "I loved wearing this mauve colour from your store. Never seen such delicate embroidery 😊",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch07": {
+          "type": "quote",
+          "settings": {
+            "text": "I paired your kota kurta with hand-embroidered bottoms. Everyone complimented me. Very beautiful pieces!",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch08": {
+          "type": "quote",
+          "settings": {
+            "text": "Wore this during Raksha Bandhan. The piece is one of its kind. All your pieces are very comfortable.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch09": {
+          "type": "quote",
+          "settings": {
+            "text": "Absolutely amazing kurta, beautiful embroidery and mukaish work. Wore this in Canada. Everyone loved it 🥰",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch10": {
+          "type": "quote",
+          "settings": {
+            "text": "Super soft fabric. I usually wear this for my daily errands ❤️",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch11": {
+          "type": "quote",
+          "settings": {
+            "text": "This is my second purchase. Amazing butter-soft fabric, very lightweight and comfortable pants. Perfect for summers.",
+            "who": "Happy customer"
+          }
+        },
+        "q_tch12": {
+          "type": "quote",
+          "settings": {
+            "text": "I wore this to my office event. Everyone praised it. Loving this kurta and sharara 😊",
+            "who": "Happy customer"
+          }
+        }
+      },
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_7",
+        "r01",
+        "r02",
+        "r03",
+        "r04",
+        "r05",
+        "r06",
+        "r07",
+        "r08",
+        "r09",
+        "r10",
+        "r11",
+        "r12",
+        "r13",
+        "q_rQTB7",
+        "q_x89pn",
+        "q_aFAaR",
+        "q_dfe3i",
+        "q_BmQry",
+        "q_qLfTR",
+        "q_gFVed",
+        "q_tch01",
+        "q_tch02",
+        "q_tch03",
+        "q_tch04",
+        "q_tch05",
+        "q_tch06",
+        "q_tch07",
+        "q_tch08",
+        "q_tch09",
+        "q_tch10",
+        "q_tch11",
+        "q_tch12"
+      ],
+      "settings": {
+        "badge": "HAND-EMBROIDERED",
+        "coupon": "WELCOME10",
+        "coupon_text": "Extra 10% off your first order with code",
+        "coupon_auto": false,
+        "offer_end": "2026-11-10T23:59:00+05:30",
+        "offer_label": "Diwali Season Sale ends in",
+        "trust4": "Quality checked before dispatch",
+        "min_days": 3,
+        "max_days": 7,
+        "craft_title": "Every stitch, by hand",
+        "craft_text": "Each piece is hand-embroidered by artisans in Lucknow using traditional chikankari stitches like ghaspatti, phanda and murri — no two pieces are exactly alike.",
+        "whatsapp": "919137899409",
+        "ctl_collection": "under-499",
+        "quotes_sub": "Feedback on Araadhya orders, shared via Instagram and WhatsApp.",
+        "sim_title": "You may also like",
+        "shipping": "<ul><li>Free shipping on all orders across India; we also ship worldwide</li><li>Dispatched in 1–2 working days; delivered in 3–5 working days after dispatch</li><li>Tracking details are shared by SMS or email as soon as your order ships</li></ul>"
+      },
+      "custom_css": [
+        ".aap,.aap *{letter-spacing:normal;text-transform:none}",
+        ".aap{line-height:normal;font-size:16px}",
+        ".aap h1,.aap h2{margin:0;letter-spacing:normal;text-transform:none}",
+        ".aap .aap-title{font-size:24px;line-height:1.25}",
+        ".aap .aap-h2,.aap .aap-craft h2{font-size:22px;line-height:1.3}",
+        ".aap .aap-badge,.aap .aap-pill{letter-spacing:.04em}",
+        ".aap .aap-craft small{letter-spacing:.12em}",
+        ".aap .aap-stars,.aap .aap-quotes .s{letter-spacing:1px}",
+        ".aap button,.aap input{line-height:normal;min-height:0;box-shadow:none;margin:0}",
+        ".aap p{margin:0}"
+      ]
+    },
+    "recent-viewed-products": {
+      "type": "recent-viewed-products",
+      "settings": {
+        "container": "container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "heading_size": "h3",
+        "text_align": "center",
+        "limit": 8,
+        "columns": 5,
+        "column_gap": 30,
+        "pcard_layout": "",
+        "pcard_image_ratio": "",
+        "show_vendor": false,
+        "hide_title": false,
+        "enable_slider": true,
+        "show_pagination": false,
+        "show_navigation": false,
+        "mobile_disable_slider": false,
+        "use_scroll_mobile": true,
+        "item_gap_mobile": 16,
+        "padding_top": 40,
+        "padding_bottom": 100,
+        "custom_class": "",
+        "animations": "inherit"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recent-viewed-products"
+  ]
+}

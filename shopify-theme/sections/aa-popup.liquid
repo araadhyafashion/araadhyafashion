@@ -1,0 +1,233 @@
+{%- liquid
+  assign code = section.settings.code | upcase
+  assign skip = false
+  if request.path contains '/challenge'
+    assign skip = true
+  endif
+-%}
+<style>
+.aapop{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(15,30,28,.6);font-family:'DM Sans',system-ui,sans-serif}
+.aapop.on{display:flex}
+.aapop *{box-sizing:border-box;letter-spacing:normal;text-transform:none}
+.aapop__box{position:relative;display:grid;grid-template-columns:42% 58%;width:min(760px,92vw);background:#1F5752;border-radius:16px;overflow:hidden;color:#EDE6DD;animation:aapopIn .3s ease}
+@keyframes aapopIn{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.aapop__img{background:#163F3B;min-height:420px}
+.aapop__img img{width:100%;height:100%;object-fit:cover;display:block}
+.aapop__c{padding:34px 32px 26px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.aapop__logo{font-family:Marcellus,serif;font-size:22px;letter-spacing:.2em !important;color:#fff}
+.aapop__h{font-family:Marcellus,serif;font-weight:400;font-size:28px;line-height:1.15;margin:0;color:#fff}
+.aapop__s{font-size:14px;line-height:1.5;color:#CFE3DF;margin:0}
+.aapop__f{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.aapop__ph{display:flex;height:48px;border-radius:8px;overflow:hidden;background:#fff}
+.aapop__cc{flex:0 0 auto;width:auto;max-width:112px;height:48px !important;border:0 !important;border-right:1px solid #E3DBD2 !important;background:#EDE6DD !important;color:#163F3B;font-weight:700;font-size:14px !important;font-family:inherit;padding:0 6px 0 10px !important;margin:0;border-radius:0 !important;cursor:pointer;box-shadow:none !important}
+.aapop__lbl{font-size:13px;color:#CFE3DF;margin-bottom:8px}
+.aapop__f [data-s1],.aapop__f [data-s2]{display:flex;flex-direction:column;gap:10px}
+.aapop__f [hidden]{display:none !important}
+.aapop__two{display:flex;gap:8px}.aapop__two .aapop__btn{flex:2}
+.aapop__skip{flex:1;height:50px;border:1.5px solid rgba(251,248,243,.6);border-radius:8px;background:transparent;color:#FBF8F3;font-weight:600;font-size:14px;font-family:inherit;cursor:pointer}
+.aapop__dots{display:flex;gap:6px;justify-content:center;margin-top:2px}.aapop__dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.3);transition:width .2s}.aapop__dots i.on{width:18px;background:#FBF8F3}
+@keyframes aapopSlide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.aapop__f [data-s2]:not([hidden]),.aapop__ok{animation:aapopSlide .3s ease}
+.aapop__ph input,.aapop__em{flex:1;min-width:0;border:0 !important;outline:0;box-shadow:none !important;padding:0 14px !important;font-size:15px !important;font-family:inherit;color:#1E1B18;background:#fff !important;margin:0;height:48px !important;min-height:48px;border-radius:0}
+.aapop__em{width:100%;border-radius:8px !important}
+.aapop__ph:focus-within,.aapop__em:focus{box-shadow:0 0 0 2px #B7791F !important}
+.aapop__perks{list-style:none;margin:2px 0 4px;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px;color:#EDE6DD}
+.aapop__perks li{display:flex;align-items:center;gap:8px}
+.aapop__perks li:before{content:'';width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:#FBF8F3 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231F5752' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/12px no-repeat}
+.aapop__btn{height:50px;border:0;border-radius:8px;background:#FBF8F3;color:#163F3B;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;transition:transform .15s}
+.aapop__btn:hover{transform:translateY(-1px)}
+.aapop__btn[disabled]{opacity:.6;cursor:wait}
+.aapop__n{font-size:11px;color:#AFC3BE;margin:0}
+.aapop__err{font-size:12px;color:#FFD2C7;margin:0}
+.aapop__x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:18px;border:0;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.aapop__ok{text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.aapop__tick{width:44px;height:44px;border-radius:50%;background:#FBF8F3;color:#1F5752;display:flex;align-items:center;justify-content:center}
+.aapop__card{position:relative;width:100%;max-width:300px;height:92px;border-radius:12px;background:#FBF8F3;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;user-select:none}
+.aapop__card small{font-size:11px;color:#6B635B;letter-spacing:.1em !important;font-weight:600}
+.aapop__card b{font-size:26px;letter-spacing:.16em !important;color:#1F5752;font-weight:700}
+.aapop__card canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+.aapop__row{display:flex;gap:8px;width:100%;max-width:300px}
+.aapop__row button,.aapop__row a{flex:1;height:44px;border-radius:8px;font-weight:700;font-size:14px;font-family:inherit;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.aapop__copy{border:1.5px solid #FBF8F3;background:transparent;color:#FBF8F3}
+.aapop__go{border:0;background:#FBF8F3;color:#163F3B !important}
+[class^="ai-newsletter-popup-"]{display:none !important}
+@media(max-width:767px){
+ .aapop{align-items:flex-end}
+ .aapop__box{grid-template-columns:1fr;width:100%;border-radius:18px 18px 0 0;animation:aapopUp .3s ease}
+ @keyframes aapopUp{from{transform:translateY(100%)}to{transform:none}}
+ .aapop__img{display:none}
+ .aapop__c{padding:18px 20px 26px;gap:10px}
+ .aapop__c:before{content:'';width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,.35);margin:0 auto 4px}
+ .aapop__h{font-size:24px;padding-right:36px}
+ .aapop__logo{font-size:18px}
+}
+</style>
+
+<div class="aapop" id="aapop" role="dialog" aria-modal="true" aria-labelledby="aapop-h" {% if skip %}data-skip{% endif %}>
+  <div class="aapop__box">
+    <button class="aapop__x" type="button" aria-label="Close" data-x><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="aapop__img">{%- if section.settings.image -%}{{ section.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</div>
+    <div class="aapop__c">
+      <div data-step="ask" style="display:flex;flex-direction:column;gap:12px">
+        <span class="aapop__logo">{{ section.settings.logo }}</span>
+        <h2 class="aapop__h" id="aapop-h">{{ section.settings.heading }}</h2>
+        <ul class="aapop__perks"><li>{{ section.settings.perk1 }}</li><li>{{ section.settings.perk2 }}</li><li>{{ section.settings.perk3 }}</li></ul>
+        {%- form 'contact', id: 'aapop-form', class: 'aapop__f' -%}
+          <input type="hidden" name="contact[name]" value="Website subscriber">
+          <input type="hidden" name="contact[body]" value="" data-body>
+          <input type="hidden" name="contact[phone]" value="" data-phone-hidden>
+          <input type="hidden" name="contact[email]" value="" data-email-hidden>
+          <div data-s1>
+            <div class="aapop__lbl">Your WhatsApp number</div>
+            <div class="aapop__ph">
+              <label for="aapop-cc" style="position:absolute;left:-9999px">Country code</label>
+              <select id="aapop-cc" class="aapop__cc" data-cc></select>
+              <label for="aapop-phone" style="position:absolute;left:-9999px">Mobile number</label>
+              <input id="aapop-phone" type="tel" inputmode="numeric" placeholder="Mobile number" autocomplete="tel-national" data-phone>
+            </div>
+            <p class="aapop__err" data-err hidden></p>
+            <button class="aapop__btn" type="button" data-next>Continue</button>
+          </div>
+          <div data-s2 hidden>
+            <div class="aapop__lbl">Almost there! Add your email for order updates <span style="opacity:.7">(optional)</span></div>
+            <label for="aapop-email" style="position:absolute;left:-9999px">Email</label>
+            <input id="aapop-email" class="aapop__em" type="email" placeholder="name@email.com" autocomplete="email" data-email>
+            <p class="aapop__err" data-err2 hidden></p>
+            <div class="aapop__two"><button class="aapop__skip" type="button" data-skip>Skip</button><button class="aapop__btn" type="submit" data-submit>{{ section.settings.button }}</button></div>
+          </div>
+          <div class="aapop__dots"><i class="on" data-d1></i><i data-d2></i><i data-d3></i></div>
+        {%- endform -%}
+        <p class="aapop__n">{{ section.settings.note }}</p>
+      </div>
+      <div data-step="done" hidden>
+        <div class="aapop__ok">
+          <span class="aapop__tick"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg></span>
+          <h2 class="aapop__h" style="padding:0">You're subscribed!</h2>
+          <p class="aapop__s">Scratch the card to reveal your welcome gift</p>
+          <div class="aapop__card" data-card><small>YOUR CODE</small><b>{{ code }}</b><small style="letter-spacing:normal !important;font-weight:500">10% off your first order</small><canvas data-scratch aria-label="Scratch to reveal your code"></canvas></div>
+          <div class="aapop__row"><button type="button" class="aapop__copy" data-copy>Copy code</button><a class="aapop__go" href="#" data-x>Start shopping</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('[class^="ai-newsletter-popup-"]').forEach(function(o){o.show=function(){};o.close=function(){}});
+  var el=document.getElementById('aapop'); if(!el||el.hasAttribute('data-skip')) return;
+  var K='aapop_v2', DAYS={{ section.settings.snooze_days | default: 7 }}, now=Date.now(), CODE='{{ code }}', STORE='{{ shop.email | default: section.settings.notify_email }}';
+  function get(){try{return JSON.parse(localStorage.getItem(K)||'{}')}catch(e){return {}}}
+  function set(o){try{localStorage.setItem(K,JSON.stringify(o))}catch(e){}}
+  function step(n){el.querySelectorAll('[data-step]').forEach(function(s){s.hidden=s.dataset.step!==n})}
+  function open(){if(el.classList.contains('on'))return;el.classList.add('on');document.documentElement.style.overflow='hidden'}
+  function close(){el.classList.remove('on');document.documentElement.style.overflow='';var s=get();if(!s.done){s.snooze=now+DAYS*864e5;set(s)}}
+  el.querySelectorAll('[data-x]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();close()})});
+  el.addEventListener('click',function(e){if(e.target===el)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+
+  /* scratch card */
+  var scratched=false;
+  function initScratch(){
+    var cv=el.querySelector('[data-scratch]'),card=el.querySelector('[data-card]'); if(!cv)return;
+    var r=card.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+    cv.width=r.width*dpr;cv.height=r.height*dpr;var x=cv.getContext('2d');x.scale(dpr,dpr);
+    var g=x.createLinearGradient(0,0,r.width,r.height);g.addColorStop(0,'#C9B48A');g.addColorStop(.5,'#E8DCC0');g.addColorStop(1,'#B7791F');
+    x.fillStyle=g;x.fillRect(0,0,r.width,r.height);
+    x.fillStyle='#5A3E12';x.font='600 15px DM Sans, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('Scratch here ✨',r.width/2,r.height/2);
+    x.globalCompositeOperation='destination-out';
+    var down=false,moves=0;
+    function pos(e){var b=cv.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return[t.clientX-b.left,t.clientY-b.top]}
+    function draw(e){if(!down||scratched)return;e.preventDefault();var p=pos(e);x.beginPath();x.arc(p[0],p[1],18,0,Math.PI*2);x.fill();if(++moves%8===0)check()}
+    function check(){var d=x.getImageData(0,0,cv.width,cv.height).data,c=0;for(var i=3;i<d.length;i+=64){if(d[i]===0)c++}if(c/(d.length/64)>.45)reveal()}
+    function reveal(){scratched=true;cv.style.transition='opacity .4s';cv.style.opacity='0';setTimeout(function(){cv.remove()},400)}
+    cv.addEventListener('mousedown',function(e){down=true;draw(e)});cv.addEventListener('mousemove',draw);window.addEventListener('mouseup',function(){down=false});
+    cv.addEventListener('touchstart',function(e){down=true;draw(e)},{passive:false});cv.addEventListener('touchmove',draw,{passive:false});cv.addEventListener('touchend',function(){down=false});
+    el._reveal=reveal;
+  }
+  var cp=el.querySelector('[data-copy]'); if(cp)cp.addEventListener('click',function(){if(!scratched&&el._reveal)el._reveal();(navigator.clipboard?navigator.clipboard.writeText(CODE):Promise.reject()).then(function(){cp.textContent='Copied ✓'}).catch(function(){cp.textContent=CODE})});
+  function done(){set({done:1,t:now});step('done');open();setTimeout(initScratch,60)}
+
+  /* country codes */
+  var CC=[['IN','India',91,[10],'^[6-9]'],['AE','UAE',971,[9],'^5'],['US','USA',1,[10]],['CA','Canada',1,[10]],['GB','UK',44,[10],'^7'],['AU','Australia',61,[9],'^4'],['SG','Singapore',65,[8]],['MY','Malaysia',60,[9,10]],['NZ','New Zealand',64,[8,9,10]],['SA','Saudi Arabia',966,[9],'^5'],['QA','Qatar',974,[8]],['KW','Kuwait',965,[8]],['OM','Oman',968,[8]],['BH','Bahrain',973,[8]],['DE','Germany',49,[10,11]],['FR','France',33,[9]],['NL','Netherlands',31,[9]],['IE','Ireland',353,[9]],['NP','Nepal',977,[10]],['BD','Bangladesh',880,[10]],['LK','Sri Lanka',94,[9]],['ZA','South Africa',27,[9]],['XX','Other',0,[6,7,8,9,10,11,12,13,14]]];
+  var TZ={'Asia/Kolkata':'IN','Asia/Calcutta':'IN','Asia/Dubai':'AE','Europe/London':'GB','Australia/Sydney':'AU','Australia/Melbourne':'AU','Australia/Brisbane':'AU','Australia/Perth':'AU','Australia/Adelaide':'AU','Asia/Singapore':'SG','Asia/Kuala_Lumpur':'MY','Pacific/Auckland':'NZ','Asia/Riyadh':'SA','Asia/Qatar':'QA','Asia/Kuwait':'KW','Asia/Muscat':'OM','Asia/Bahrain':'BH','Europe/Berlin':'DE','Europe/Paris':'FR','Europe/Amsterdam':'NL','Europe/Dublin':'IE','Asia/Kathmandu':'NP','Asia/Katmandu':'NP','Asia/Dhaka':'BD','Asia/Colombo':'LK','Africa/Johannesburg':'ZA','America/Toronto':'CA','America/Vancouver':'CA','America/Edmonton':'CA','America/Winnipeg':'CA','America/Halifax':'CA'};
+  var guess='{{ localization.country.iso_code }}';
+  try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(TZ[tz])guess=TZ[tz];else if(/^America\//.test(tz))guess='US'}catch(e){}
+  var ccSel=el.querySelector('[data-cc]');
+  if(!CC.some(function(c){return c[0]===guess}))guess=guess?'XX':'IN';
+  CC.forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[2]?('+'+c[2]):'+ …';o.title=c[1];if(c[0]===guess)o.selected=true;ccSel.appendChild(o)});
+  function cur(){var v=ccSel.value;for(var i=0;i<CC.length;i++)if(CC[i][0]===v)return CC[i];return CC[0]}
+  var phIn=el.querySelector('[data-phone]'),xCode=null;
+  function ph(){var c=cur();phIn.placeholder=c[0]==='XX'?'Number with country code':(c[3].length===1?c[3][0]+'-digit mobile number':'Mobile number');phIn.maxLength=c[0]==='XX'?16:Math.max.apply(null,c[3])+1}
+  ph();ccSel.addEventListener('change',function(){ph();phIn.focus()});
+  phIn.addEventListener('input',function(){var c=cur();var v=phIn.value.replace(/\D/g,'');if(c[0]!=='XX'&&v.length>Math.max.apply(null,c[3])&&v.charAt(0)==='0')v=v.slice(1);phIn.value=v.slice(0,c[0]==='XX'?15:Math.max.apply(null,c[3]))});
+  var f=document.getElementById('aapop-form'),err=el.querySelector('[data-err]'),err2=el.querySelector('[data-err2]'),btn=el.querySelector('[data-submit]'),full='';
+  function dots(n){[1,2,3].forEach(function(i){el.querySelector('[data-d'+i+']').classList.toggle('on',i===n)})}
+  function validPhone(){
+    var c=cur(),v=phIn.value.replace(/\D/g,'');
+    if(c[0]==='XX'){if(v.length<8||v.length>15)return 'Enter your full number including country code.';full='+'+v;return ''}
+    if(v.charAt(0)==='0')v=v.slice(1);
+    if(c[3].indexOf(v.length)<0)return 'Enter a valid '+c[3].join(' or ')+'-digit number for '+c[1]+'.';
+    if(c[4]&&!new RegExp(c[4]).test(v))return 'That doesn’t look like a '+c[1]+' mobile number.';
+    full='+'+c[2]+' '+v;return '';
+  }
+  function goStep2(){var m=validPhone();if(m){err.hidden=false;err.textContent=m;phIn.focus();return}err.hidden=true;f.querySelector('[data-s1]').hidden=true;f.querySelector('[data-s2]').hidden=false;dots(2);setTimeout(function(){el.querySelector('[data-email]').focus()},50)}
+  el.querySelector('[data-next]').addEventListener('click',goStep2);
+  phIn.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();goStep2()}});
+  function send(em){
+    btn.disabled=true;btn.textContent='Subscribing…';
+    var body='New subscriber from the website popup\nWhatsApp: '+full+'\nEmail: '+(em||'not given')+'\nPage: '+location.href;
+    f.querySelector('[data-phone-hidden]').value=full;
+    f.querySelector('[data-email-hidden]').value=em||STORE;
+    f.querySelector('[data-body]').value=body;
+    var fd=new FormData(f);
+    function hard(){set({pending:1,t:now});HTMLFormElement.prototype.submit.call(f)}
+    fetch(f.getAttribute('action')||'/contact',{method:'POST',body:fd,credentials:'same-origin',headers:{'Accept':'text/html'}}).then(function(r){
+      if(r.url&&(r.url.indexOf('/challenge')>-1||r.status>=400)){hard();return}
+      dots(3);done();
+    }).catch(hard);
+  }
+  el.querySelector('[data-skip]').addEventListener('click',function(){send('')});
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=(el.querySelector('[data-email]').value||'').trim();
+    if(em&&!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(em)){err2.hidden=false;err2.textContent='That email doesn’t look right. Fix it or tap Skip.';return}
+    err2.hidden=true;send(em);
+  });
+  if(get().pending&&/contact_posted=true/.test(location.search)){done();return}
+  if(get().pending){var g=get();delete g.pending;set(g)}
+
+  {%- if customer -%}if(!{{ section.settings.show_logged_in }})return;{%- endif -%}
+  var s=get(); if(s.done||(s.snooze&&s.snooze>now))return;
+  if(/^\/(cart|checkout|account|pages\/contact)/.test(location.pathname))return;
+  var fired=false;
+  function go(){if(fired)return;fired=true;open();window.removeEventListener('scroll',onS)}
+  function onS(){var h=document.documentElement;if((h.scrollTop+innerHeight)/h.scrollHeight>.5)go()}
+  setTimeout(go,{{ section.settings.delay | default: 10 }}*1000);
+  window.addEventListener('scroll',onS,{passive:true});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Araadhya newsletter popup",
+  "tag": "section",
+  "class": "aapop-section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo (desktop)" },
+    { "type": "text", "id": "logo", "label": "Logo text", "default": "ARAADHYA" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Unlock your welcome gift" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Subscribe for new drops and offers, then scratch your card for an extra discount on your first order." },
+    { "type": "text", "id": "perk1", "label": "Perk 1", "default": "Extra 10% off your first order" },
+    { "type": "text", "id": "perk2", "label": "Perk 2", "default": "Early access to new drops" },
+    { "type": "text", "id": "perk3", "label": "Perk 3", "default": "Festive offers before anyone else" },
+    { "type": "text", "id": "button", "label": "Button text", "default": "Get my gift" },
+    { "type": "text", "id": "note", "label": "Small note", "default": "First order only. No spam, ever." },
+    { "type": "text", "id": "code", "label": "Discount code", "default": "WELCOME10" },
+    { "type": "text", "id": "notify_email", "label": "Fallback email for notifications", "default": "araadhyafashion@gmail.com" },
+    { "type": "range", "id": "delay", "label": "Show after", "min": 3, "max": 30, "step": 1, "unit": "s", "default": 10 },
+    { "type": "range", "id": "snooze_days", "label": "After closing, hide for", "min": 1, "max": 30, "step": 1, "unit": "d", "default": 7 },
+    { "type": "checkbox", "id": "show_logged_in", "label": "Show to logged-in customers", "default": false }
+  ]
+}
+{% endschema %}

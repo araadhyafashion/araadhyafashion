@@ -1,0 +1,490 @@
+{%- liquid
+  assign c = collection
+  assign wa = section.settings.whatsapp | remove: ' ' | remove: '+'
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign new_cut = now_s | minus: 2592000
+  assign desc_text = c.description | strip_html | strip
+  if desc_text == blank
+    assign desc_text = section.settings.tagline
+  endif
+-%}
+<style>
+.aac{--ink:#1E1B18;--mut:#6B635B;--line:#EEE7E0;--soft:#F7F1EC;--acc:#1F5752;--acc2:#163F3B;--red:#8A2F21;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);background:#fff}
+.aac *{box-sizing:border-box;letter-spacing:normal;text-transform:none}
+.aac button{font-family:inherit;cursor:pointer;margin:0;line-height:normal;box-shadow:none;min-height:0}
+.aac a{color:var(--acc)}
+.aac-w{max-width:1360px;margin:0 auto;padding:0 12px}
+.aac-sale{background:#FFF4EF;color:var(--red);border-bottom:1px solid #F3DCD2}
+.aac-sale .aac-w{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;padding-bottom:10px;font-size:13px}
+.aac-sale b{font-weight:700}
+.aac-sale .t{display:flex;gap:4px;font-weight:700;font-variant-numeric:tabular-nums}
+.aac-sale .t span{background:var(--red);color:#fff;padding:3px 6px;border-radius:4px}
+.aac-head{padding:18px 4px 8px;display:flex;flex-direction:column;gap:6px}
+.aac-crumb{font-size:12px;color:var(--mut)}.aac-crumb a{color:var(--mut);text-decoration:none}
+.aac-head .tt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.aac-head h1{margin:0;font-family:Marcellus,serif;font-weight:400;font-size:30px;line-height:1.15}
+.aac-head .n{font-size:13px;color:var(--mut)}
+.aac-head p{margin:0;font-size:14px;line-height:1.5;color:#3A342F}
+.aac-sizes{padding:10px 4px 14px;display:flex;flex-direction:column;gap:10px}
+.aac-sizes .l{font-size:13px;font-weight:600}
+.aac-chips{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px}
+.aac-chip{width:100%;height:44px;padding:0;border-radius:22px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aac-chip.on{border:1.5px solid var(--acc);background:var(--acc);color:#fff}
+.aac-chip[disabled]{opacity:.35;cursor:not-allowed}
+.aac-bar{position:sticky;top:0;z-index:5;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.aac-bar .aac-w{padding-top:8px;padding-bottom:8px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.aac-bb{height:38px;border:1px solid #CFC6BC;border-radius:19px;background:#fff;color:var(--ink);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 6px;white-space:nowrap}
+.aac-bb .dot{width:7px;height:7px;border-radius:4px;background:var(--acc);display:none}
+.aac-bb.act .dot{display:inline-block}
+.aac-count{margin:0;padding:12px 4px 4px;font-size:12px;color:var(--mut)}
+.aac-grid{padding:8px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}
+.aac-card{display:flex;flex-direction:column;gap:6px;min-width:0}
+.aac-card[hidden]{display:none}
+.aac-media{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--soft)}
+.aac-imgs{display:flex;width:100%;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.aac-imgs::-webkit-scrollbar{display:none}
+.aac-imgs a{flex:0 0 100%;height:100%;scroll-snap-align:start;display:block}
+.aac-imgs img{width:100%;height:100%;object-fit:cover;display:block}
+.aac-dots{position:absolute;bottom:10px;left:8px;display:flex;gap:4px;pointer-events:none}
+.aac-dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.55)}.aac-dots i.on{background:#fff}
+.aac-badge{position:absolute;top:8px;left:8px;font-size:11px;font-weight:700;padding:4px 8px;border-radius:4px;background:#fff;color:var(--red);pointer-events:none}
+.aac-badge.new{background:var(--acc);color:#fff}.aac-badge.so{background:#3A342F;color:#fff}
+.aac-wl{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:17px;border:0;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:var(--ink);padding:0}
+.aac-wl.added-to-wishlist{color:#A23B2A}.aac-wl.added-to-wishlist path{fill:#A23B2A}
+.aac-card.sold .aac-imgs{opacity:.55}
+.aac-card{gap:0}
+.aac-card h2{margin:10px 0 0;font-size:13.5px;font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.aac-card h2 a{color:var(--ink);text-decoration:none}
+.aac-pr{margin-top:5px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.aac-pr b{font-size:16px;font-weight:700;color:var(--ink)}
+.aac-pr s{font-size:12.5px;color:#9A9089;text-decoration-thickness:1px}
+.aac-pr em{font-style:normal;font-size:12px;font-weight:700;color:#1E7A4F}
+.aac-meta{margin-top:7px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--mut)}
+.aac-sz{display:flex;gap:4px;flex-wrap:wrap}
+.aac-sz span{font-size:11px;font-weight:700;color:var(--acc);background:#EEF5F3;border-radius:4px;padding:3px 7px}
+.aac-act{margin-top:10px;display:grid;grid-template-columns:42px 1fr;gap:6px}
+.aac-act button{height:40px;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;padding:0}
+.aac-cart{border:1.5px solid var(--acc);background:#fff;color:var(--acc)}
+.aac-buy{border:0;background:var(--acc);color:#fff}
+.aac-act button[disabled]{border:1px solid #DDD3C8;background:#F4F0EC;color:#A39A91;cursor:not-allowed}
+.aac-act.sold{grid-template-columns:1fr!important}
+.aac-cart .lbl{display:none}
+.aac-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:2147483001;background:#1E1B18;color:#fff;font:600 13px 'DM Sans',system-ui,sans-serif;padding:12px 16px;border-radius:10px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+.aac-toast a{color:#9FD6CB;font-weight:700;text-decoration:none}
+.aac-empty{grid-column:1/-1;text-align:center;padding:40px 12px;display:flex;flex-direction:column;align-items:center;gap:12px;font-size:14px;color:#3A342F}
+.aac-trust{margin:24px 0 0;background:var(--soft);border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.aac-trust div{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.aac-more{padding:20px 0 0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.aac-more button{height:48px;width:100%;max-width:320px;border:1.5px solid var(--acc);border-radius:8px;background:#fff;color:var(--acc);font-size:15px;font-weight:700}
+.aac-more span{font-size:12px;color:var(--mut)}
+.aac-ask{margin:24px 0 0;border:1px solid #DDEAE6;background:#F2F8F6;border-radius:12px;padding:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.aac-ask div{flex:1 1 260px;display:flex;flex-direction:column;gap:6px}
+.aac-ask h2{margin:0;font-family:Marcellus,serif;font-weight:400;font-size:20px}
+.aac-ask p{margin:0;font-size:13px;line-height:1.5;color:#3A342F}
+.aac-ask a{height:46px;padding:0 18px;border-radius:8px;background:var(--acc);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;flex:1 1 220px}
+.aac-foot{padding:24px 4px 40px;display:flex;flex-direction:column;gap:10px}
+.aac-foot h2{margin:0;font-size:13px;font-weight:700}
+.aac-links{display:flex;flex-wrap:wrap;gap:8px}
+.aac-links a{font-size:13px;padding:8px 12px;border-radius:18px;background:var(--soft);color:var(--ink);text-decoration:none}
+.aac-foot p{margin:8px 0 0;font-size:12px;line-height:1.6;color:var(--mut);max-width:820px}
+/* sheets */
+.aac-ov{position:fixed;inset:0;z-index:2147483000;background:rgba(30,27,24,.45);display:flex;align-items:flex-end;justify-content:center}
+.aac-ov[hidden]{display:none}
+.aac-sh{width:100%;max-width:520px;max-height:92vh;background:#fff;border-radius:18px 18px 0 0;display:flex;flex-direction:column;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink)}
+.aac-sh .grab{display:flex;justify-content:center;padding-top:8px}.aac-sh .grab span{width:40px;height:4px;border-radius:2px;background:#DDD3C8}
+.aac-sh .hd{display:flex;align-items:center;justify-content:space-between;padding:8px 16px 12px;border-bottom:1px solid var(--line)}
+.aac-sh .hd h2{margin:0;font-family:Marcellus,serif;font-weight:400;font-size:22px}
+.aac-x{width:44px;height:44px;border:0;background:none;display:flex;align-items:center;justify-content:center;padding:0}
+.aac-sh .bd{flex:1 1 auto;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:22px}
+.aac-sh h3{margin:0 0 10px;font-size:14px;font-weight:700}
+.aac-g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.aac-g7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.aac-opt{height:44px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink);padding:0 10px;text-decoration:none;display:flex;align-items:center;justify-content:center}
+.aac-opt.on{border:1.5px solid var(--acc);background:var(--acc);color:#fff}
+.aac-opt.r{border-radius:22px;padding:0}
+.aac-pill{height:40px;padding:0 16px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aac-pill.on{border:1.5px solid var(--acc);background:var(--acc);color:#fff}
+.aac-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px 6px}
+.aac-col{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;color:#3A342F}
+.aac-col .ring{width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:2px solid transparent}
+.aac-col.on .ring{border-color:var(--acc)}
+.aac-col .d{width:30px;height:30px;border-radius:15px;border:1px solid #DDD3C8}
+.aac-sh .ft{border-top:1px solid var(--line);padding:12px 16px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.aac-sh .ft button{height:50px;border-radius:8px;font-size:15px;font-weight:700}
+.aac-clr{border:1.5px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aac-go{border:0;background:var(--acc);color:#fff}
+.aac-qa{padding:0 16px;display:flex;gap:14px}
+.aac-qa .pics{width:120px;flex:0 0 120px;display:flex;flex-direction:column;gap:6px}
+.aac-qa .main{width:120px;height:160px;object-fit:cover;border-radius:10px;background:var(--soft);display:block}
+.aac-qa .th{display:flex;gap:6px}
+.aac-qa .th button{width:54px;height:72px;padding:0;border-radius:6px;overflow:hidden;background:var(--soft);border:2px solid transparent}
+.aac-qa .th button.on{border-color:var(--acc)}
+.aac-qa .th img{width:100%;height:100%;object-fit:cover;display:block}
+.aac-qa .inf{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
+.aac-qa h2{margin:0;font-family:Marcellus,serif;font-weight:400;font-size:20px;line-height:1.25}
+.aac-qa .p{font-size:20px;font-weight:700}
+.aac-qa .m{font-size:12px;color:var(--mut)}
+.aac-qa a.v{font-size:13px;font-weight:600}
+.aac-qs{padding:20px 16px 0;display:flex;flex-direction:column;gap:10px}
+.aac-qs .row{display:flex;justify-content:space-between;align-items:center}
+.aac-qs h3{margin:0}
+.aac-qs .opt{width:100%;height:44px;padding:0;border-radius:22px;font-size:13px;font-weight:600;border:1px solid #CFC6BC;background:#fff;color:var(--ink)}
+.aac-qs .opt.on{border:1.5px solid var(--acc);background:var(--acc);color:#fff}
+.aac-qs .opt[disabled]{border:1px dashed #DDD3C8;background:#F7F4F1;color:#A39A91;text-decoration:line-through;cursor:not-allowed}
+.aac-qs .note{margin:0;font-size:12px;color:var(--red);font-weight:600;min-height:16px}
+.aac-qt{margin:16px 16px 0;background:var(--soft);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:600;color:#3A342F}
+.aac-qb{padding:16px 16px 24px;display:flex;flex-direction:column;gap:8px}
+.aac-qb button{height:52px;border:0;border-radius:8px;font-size:16px;font-weight:700;background:var(--acc);color:#fff}
+.aac-qb button[disabled]{background:#DDD3C8;color:var(--mut);cursor:not-allowed}
+.aac-qb span{font-size:12px;color:var(--mut);text-align:center}
+@media(min-width:750px){.aac-w{padding:0 24px}.aac-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 16px}.aac-trust{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:990px){
+ .aac-w{padding:0 32px}
+ .aac-head{padding-top:28px}.aac-head h1{font-size:40px}.aac-head p{font-size:15px}
+ .aac-chips{display:flex;gap:8px;flex-wrap:wrap}.aac-chip{width:auto;min-width:48px;padding:0 14px;font-size:14px}
+ .aac-sizes{flex-direction:row;align-items:center;gap:14px}
+ .aac-bar .aac-w{display:flex;justify-content:flex-end}.aac-bb{height:40px;padding:0 16px;font-size:14px}
+ .aac-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 20px}
+ .aac-card h2{font-size:15px}.aac-pr b{font-size:18px}
+ .aac-act{grid-template-columns:1fr 1fr}.aac-act button{height:44px;font-size:14px}.aac-cart .lbl{display:inline}
+ .aac-imgs{overflow:hidden}
+ .aac-imgs a+a{position:absolute;inset:0;opacity:0;transition:opacity .25s}
+ .aac-media:hover .aac-imgs a+a{opacity:1}
+ .aac-dots{display:none}
+ .aac-ov{align-items:center}.aac-sh{border-radius:18px}
+}
+</style>
+
+<div class="aac" data-aac data-wa="{{ wa }}">
+  {%- if section.settings.offer_end != blank -%}
+    <div class="aac-sale" data-aac-sale data-end="{{ section.settings.offer_end }}" hidden><div class="aac-w"><b>{{ section.settings.offer_label }}</b><span class="t"><span data-d>00d</span><span data-h>00h</span><span data-m>00m</span></span></div></div>
+  {%- endif -%}
+
+  <div class="aac-w">
+    <section class="aac-head">
+      <nav class="aac-crumb" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a> / {{ c.title }}</nav>
+      <div class="tt"><h1>{{ c.title }}</h1><span class="n">{{ c.products_count }} {% if c.products_count == 1 %}piece{% else %}pieces{% endif %}</span></div>
+      {%- if section.settings.tagline != blank -%}<p>{{ section.settings.tagline }}</p>{%- endif -%}
+    </section>
+
+    <section class="aac-sizes" aria-label="Shop by size">
+      <span class="l">Shop your size</span>
+      <div class="aac-chips" data-chips>
+        <button type="button" class="aac-chip on" data-size="All" aria-pressed="true">All</button>
+        {%- assign sizelist = section.settings.sizes | split: ',' -%}
+        {%- for s in sizelist -%}{%- assign s2 = s | strip -%}<button type="button" class="aac-chip" data-size="{{ s2 }}" aria-pressed="false">{{ s2 }}</button>{%- endfor -%}
+      </div>
+    </section>
+  </div>
+
+  <div class="aac-bar"><div class="aac-w">
+    <button type="button" class="aac-bb" data-open-filter><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter<span class="dot" data-dot="any"></span></button>
+    <button type="button" class="aac-bb" data-open-filter="colour"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 100 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 005-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/><circle cx="17" cy="10.5" r="1"/></svg>Colour<span class="dot" data-dot="colour"></span></button>
+    <button type="button" class="aac-bb" data-open-filter="occ">Occasion<span class="dot" data-dot="occ"></span></button>
+    <button type="button" class="aac-bb" data-open-filter="sort">Sort<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+  </div></div>
+
+  <div class="aac-w">
+    <p class="aac-count" data-count aria-live="polite"></p>
+
+    {%- paginate c.products by 48 -%}
+    <div class="aac-grid" data-grid>
+      {%- for p in c.products -%}
+        {%- liquid
+          assign si = 0
+          for o in p.options
+            assign od = o | downcase
+            if od == 'size'
+              assign si = forloop.index
+            endif
+          endfor
+          assign avs = ''
+          assign vjson = ''
+          assign tot = 0
+          for v in p.variants
+            if si > 0
+              assign oi = si | minus: 1
+              assign sv = v.options[oi]
+            else
+              assign sv = v.title
+            endif
+            assign q = v.inventory_quantity | default: 0
+            if v.available
+              assign avs = avs | append: '|' | append: sv
+              if q > 0
+                assign tot = tot | plus: q
+              else
+                assign tot = tot | plus: 99
+              endif
+            endif
+            assign svj = sv | json
+            assign vjson = vjson | append: '{"s":' | append: svj | append: ',"id":' | append: v.id | append: ',"a":' | append: v.available | append: ',"q":' | append: q | append: '},'
+          endfor
+          assign vjson = vjson | remove_last: ','
+          assign colour = ''
+          assign occ = ''
+          for t in p.tags
+            assign tl = t | downcase
+            if tl contains 'colour:'
+              assign colour = tl | remove: 'colour:'
+            endif
+            if tl == 'daily-wear' or tl == 'office-wear' or tl == 'festive'
+              assign occ = occ | append: '|' | append: tl
+            endif
+          endfor
+          assign ct = p.created_at | date: '%s' | plus: 0
+          assign badge = ''
+          assign bcls = ''
+          if p.available == false
+            assign badge = 'Sold out'
+            assign bcls = 'so'
+          elsif tot == 1
+            assign badge = 'Only 1 left'
+          elsif ct > new_cut
+            assign badge = 'New'
+            assign bcls = 'new'
+          endif
+          assign m1 = p.media[0]
+          assign m2 = p.media[1]
+        -%}
+        <article class="aac-card{% unless p.available %} sold{% endunless %}" data-card data-handle="{{ p.handle }}" data-sizes="{{ avs }}|" data-colour="{{ colour }}" data-occ="{{ occ }}|" data-sold="{% if p.available %}0{% else %}1{% endif %}" data-title="{{ p.title | escape }}" data-url="{{ p.url }}" data-price="{{ p.price | money_without_trailing_zeros | escape }}" data-img1="{{ m1 | image_url: width: 400 }}" data-img2="{% if m2 %}{{ m2 | image_url: width: 400 }}{% endif %}">
+          <script type="application/json" data-v>[{{ vjson }}]</script>
+          <div class="aac-media">
+            <div class="aac-imgs" data-imgs>
+              <a href="{{ p.url }}" tabindex="-1" aria-hidden="true">{%- if m1 -%}{{ m1 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,400,600', sizes: '(min-width: 990px) 25vw, 50vw', alt: p.title }}{%- endif -%}</a>
+              {%- if m2 -%}<a href="{{ p.url }}" tabindex="-1" aria-hidden="true">{{ m2 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,400,600', sizes: '(min-width: 990px) 25vw, 50vw', alt: '' }}</a>{%- endif -%}
+            </div>
+            {%- if m2 -%}<span class="aac-dots" aria-hidden="true"><i class="on"></i><i></i></span>{%- endif -%}
+            {%- if badge != blank -%}<span class="aac-badge {{ bcls }}">{{ badge }}</span>{%- endif -%}
+            <button type="button" class="aac-wl m-wishlist-button" data-product-handle="{{ p.handle }}" aria-label="Add {{ p.title | escape }} to wishlist"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg></button>
+          </div>
+          <h2><a href="{{ p.url }}">{{ p.title }}</a></h2>
+          <div class="aac-pr"><b>{{ p.price | money_without_trailing_zeros }}</b>{%- if p.compare_at_price > p.price -%}{%- assign off = p.compare_at_price | minus: p.price | times: 100 | divided_by: p.compare_at_price -%}<s>{{ p.compare_at_price | money_without_trailing_zeros }}</s><em>{{ off }}% off</em>{%- endif -%}</div>
+          {%- assign avl = avs | remove_first: '|' | split: '|' -%}
+          {%- if avl.size > 0 and si > 0 -%}<div class="aac-meta"><span>Size</span><div class="aac-sz">{%- for z in avl -%}<span>{{ z }}</span>{%- endfor -%}</div></div>{%- endif -%}
+          {%- if p.available -%}
+            <div class="aac-act">
+              <button type="button" class="aac-cart" data-qa="cart" aria-label="Add {{ p.title | escape }} to cart"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg><span class="lbl">Add to cart</span></button>
+              <button type="button" class="aac-buy" data-qa="buy">Buy now</button>
+            </div>
+          {%- else -%}
+            <div class="aac-act sold"><button type="button" disabled>Sold out</button></div>
+          {%- endif -%}
+        </article>
+      {%- else -%}
+        <div class="aac-empty">
+          <strong style="font-family:Marcellus,serif;font-weight:400;font-size:22px">Coming soon</strong>
+          <span>New pieces are being added. Get a WhatsApp message when they arrive.</span>
+          {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}?text={{ 'Hi! Please notify me when new pieces arrive in ' | append: c.title | url_encode }}" target="_blank" rel="noopener" style="height:46px;padding:0 18px;border-radius:8px;background:#1F5752;color:#fff;font-weight:700;display:inline-flex;align-items:center;text-decoration:none">Notify me on WhatsApp</a>{%- endif -%}
+        </div>
+      {%- endfor -%}
+      <div class="aac-empty" data-nomatch hidden>
+        <strong>No pieces match these filters right now.</strong>
+        <button type="button" class="aac-pill" data-clear-all>Clear filters</button>
+      </div>
+    </div>
+
+    <div class="aac-trust" aria-label="Why Araadhya">
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Free shipping</div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="2"/><circle cx="12" cy="12.5" r="2.5"/></svg>Cash on delivery</div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M4 20l9-9M13 11l3-7 4 4-7 3z"/></svg>Hand-embroidered</div>
+      <div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5752" stroke-width="1.7" aria-hidden="true"><path d="M4 12a8 8 0 0114-5l2-2v6h-6l2-2a5 5 0 10.9 6"/></svg>Easy exchange</div>
+    </div>
+
+    {%- if paginate.next -%}
+      <div class="aac-more"><button type="button" data-more="{{ paginate.next.url }}">Load more</button><span data-shown></span></div>
+    {%- endif -%}
+    {%- endpaginate -%}
+
+    <section class="aac-ask">
+      <div><h2>Can&#39;t find your size?</h2><p>Tell us your size and favourite colour. We&#39;ll WhatsApp you when a new piece arrives.</p></div>
+      {%- if wa != blank -%}<a href="https://wa.me/{{ wa }}?text={{ 'Hi! I am looking for a kurti in size ' | url_encode }}" data-wa-link target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true"><path d="M4 20l1.5-4A8 8 0 1112 20a8 8 0 01-4-1z"/></svg>Notify me on WhatsApp</a>{%- endif -%}
+    </section>
+
+    <section class="aac-foot">
+      {%- assign ml = linklists[section.settings.more_menu] -%}
+      {%- if ml.links.size > 0 -%}
+        <h2>Shop more</h2>
+        <div class="aac-links">{%- for l in ml.links -%}{%- unless l.url == c.url -%}<a href="{{ l.url }}">{{ l.title }}</a>{%- endunless -%}{%- endfor -%}</div>
+      {%- endif -%}
+      {%- if desc_text != blank -%}<p>{{ desc_text }}</p>{%- endif -%}
+    </section>
+  </div>
+
+  <div class="aac-ov" data-fsheet hidden>
+    <div class="aac-sh" role="dialog" aria-modal="true" aria-labelledby="aac-ft-{{ section.id }}">
+      <div class="grab"><span></span></div>
+      <div class="hd"><h2 id="aac-ft-{{ section.id }}">Filter &amp; sort</h2><button type="button" class="aac-x" data-close aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="bd">
+        <section data-sec="sort"><h3>Sort by</h3>
+          {%- assign sb = c.sort_by | default: c.default_sort_by -%}
+          <div class="aac-g2">
+            {%- assign sorts = 'created-descending:Newest,best-selling:Bestselling,price-ascending:Price: low to high,price-descending:Price: high to low' | split: ',' -%}
+            {%- for so in sorts -%}{%- assign kv = so | split: ':' -%}
+              <a class="aac-opt{% if sb == kv[0] %} on{% endif %}" data-sort="{{ kv[0] }}" href="{{ c.url }}?sort_by={{ kv[0] }}">{{ kv[1] }}{% if kv.size > 2 %}:{{ kv[2] }}{% endif %}</a>
+            {%- endfor -%}
+          </div>
+        </section>
+        <section data-sec="size"><h3>Size</h3>
+          <div class="aac-g7">{%- for s in sizelist -%}{%- assign s2 = s | strip -%}<button type="button" class="aac-opt r" data-fsize="{{ s2 }}" aria-pressed="false">{{ s2 }}</button>{%- endfor -%}</div>
+        </section>
+        <section data-sec="colour"><h3>Colour</h3>
+          <div class="aac-cols">
+            {%- assign cols = 'pink:#D6336C,red:#C0272D,green:#1F7A4D,blue:#2F5DA8,purple:#7B4FB8,black:#1E1B18,white:#F4F1EA,grey:#8A8A8A,yellow:#E1C21B,orange:#E0672B,brown:#6B4226' | split: ',' -%}
+            {%- for cc in cols -%}{%- assign kv = cc | split: ':' -%}
+              <button type="button" class="aac-col" data-fcol="{{ kv[0] }}" aria-pressed="false"><span class="ring"><span class="d" style="background:{{ kv[1] }}"></span></span>{{ kv[0] | capitalize }}</button>
+            {%- endfor -%}
+          </div>
+        </section>
+        <section data-sec="occ"><h3>Occasion</h3>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" class="aac-pill" data-focc="daily-wear" aria-pressed="false">Daily wear</button>
+            <button type="button" class="aac-pill" data-focc="office-wear" aria-pressed="false">Office wear</button>
+            <button type="button" class="aac-pill" data-focc="festive" aria-pressed="false">Festive</button>
+          </div>
+        </section>
+      </div>
+      <div class="ft"><button type="button" class="aac-clr" data-clear-all>Clear all</button><button type="button" class="aac-go" data-close>Show results</button></div>
+    </div>
+  </div>
+
+  <div class="aac-ov" data-qsheet hidden>
+    <div class="aac-sh" role="dialog" aria-modal="true" aria-labelledby="aac-qt-{{ section.id }}">
+      <div class="grab"><span></span></div>
+      <div style="display:flex;justify-content:flex-end;padding:4px 8px 0"><button type="button" class="aac-x" data-close aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="aac-qa">
+        <div class="pics"><img class="main" data-q-main alt=""><div class="th" data-q-th></div></div>
+        <div class="inf"><h2 id="aac-qt-{{ section.id }}" data-q-title></h2><span class="p" data-q-price></span><span class="m">Inclusive of all taxes</span><a class="v" data-q-url href="#">View full details</a></div>
+      </div>
+      <div class="aac-qs">
+        <div class="row"><h3>Size: <span style="font-weight:500" data-q-sel>select a size</span></h3><a href="/pages/size-guide" style="font-size:13px;font-weight:600">Size chart</a></div>
+        <div class="aac-g7" data-q-sizes></div>
+        <p class="note" data-q-note></p>
+      </div>
+      <div class="aac-qt">Free shipping · COD available · Easy exchange</div>
+      <div class="aac-qb"><button type="button" data-q-add disabled>Select a size</button><span>Secure checkout · UPI · Cards · COD</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var R=document.querySelector('[data-aac]'); if(!R) return;
+  var $=function(s,el){return (el||R).querySelector(s)}, $$=function(s,el){return Array.prototype.slice.call((el||R).querySelectorAll(s))};
+  var st={size:'All',colour:{},occ:{}};
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+  try{var u=new URL(location.href);var qs=u.searchParams.get('size');if(qs){st.size=qs}else{var s0=ls('aa_size');if(s0)st.size=s0}}catch(e){}
+  if(!$('[data-chips] [data-size="'+st.size+'"]'))st.size='All';
+  function cards(){return $$('[data-card]')}
+  function apply(){
+    var cs=Object.keys(st.colour).filter(function(k){return st.colour[k]}), os=Object.keys(st.occ).filter(function(k){return st.occ[k]});
+    var n=0,all=cards();
+    all.forEach(function(c){
+      var ok=(st.size==='All'||c.dataset.sizes.indexOf('|'+st.size+'|')>-1)&&(!cs.length||cs.indexOf(c.dataset.colour)>-1)&&(!os.length||os.some(function(o){return c.dataset.occ.indexOf('|'+o+'|')>-1}));
+      c.hidden=!ok; if(ok)n++;
+    });
+    $$('[data-chips] [data-size]').forEach(function(b){var on=b.dataset.size===st.size;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    $$('[data-fsize]').forEach(function(b){var on=b.dataset.fsize===st.size;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    $$('[data-fcol]').forEach(function(b){var on=!!st.colour[b.dataset.fcol];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    $$('[data-focc]').forEach(function(b){var on=!!st.occ[b.dataset.focc];b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    var cn=$('[data-count]'); if(cn){cn.textContent=st.size==='All'&&!cs.length&&!os.length?'Showing all sizes':('Showing '+n+(n===1?' piece':' pieces')+(st.size!=='All'?' in size '+st.size:''))}
+    var nm=$('[data-nomatch]'); if(nm)nm.hidden=!(all.length&&n===0);
+    $$('[data-dot="colour"]').forEach(function(d){d.parentNode.classList.toggle('act',cs.length>0)});
+    $$('[data-dot="occ"]').forEach(function(d){d.parentNode.classList.toggle('act',os.length>0)});
+    $$('[data-dot="any"]').forEach(function(d){d.parentNode.classList.toggle('act',st.size!=='All'||cs.length>0||os.length>0)});
+    var wl=$('[data-wa-link]'); if(wl&&R.dataset.wa){wl.href='https://wa.me/'+R.dataset.wa+'?text='+encodeURIComponent('Hi! I am looking for a kurti'+(st.size!=='All'?' in size '+st.size:'')+'. Please notify me when one arrives.')}
+    var sh=$('[data-shown]'); if(sh)sh.textContent='Showing '+all.length+' of {{ c.products_count }}';
+  }
+  function sinkSold(){var g=$('[data-grid]'),nm=$('[data-nomatch]');cards().filter(function(c){return c.dataset.sold==='1'}).forEach(function(c){g.insertBefore(c,nm)})}
+  function setSize(s){st.size=s;ls('aa_size',s);apply()}
+  R.addEventListener('click',function(e){
+    var t=e.target.closest('button,a'); if(!t||!R.contains(t))return;
+    if(t.matches('[data-chips] [data-size]')){setSize(t.dataset.size);return}
+    if(t.hasAttribute('data-fsize')){setSize(st.size===t.dataset.fsize?'All':t.dataset.fsize);return}
+    if(t.hasAttribute('data-fcol')){st.colour[t.dataset.fcol]=!st.colour[t.dataset.fcol];apply();return}
+    if(t.hasAttribute('data-focc')){st.occ[t.dataset.focc]=!st.occ[t.dataset.focc];apply();return}
+    if(t.hasAttribute('data-clear-all')){st={size:'All',colour:{},occ:{}};ls('aa_size','All');apply();return}
+    if(t.hasAttribute('data-open-filter')){openSheet($('[data-fsheet]'),t.getAttribute('data-open-filter'));return}
+    if(t.hasAttribute('data-close')){closeSheets();return}
+    if(t.hasAttribute('data-sort')){e.preventDefault();var u=new URL(location.href);u.searchParams.set('sort_by',t.dataset.sort);u.searchParams.delete('page');if(st.size!=='All')u.searchParams.set('size',st.size);location.href=u.toString();return}
+    if(t.hasAttribute('data-qa')){qaClick(t);return}
+    if(t.hasAttribute('data-more')){loadMore(t);return}
+  });
+  var lastFocus=null;
+  function openSheet(ov,sec){lastFocus=document.activeElement;ov.hidden=false;document.documentElement.style.overflow='hidden';if(sec){var s=ov.querySelector('[data-sec="'+sec+'"]');if(s)s.scrollIntoView({block:'start'})}var x=ov.querySelector('[data-close]');if(x)x.focus()}
+  function closeSheets(){$$('.aac-ov').forEach(function(o){o.hidden=true});document.documentElement.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+  $$('.aac-ov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)closeSheets()})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&$$('.aac-ov').some(function(o){return !o.hidden}))closeSheets()});
+  var q={card:null,vs:[],sel:null,mode:'cart'};
+  function vsOf(card){try{return JSON.parse(card.querySelector('[data-v]').textContent)}catch(e){return []}}
+  function openCart(){window.AACD.open()}
+  function toast(msg){var o=document.querySelector('.aac-toast');if(o)o.remove();var d=document.createElement('div');d.className='aac-toast';d.setAttribute('role','status');d.innerHTML='<span></span><a href="/cart">View cart</a>';d.firstChild.textContent=msg;d.lastChild.onclick=function(e){e.preventDefault();d.remove();openCart()};document.body.appendChild(d);setTimeout(function(){d.remove()},3500)}
+  function addV(v,mode,btn,label){
+    if(btn){btn.disabled=true;btn.dataset.l=btn.innerHTML;btn.textContent=mode==='buy'?'Opening…':'Adding…'}
+    var buyNow=mode==='buy';
+    return window.AACD.submit([{id:Number(v.id),quantity:1}],buyNow)
+      .then(function(){if(!buyNow)toast('Added to cart · '+label)})
+      .catch(function(err){toast((err&&err.description)||'Sorry, could not add. Please try again.');throw err})
+      .finally(function(){if(btn){btn.disabled=false;btn.innerHTML=btn.dataset.l}});
+  }
+  function qaClick(btn){
+    var card=btn.closest('[data-card]'),mode=btn.getAttribute('data-qa')||'cart',vs=vsOf(card).filter(function(v){return v.a});
+    var pre=vs.length===1?vs[0]:(st.size!=='All'?vs.filter(function(v){return v.s===st.size})[0]:null);
+    if(pre){addV(pre,mode,btn,card.dataset.title).catch(function(){});return}
+    openQA(card,mode);
+  }
+  function openQA(card,mode){
+    q.card=card;q.sel=null;q.mode=mode||'cart';
+    try{q.vs=JSON.parse(card.querySelector('[data-v]').textContent)}catch(e){q.vs=[]}
+    $('[data-q-title]').textContent=card.dataset.title;$('[data-q-price]').textContent=card.dataset.price;$('[data-q-url]').href=card.dataset.url;
+    var imgs=[card.dataset.img1,card.dataset.img2].filter(Boolean),main=$('[data-q-main]'),th=$('[data-q-th]');main.src=imgs[0]||'';main.alt=card.dataset.title;th.innerHTML='';
+    imgs.forEach(function(src,i){var b=document.createElement('button');b.type='button';b.className=i===0?'on':'';b.setAttribute('aria-label',i===0?'Model photo':'Real photo');var im=document.createElement('img');im.src=src;im.alt='';b.appendChild(im);b.onclick=function(){main.src=src;$$('button',th).forEach(function(x){x.classList.remove('on')});b.classList.add('on')};th.appendChild(b)});
+    var box=$('[data-q-sizes]');box.innerHTML='';
+    var single=q.vs.length===1;
+    q.vs.forEach(function(v){var b=document.createElement('button');b.type='button';b.className='opt';b.textContent=v.s;b.disabled=!v.a;b.setAttribute('aria-label',v.a?'Size '+v.s:'Size '+v.s+' sold out');b.onclick=function(){pick(v)};box.appendChild(b)});
+    var pre=null;if(single&&q.vs[0].a)pre=q.vs[0];else if(st.size!=='All')pre=q.vs.filter(function(v){return v.s===st.size&&v.a})[0];
+    if(pre)pick(pre);else upd();
+    openSheet($('[data-qsheet]'));
+  }
+  function pick(v){q.sel=v;$$('.opt',$('[data-q-sizes]')).forEach(function(b){var on=b.textContent===v.s;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});upd()}
+  function upd(){
+    var v=q.sel,btn=$('[data-q-add]'),note=$('[data-q-note]');
+    $('[data-q-sel]').textContent=v?v.s:'select a size';
+    var av=q.vs.filter(function(x){return x.a}).map(function(x){return x.s});
+    note.textContent=!v?(av.length?'Available in '+av.join(', '):''):(v.q===1?'Only 1 piece left in size '+v.s:(v.q>1&&v.q<5?v.q+' pieces left in size '+v.s:''));
+    btn.disabled=!v;btn.textContent=v?(q.mode==='buy'?'Buy now · ':'Add to cart · ')+q.card.dataset.price:'Select a size';
+  }
+  $('[data-q-add]').addEventListener('click',function(){
+    var v=q.sel;if(!v)return;var title=q.card.dataset.title,mode=q.mode;closeSheets();addV(v,mode,null,title).catch(function(){});
+  });
+  function loadMore(btn){
+    var url=btn.dataset.more;btn.disabled=true;btn.textContent='Loading…';
+    fetch(url).then(function(r){return r.text()}).then(function(h){
+      var d=new DOMParser().parseFromString(h,'text/html'),g=$('[data-grid]'),nm=$('[data-nomatch]');
+      d.querySelectorAll('[data-card]').forEach(function(c){g.insertBefore(document.importNode(c,true),nm)});
+      var nb=d.querySelector('[data-more]');if(nb){btn.dataset.more=nb.dataset.more;btn.disabled=false;btn.textContent='Load more'}else{btn.parentNode.removeChild(btn)}
+      sinkSold();bindDots();apply();
+    }).catch(function(){btn.disabled=false;btn.textContent='Load more'});
+  }
+  function bindDots(){$$('[data-imgs]').forEach(function(s){if(s._b)return;s._b=1;var dots=s.parentNode.querySelectorAll('.aac-dots i');if(!dots.length)return;s.addEventListener('scroll',function(){var i=Math.round(s.scrollLeft/Math.max(1,s.clientWidth));dots.forEach(function(d,k){d.classList.toggle('on',k===i)})},{passive:true})})}
+  var sale=$('[data-aac-sale]');
+  if(sale){var end=Date.parse(sale.dataset.end);if(!isNaN(end)){var p2=function(n){return String(n).padStart(2,'0')};var tick=function(){var s=Math.floor((end-Date.now())/1000);if(s<=0){sale.hidden=true;return}sale.hidden=false;$('[data-d]',sale).textContent=Math.floor(s/86400)+'d';$('[data-h]',sale).textContent=p2(Math.floor(s%86400/3600))+'h';$('[data-m]',sale).textContent=p2(Math.floor(s%3600/60))+'m'};tick();setInterval(tick,30000)}}
+  sinkSold();bindDots();apply();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Araadhya collection",
+  "tag": "section",
+  "class": "aac-section",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Line under title", "default": "Hand-embroidered in Lucknow. One piece each, once it's gone, it's gone." },
+    { "type": "text", "id": "sizes", "label": "Size buttons (comma separated)", "default": "38,40,42,44,46,48,50" },
+    { "type": "text", "id": "offer_end", "label": "Sale countdown end (blank = hidden)", "default": "2026-11-30T23:59:00+05:30", "info": "Format 2026-11-30T23:59:00+05:30. Use only for a real sale." },
+    { "type": "text", "id": "offer_label", "label": "Sale countdown label", "default": "Diwali Season Sale ends in" },
+    { "type": "text", "id": "whatsapp", "label": "WhatsApp number", "default": "919137899409" },
+    { "type": "link_list", "id": "more_menu", "label": "Shop more links" }
+  ]
+}
+{% endschema %}
