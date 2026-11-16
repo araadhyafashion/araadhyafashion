@@ -578,9 +578,9 @@ a[href*="wa.me"].m-button--whatsapp,
       </div>
 
       <div class="aap-acc">
-        <details open><summary>Description</summary><div class="b">{{ p.description }}</div></details>
-        <details><summary>Fabric &amp; care</summary><div class="b">{{ section.settings.care }}</div></details>
-        <details><summary>Shipping &amp; delivery</summary><div class="b">{{ section.settings.shipping }}</div></details>
+        <details open><summary>Description</summary><div class="b">{% if p.description != blank %}{{ p.description }}{% else %}<p>Authentic hand-embroidered Lucknowi Chikankari kurti crafted on 100% pure breathable cotton. Embellished with traditional ghaspatti and phanda artisan stitches by skilled craftsmen in Lucknow. Designed for effortless elegance, lightweight comfort, and timeless ethnic appeal.</p>{% endif %}</div></details>
+        <details><summary>Fabric &amp; care</summary><div class="b">{% if section.settings.care != blank %}{{ section.settings.care }}{% else %}<ul><li>Hand wash in cold water with mild detergent</li><li>Dry in shade; do not wring</li><li>Iron on reverse at low heat</li><li>Small irregularities are a mark of handwork, not a defect</li></ul>{% endif %}</div></details>
+        <details><summary>Shipping &amp; delivery</summary><div class="b">{% if section.settings.shipping != blank %}{{ section.settings.shipping }}{% else %}<ul><li>Free express shipping across India on all orders</li><li>Dispatched within 24–48 hours; delivered in 3–5 working days</li><li>Cash on delivery available nationwide</li></ul>{% endif %}</div></details>
       </div>
     </div>
   </div>

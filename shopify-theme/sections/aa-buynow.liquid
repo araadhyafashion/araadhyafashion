@@ -74,7 +74,11 @@
       else await cartRequest('cart/add.js', { items });
       document.dispatchEvent(new CustomEvent('cart:refresh'));
       refresh();
-      if (buyNow) open();
+      if (buyNow) {
+        window.location.assign(routesRoot + 'checkout');
+      } else {
+        open();
+      }
     });
     pending = operation.catch(() => {});
     return operation;
