@@ -287,25 +287,63 @@ a[href*="wa.me"].m-button--whatsapp,
   <div class="aap-top">
     <div class="aap-gal-wrap">
       <div class="aap-gal">
+        {%- liquid
+          assign raw_hero = blank
+          assign p_handle_lower = p.handle | downcase
+          assign p_title_lower = p.title | downcase
+          if p_handle_lower contains 'lemon-yellow' or p_title_lower contains 'yellow'
+            assign raw_hero = 'product-hero-lemon-yellow.jpg' | asset_url
+          elsif p_handle_lower contains 'azure-blue' or p_handle_lower contains 'blue' or p_title_lower contains 'blue'
+            assign raw_hero = 'product-hero-azure-blue.jpg' | asset_url
+          elsif p_handle_lower contains 'coral-pink' or p_handle_lower contains 'pink' or p_title_lower contains 'pink'
+            assign raw_hero = 'product-hero-coral-pink.jpg' | asset_url
+          elsif p_handle_lower contains 'slate-grey' or p_handle_lower contains 'grey' or p_handle_lower contains 'gray' or p_title_lower contains 'grey' or p_title_lower contains 'gray'
+            assign raw_hero = 'product-hero-slate-grey.jpg' | asset_url
+          elsif p_handle_lower contains 'white' or p_title_lower contains 'white' or p_handle_lower contains 'mahi'
+            assign raw_hero = 'product-hero-white-tonal.jpg' | asset_url
+          endif
+        -%}
         <div class="aap-track" data-track>
+          {%- if raw_hero != blank -%}
+            <div class="aap-slide" data-media-id="hero-raw">
+              <img src="{{ raw_hero }}" alt="{{ p.title }} - Handcrafted Lucknowi Chikankari" loading="eager" fetchpriority="high" width="896" height="1200">
+            </div>
+          {%- endif -%}
           {%- for m in p.media -%}
             {%- if m.media_type == 'image' -%}
+              {%- if raw_hero != blank and forloop.first %}{% continue %}{% endif -%}
               <div class="aap-slide" data-media-id="{{ m.id }}">{{ m | image_url: width: 1100 | image_tag: loading: 'lazy', alt: m.alt | default: p.title, sizes: '(min-width: 990px) 50vw, 100vw' }}</div>
             {%- endif -%}
           {%- endfor -%}
         </div>
         {%- if section.settings.badge != blank -%}<span class="aap-badge">{{ section.settings.badge }}</span>{%- endif -%}
-        {%- if p.media.size > 1 -%}
+        {%- if p.media.size > 1 or raw_hero != blank -%}
           <button class="aap-nav aap-prev" type="button" aria-label="Previous photo" data-prev><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E1B18" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
           <button class="aap-nav aap-next" type="button" aria-label="Next photo" data-next><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E1B18" stroke-width="1.8" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          <span class="aap-count"><span data-idx>1</span> / {{ p.media.size }}</span>
+          {%- assign total_slides = p.media.size -%}
+          {%- if raw_hero != blank and p.media.size == 0 %}{% assign total_slides = 1 %}{% endif -%}
+          <span class="aap-count"><span data-idx>1</span> / {{ total_slides }}</span>
         {%- endif -%}
       </div>
-      {%- if p.media.size > 1 -%}
+      {%- if p.media.size > 1 or raw_hero != blank -%}
         <div class="aap-thumbs">
-          {%- for m in p.media -%}
-            <button type="button" class="aap-thumb{% if forloop.first %} is-on{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Photo {{ forloop.index }}">{{ m | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>
-          {%- endfor -%}
+          {%- if raw_hero != blank -%}
+            <button type="button" class="aap-thumb is-on" data-thumb="0" aria-label="Photo 1">
+              <img src="{{ raw_hero }}" alt="{{ p.title }}" loading="eager" width="56" height="72">
+            </button>
+            {%- assign t_idx = 1 -%}
+            {%- for m in p.media -%}
+              {%- if forloop.first %}{% continue %}{% endif -%}
+              <button type="button" class="aap-thumb" data-thumb="{{ t_idx }}" aria-label="Photo {{ t_idx | plus: 1 }}">
+                {{ m | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
+              </button>
+              {%- assign t_idx = t_idx | plus: 1 -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for m in p.media -%}
+              <button type="button" class="aap-thumb{% if forloop.first %} is-on{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Photo {{ forloop.index }}">{{ m | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
       {%- endif -%}
     </div>
@@ -709,7 +747,7 @@ a[href*="wa.me"].m-button--whatsapp,
   <div class="aap-lb" data-lb hidden role="dialog" aria-label="Zoomed photo"><button type="button" aria-label="Close">×</button><img alt=""></div>
   <div class="aap-bar" data-bar>
     <div class="in">
-      <div class="bi">{%- if p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}<span>{{ p.title }}</span></div>
+      <div class="bi">{%- if raw_hero != blank -%}<img src="{{ raw_hero }}" alt="" width="48" height="60" style="width:48px;height:48px;border-radius:6px;object-fit:cover">{%- elsif p.featured_image -%}{{ p.featured_image | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}<span>{{ p.title }}</span></div>
       <div class="pp"><b data-bar-price>{{ current_price | money_without_trailing_zeros }}</b><s data-bar-mrp style="font-size:12px;color:#9CA3AF;text-decoration:line-through;margin-left:4px">MRP {{ compare_price | money_without_trailing_zeros }}</s><span style="font-size:12px;color:#6B7280;margin-left:4px">Size <strong data-bar-size>38</strong></span></div>
       <button class="aap-atc" type="button" data-atc>Add to cart</button>
       <button class="aap-bn" type="button" data-bn>Buy now</button>

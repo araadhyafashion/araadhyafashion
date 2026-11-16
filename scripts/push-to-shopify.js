@@ -63,7 +63,12 @@ const ASSETS_TO_PUSH = [
   'assets/ugc-avatar-sneha.jpg',
   'assets/ugc-avatar-ananya.jpg',
   'assets/ugc-avatar-ridhima.jpg',
-  'assets/ugc-avatar-sunaina.jpg'
+  'assets/ugc-avatar-sunaina.jpg',
+  'assets/product-hero-lemon-yellow.jpg',
+  'assets/product-hero-azure-blue.jpg',
+  'assets/product-hero-coral-pink.jpg',
+  'assets/product-hero-slate-grey.jpg',
+  'assets/product-hero-white-tonal.jpg'
 ];
 
 function request(options, body = null) {

@@ -247,12 +247,26 @@
           endif
           assign m1 = p.media[0]
           assign m2 = p.media[1]
+          assign card_hero = blank
+          assign p_handle_lower = p.handle | downcase
+          assign p_title_lower = p.title | downcase
+          if p_handle_lower contains 'lemon-yellow' or p_title_lower contains 'yellow'
+            assign card_hero = 'product-hero-lemon-yellow.jpg' | asset_url
+          elsif p_handle_lower contains 'azure-blue' or p_handle_lower contains 'blue' or p_title_lower contains 'blue'
+            assign card_hero = 'product-hero-azure-blue.jpg' | asset_url
+          elsif p_handle_lower contains 'coral-pink' or p_handle_lower contains 'pink' or p_title_lower contains 'pink'
+            assign card_hero = 'product-hero-coral-pink.jpg' | asset_url
+          elsif p_handle_lower contains 'slate-grey' or p_handle_lower contains 'grey' or p_handle_lower contains 'gray' or p_title_lower contains 'grey' or p_title_lower contains 'gray'
+            assign card_hero = 'product-hero-slate-grey.jpg' | asset_url
+          elsif p_handle_lower contains 'white' or p_title_lower contains 'white' or p_handle_lower contains 'mahi'
+            assign card_hero = 'product-hero-white-tonal.jpg' | asset_url
+          endif
         -%}
-        <article class="aac-card{% unless p.available %} sold{% endunless %}" data-card data-handle="{{ p.handle }}" data-sizes="{{ avs }}|" data-colour="{{ colour }}" data-occ="{{ occ }}|" data-sold="{% if p.available %}0{% else %}1{% endif %}" data-title="{{ p.title | escape }}" data-url="{{ p.url }}" data-price="{{ p.price | money_without_trailing_zeros | escape }}" data-img1="{{ m1 | image_url: width: 400 }}" data-img2="{% if m2 %}{{ m2 | image_url: width: 400 }}{% endif %}">
+        <article class="aac-card{% unless p.available %} sold{% endunless %}" data-card data-handle="{{ p.handle }}" data-sizes="{{ avs }}|" data-colour="{{ colour }}" data-occ="{{ occ }}|" data-sold="{% if p.available %}0{% else %}1{% endif %}" data-title="{{ p.title | escape }}" data-url="{{ p.url }}" data-price="{{ p.price | money_without_trailing_zeros | escape }}" data-img1="{% if card_hero != blank %}{{ card_hero }}{% else %}{{ m1 | image_url: width: 400 }}{% endif %}" data-img2="{% if m2 %}{{ m2 | image_url: width: 400 }}{% endif %}">
           <script type="application/json" data-v>[{{ vjson }}]</script>
           <div class="aac-media">
             <div class="aac-imgs" data-imgs>
-              <a href="{{ p.url }}" tabindex="-1" aria-hidden="true">{%- if m1 -%}{{ m1 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,400,600', sizes: '(min-width: 990px) 25vw, 50vw', alt: p.title }}{%- endif -%}</a>
+              <a href="{{ p.url }}" tabindex="-1" aria-hidden="true">{%- if card_hero != blank -%}<img src="{{ card_hero }}" loading="lazy" alt="{{ p.title }}" width="600" height="800">{%- elsif m1 -%}{{ m1 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,400,600', sizes: '(min-width: 990px) 25vw, 50vw', alt: p.title }}{%- endif -%}</a>
               {%- if m2 -%}<a href="{{ p.url }}" tabindex="-1" aria-hidden="true">{{ m2 | image_url: width: 600 | image_tag: loading: 'lazy', widths: '300,400,600', sizes: '(min-width: 990px) 25vw, 50vw', alt: '' }}</a>{%- endif -%}
             </div>
             {%- if m2 -%}<span class="aac-dots" aria-hidden="true"><i class="on"></i><i></i></span>{%- endif -%}
