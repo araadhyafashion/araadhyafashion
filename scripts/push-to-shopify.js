@@ -41,6 +41,7 @@ const TARGET_THEMES = process.env.THEME_IDS
 const ASSETS_TO_PUSH = [
   'layout/theme.liquid',
   'sections/aa-product.liquid',
+  'sections/aa-pdp-boost.liquid',
   'sections/aa-collection.liquid',
   'sections/aa-price-anchor.liquid',
   'sections/annoucement.liquid',

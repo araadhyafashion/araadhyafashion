@@ -49,7 +49,8 @@
 .aap-stars{color:var(--gold);letter-spacing:1px}
 .aap-price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:6px}
 .aap-now{font-size:28px;font-weight:700}
-.aap-mrp{font-size:16px;color:var(--mut);text-decoration:line-through}
+.aap-mrp{font-size:22px;font-weight:600;color:#6B7280;text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:#9CA3AF;margin:0 6px}
+.aap-save{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-size:13px;font-weight:700;color:#0B382C;background:#E7F2EF;border:1px solid #A7D5C9;border-radius:6px;padding:4px 10px;width:fit-content}
 .aap-off{font-size:13px;font-weight:700;color:#fff;background:var(--red);padding:3px 8px;border-radius:4px}
 .aap-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .aap-pill{display:inline-flex;align-items:center;gap:6px;background:#E7F2EF;color:var(--acc);font-size:12px;font-weight:700;letter-spacing:.04em;padding:6px 10px;border-radius:20px}
@@ -341,7 +342,6 @@ a[href*="wa.me"].m-button--whatsapp,
           <span class="aap-mrp" data-mrp>MRP {{ compare_price | money_without_trailing_zeros }}</span>
           <span class="aap-off" data-off>{{ discount_pct }}% OFF</span>
         </div>
-        <div class="aap-save-badge" data-save-badge>You save {{ savings_amount | money_without_trailing_zeros }}</div>
 
         <div class="aap-specs-pills">
           <span class="aap-spec-tag"><strong>Fabric:</strong> 100% Breathable Cotton</span>
@@ -828,7 +828,7 @@ a[href*="wa.me"].m-button--whatsapp,
     if(!v) return;
     var pr=v.price, cp=v.compare_at_price;
     $('[data-price]').textContent=inr(pr); $('[data-bar-price]').textContent=inr(pr);
-    var m=$('[data-mrp]'),o=$('[data-off]'),bm=$('[data-bar-mrp]'),sb=$('[data-save-badge]'),nt=$('[data-note]');
+    var m=$('[data-mrp]'),o=$('[data-off]'),bm=$('[data-bar-mrp]'),nt=$('[data-note]');
     var ref=(cp&&cp>pr)?cp:0;
     if(!ref){
       if(pr<=60000) ref = 129900;
@@ -838,7 +838,6 @@ a[href*="wa.me"].m-button--whatsapp,
     if(m){m.hidden=false;m.textContent='MRP '+inr(ref)}
     if(o){o.hidden=false;o.textContent=Math.round((ref-pr)*100/ref)+'% OFF'}
     if(bm){bm.hidden=false;bm.textContent=inr(ref)}
-    if(sb){sb.hidden=false;sb.textContent='You save '+inr(ref-pr)}
     if(nt){nt.hidden=true}
     addTot();
     if(!initial&&v.featured_media&&track){var sl=$$('.aap-slide');sl.forEach(function(s,k){if(+s.dataset.mediaId===v.featured_media.id)go(k)})}
